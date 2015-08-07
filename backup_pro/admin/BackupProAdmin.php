@@ -1,7 +1,7 @@
 <?php
+use mithra62\BackupPro\Platforms\Controllers\Wordpress AS WpController;
 
-
-class BackupProAdmin 
+class BackupProAdmin extends WpController
 {
 	private $plugin_name;
 
@@ -11,11 +11,18 @@ class BackupProAdmin
 	{
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		add_action('admin_init', array($this, 'check_settings'));
+	}
+	
+	public function check_settings()
+	{
+	    //wp_redirect('/');
 	}
 	
 	public function dashboard()
 	{
-	    echo 'f';
+	    $page = new BackupProDashboardController();
+	    $page->index();
 	}
 	
 	public function settings()
@@ -46,7 +53,7 @@ class BackupProAdmin
 	public function loadMenu()
 	{
 	    add_menu_page('Backup Pro', 'Backup Pro', 'manage_options', 'backup_pro', array($this, 'dashboard'), plugin_dir_url( __FILE__ ).'icons/bp3_32.png', '23.56');
-        //add_submenu_page( 'backup_pro', 'Dashboard', 'Dashboard', 'manage_options', 'backup_pro_dashboard', array($this, 'dashboard'));
+        add_submenu_page( 'backup_pro', 'Dashboard', 'Dashboard', 'manage_options', 'backup_pro', array($this, 'dashboard'));
         add_submenu_page( 'backup_pro', 'Backup Database', 'Backup Database', 'manage_options', 'backup_pro/backup_db', array($this, 'backup_db'));
         add_submenu_page( 'backup_pro', 'Backup Files', 'Backup Files', 'manage_options', 'backup_pro/backup_files', array($this, 'backup_files'));
         add_submenu_page( 'backup_pro', 'Settings', 'Settings', 'manage_options', 'backup_pro/settings', array($this, 'settings'));

@@ -1,36 +1,51 @@
 <?php
-
 /**
- * Fired during plugin activation
+ * mithra62 - Backup Pro
  *
- * @link       http://example.com
- * @since      1.0.0
- *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
+ * @copyright	Copyright (c) 2015, mithra62, Eric Lamb.
+ * @link		http://mithra62.com/
+ * @version		3.0
+ * @filesource 	./backup_pro/includes/BackupProActivate.php
  */
 
 /**
- * Fired during plugin activation.
+ * Backup Pro - Wordpress Activate Object
  *
- * This class defines all code necessary to run during the plugin's activation.
+ * Handles installing Backup Pro for Wordpress
  *
- * @since      1.0.0
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
- * @author     Your Name <email@example.com>
+ * @package 	Wordpress
+ * @author		Eric Lamb <eric@mithra62.com>
  */
-class BackupProActivate {
+class BackupProActivate 
+{
+    /**
+     * The version our settings table is at
+     * @var float
+     */
+    private static $table_version = '1.0';
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function activate() {
-
+    /**
+     * Wrapper to install everything
+     */
+	public static function activate() 
+	{
+	    global $wpdb;
+	    $charset_collate = $wpdb->get_charset_collate();
+	    
+        $sql = "
+            CREATE TABLE IF NOT EXISTS ".$wpdb->prefix."backup_pro_settings (
+              id int(10) unsigned NOT NULL AUTO_INCREMENT,
+              setting_key varchar(60) NOT NULL DEFAULT '',
+              setting_value text NOT NULL,
+              serialized int(1) DEFAULT '0',
+              PRIMARY KEY  (id)
+            ) $charset_collate;
+        ";
+        
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $sql );
+        
+        add_option( 'bp3_db_version', self::$table_version );        
 	}
 
 }

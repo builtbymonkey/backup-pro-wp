@@ -91,6 +91,11 @@ class BackupPro implements BpInterface {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/BackupProPublic.php';
+		
+		/**
+		 * Now load up all the controllers
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/controllers/BackupProDashboardController.php';
 
 		$this->loader = new BackupProLoader();
 

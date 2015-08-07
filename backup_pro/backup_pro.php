@@ -10,6 +10,14 @@
 * License URI: https://mithra62.com/license-agreement
 **/
 
+/**
+ * mithra62 - Backup Pro
+ *
+ * @copyright	Copyright (c) 2015, mithra62, Eric Lamb.
+ * @link		http://mithra62.com/
+ * @version		3.0
+ * @filesource 	./backup_pro.php
+ */
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
     die;
@@ -27,6 +35,7 @@ function deactivate_backup_pro()
     BackupProDeactivate::deactivate();
 }
 
+
 if( !class_exists('BackupPro') )
 {
     require plugin_dir_path( __FILE__ ) . 'includes/BackupPro.php';
@@ -36,14 +45,13 @@ if( !function_exists('run_backup_pro') )
 {
     function run_backup_pro() 
     {
-    
         $plugin = new BackupPro();
         $plugin->run();
     
     }
 }
 
-register_activation_hook( __FILE__, 'activate_backup_pro' );
-register_deactivation_hook( __FILE__, 'deactivate_backup_pro' );
+register_activation_hook( basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ), 'activate_backup_pro' );
+register_deactivation_hook( basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ), 'deactivate_backup_pro' );
 
 run_backup_pro();
