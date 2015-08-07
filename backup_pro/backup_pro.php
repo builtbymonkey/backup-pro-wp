@@ -10,8 +10,6 @@
 * License URI: https://mithra62.com/license-agreement
 **/
 
-require_once 'includes/vendor/autoload.php';
-
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
     die;

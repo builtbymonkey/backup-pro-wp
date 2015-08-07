@@ -1,14 +1,14 @@
 <?php
+require_once 'vendor/autoload.php';
 
-class BackupPro {
+use mithra62\BackupPro\BackupPro AS BpInterface;
+
+class BackupPro implements BpInterface {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      Plugin_Name_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var BackupProLoader
 	 */
 	protected $loader;
 
@@ -28,7 +28,7 @@ class BackupPro {
 	 * @access   protected
 	 * @var      string    $version    The current version of the plugin.
 	 */
-	protected $version;
+	protected $version = self::version;
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -41,8 +41,8 @@ class BackupPro {
 	 */
 	public function __construct() {
 
-		$this->plugin_name = 'plugin-name';
-		$this->version = '1.0.0';
+		$this->plugin_name = 'backup_pro';
+		//$this->version = 
 
 		$this->loadDependencies();
 		$this->setLocale();
@@ -127,6 +127,8 @@ class BackupPro {
 
 		$this->loader->addAction( 'admin_enqueue_scripts', $plugin_admin, 'enqueueStyles' );
 		$this->loader->addAction( 'admin_enqueue_scripts', $plugin_admin, 'enqueueScripts' );
+		$this->loader->addAction( 'admin_menu', $plugin_admin, 'loadMenu' );
+		
 
 	}
 

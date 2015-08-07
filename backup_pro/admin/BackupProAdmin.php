@@ -99,5 +99,21 @@ class BackupProAdmin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
+	
+	public function loadMenu()
+	{
+	    add_menu_page (
+	        'Backup Pro',
+	        'Backup Pro',
+	        'manage_options',
+	        'backup_pro',
+	        'my_admin_page_function',
+	        plugin_dir_url( __FILE__ ).'icons/bp3_32.png',
+	        '23.56'
+	    );
+	    
+        add_submenu_page( 'backup_pro', 'My Custom Page', 'My Custom Page', 'manage_options', 'my-top-level-slug');
+        add_submenu_page( 'backup_pro', 'My Custom Submenu Page', 'My Custom Submenu Page', 'manage_options', 'my-secondary-slug');
+	}
 
 }
