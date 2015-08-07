@@ -24,7 +24,7 @@
  * @subpackage Plugin_Name/includes
  * @author     Your Name <email@example.com>
  */
-class Plugin_Name_i18n {
+class BackupProi18n {
 
 	/**
 	 * The domain specified for this plugin.
@@ -40,7 +40,7 @@ class Plugin_Name_i18n {
 	 *
 	 * @since    1.0.0
 	 */
-	public function load_plugin_textdomain() {
+	public function loadPluginTextdomain() {
 
 		load_plugin_textdomain(
 			$this->domain,
@@ -56,7 +56,7 @@ class Plugin_Name_i18n {
 	 * @since    1.0.0
 	 * @param    string    $domain    The domain that represents the locale of this plugin.
 	 */
-	public function set_domain( $domain ) {
+	public function setDomain( $domain ) {
 		$this->domain = $domain;
 	}
 
