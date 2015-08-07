@@ -1,45 +1,9 @@
 <?php
 
-/**
- * Define the internationalization functionality
- *
- * Loads and defines the internationalization files for this plugin
- * so that it is ready for translation.
- *
- * @link       http://example.com
- * @since      1.0.0
- *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
- */
-
-/**
- * Define the internationalization functionality.
- *
- * Loads and defines the internationalization files for this plugin
- * so that it is ready for translation.
- *
- * @since      1.0.0
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
- * @author     Your Name <email@example.com>
- */
 class BackupProi18n {
 
-	/**
-	 * The domain specified for this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $domain    The domain identifier for this plugin.
-	 */
 	private $domain;
 
-	/**
-	 * Load the plugin text domain for translation.
-	 *
-	 * @since    1.0.0
-	 */
 	public function loadPluginTextdomain() {
 
 		load_plugin_textdomain(
