@@ -6,6 +6,12 @@ class BackupProAdmin extends WpController
 	private $plugin_name;
 
 	private $version;
+	
+	/**
+	 * An instance of the BackupPro object
+	 * @var BackupPro
+	 */
+	private $context = null;
 
 	public function __construct( $plugin_name, $version ) 
 	{
@@ -90,6 +96,12 @@ class BackupProAdmin extends WpController
         //these shouldn't show up in the navigation
         add_submenu_page( null, 'New Storage', 'New Storage', 'manage_options', 'backup_pro/settings&action=new_storage', array($this, 'settings'));
         add_submenu_page( 'backup_pro', 'Settings', 'Settings', 'manage_options', 'backup_pro/settings', array($this, 'settings'));
+	}
+	
+	public function pluginLinks($links)
+	{
+	    $links['settings'] = sprintf( '<a href="%s"> %s </a>', admin_url( 'options-general.php?page=my_plugin_settings' ), __( 'Settings', 'plugin_domain' ) );
+	    return $links;
 	}
 
 }

@@ -1,4 +1,4 @@
-
+<div class='wrap'>
 <h1>Backup Pro Dashboard</h1>
 
 <?php include '_includes/_errors.php'; ?>
@@ -6,68 +6,91 @@
 <br clear="all" />
 <?php 
 //echo $this->view_helper->m62Lang('module_instructions'); ?>
-
-<div class="clear_left shun"></div>
-<div>
 <?php 
-
-$space_available_header = $this->view_helper->m62Lang('total_space_available');
-if($this->settings['auto_threshold'] != '0')
+$space_available_header = $view_helper->m62Lang('total_space_available');
+if($settings['auto_threshold'] != '0')
 {
-	$space_available_header .= ' ('.$available_space['available_percentage'].'%)';
+    $space_available_header .= ' ('.$available_space['available_percentage'].'%)';
 }
-
-$this->table->set_heading(
-	$view_helper->m62Lang('total_backups'), 
-	$view_helper->m62Lang('total_space_used'),
-	$space_available_header, 
-	array('data' => $view_helper->m62Lang('last_backup_taken'), 'align' => 'right'), 
-	array('data' => $view_helper->m62Lang('first_backup_taken'), 'align' => 'right')
-);
-$data = array(
-	array('data' => $backup_meta['global']['total_backups'], 'width' => 80), 
-	array('data' => $backup_meta['global']['total_space_used'], 'width' => 150), 
-	array('data' => ($settings['auto_threshold'] == '0' ? $view_helper->m62Lang('unlimited') : $available_space['available_space'].' / '.$available_space['max_space'])),
-	array('data' => ($backup_meta['global']['newest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['global']['newest_backup_taken']) : $view_helper->m62Lang('na')), 'width' => 150, 'align' => 'right'),
-	array('data' => ($backup_meta['global']['oldest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['global']['oldest_backup_taken']) : $view_helper->m62Lang('na')), 'width' => 150, 'align' => 'right')
-);
-$this->table->add_row($data);
-echo $this->table->generate();
-$this->table->clear();
 ?>
-</div>
-<div class="clear_left shun"></div>
-
-<?php echo form_open($query_base, array('id'=>'my_accordion')); ?>
-
-<table width="100%">
+	
+	<table border="0" cellspacing="0" cellpadding="0" class="widefat"  width="100%" >
+	<thead>
 	<tr>
-		<td width="50%">
-		<?php 
-		$this->table->set_heading(array('data' => $view_helper->m62Lang('database_backups'), 'width' => '50%'),' ');
-		$this->table->add_row('<strong>'.$view_helper->m62Lang('total_backups').'</strong>', $backup_meta['database']['total_backups']);
-		$this->table->add_row('<strong>'.$view_helper->m62Lang('total_space_used').'</strong>', $backup_meta['database']['total_space_used']);
-		$this->table->add_row('<strong>'.$view_helper->m62Lang('last_backup_taken').'</strong>', ($backup_meta['database']['newest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['database']['newest_backup_taken']) : $view_helper->m62Lang('na')));
-
-		echo $this->table->generate();
-		// Clear out of the next one
-		$this->table->clear();		
-		?>
-		</td>
-		<td valign="top">
-		<?php 
-		$this->table->set_heading(array('data' =>$view_helper->m62Lang('file_backups'), 'width' => '50%'),' ');
-		$this->table->add_row('<strong>'.$view_helper->m62Lang('total_backups').'</strong>', $backup_meta['files']['total_backups']);
-		$this->table->add_row('<strong>'.$view_helper->m62Lang('total_space_used').'</strong>', $backup_meta['files']['total_space_used']);
-		$this->table->add_row('<strong>'.$view_helper->m62Lang('last_backup_taken').'</strong>', ($backup_meta['files']['newest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['files']['newest_backup_taken']) : $view_helper->m62Lang('na')));
-
-		echo $this->table->generate();
-		// Clear out of the next one
-		$this->table->clear();		
-		?>
-		</td>
+		<th width="80"><?php echo $view_helper->m62Lang('total_backups'); ?></th>
+		<th><?php echo $view_helper->m62Lang('total_space_used'); ?></th>
+		<th><?php echo $space_available_header; ?></th>
+		<th align='right'><?php echo $view_helper->m62Lang('last_backup_taken'); ?></th>
+		<th align='right'><?php echo $view_helper->m62Lang('first_backup_taken'); ?></th>
 	</tr>
-</table>
+	</thead>
+	<tbody>
+	<tr>
+		<td width='80'> <?php echo $backup_meta['global']['total_backups']; ?> </td>
+		<td width='150'><?php echo $backup_meta['global']['total_space_used']; ?></td>
+		<td><?php echo ($settings['auto_threshold'] == '0' ? $view_helper->m62Lang('unlimited') : $available_space['available_space'].' / '.$available_space['max_space']); ?></td>
+		<td align='right' width='150'><?php echo ($backup_meta['global']['newest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['global']['newest_backup_taken']) : $view_helper->m62Lang('na')); ?></td>
+		<td align='right' width='150'><?php echo ($backup_meta['global']['oldest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['global']['oldest_backup_taken']) : $view_helper->m62Lang('na')); ?></td>
+	</tr>
+	</tbody>
+	</table>
+	
+	
+	<table width="100%" >
+		<tbody><tr class="even">
+			<td width="50%">
+				<table class="widefat"  width="100%" border="0" cellpadding="0" cellspacing="0">
+					<thead>
+						<tr class="odd">
+							<th width="50%"><?php echo $view_helper->m62Lang('database_backups'); ?></th>
+							<th> </th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr class="even">
+						<td><strong><?php echo $view_helper->m62Lang('total_backups'); ?></strong></td>
+						<td><?php echo $backup_meta['database']['total_backups']; ?></td>
+					</tr>
+					<tr class="odd">
+						<td><strong><?php echo $view_helper->m62Lang('total_space_used'); ?></strong></td>
+						<td><?php echo $backup_meta['database']['total_space_used']; ?></td>
+					</tr>
+					<tr class="even">
+						<td><strong><?php echo $view_helper->m62Lang('last_backup_taken'); ?></strong></td>
+						<td><?php echo ($backup_meta['database']['newest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['database']['newest_backup_taken']) : $view_helper->m62Lang('na')); ?></td>
+					</tr>
+					</tbody>
+				</table>		
+			</td>
+			<td valign="top">
+				<table class="widefat"  width="100%" border="0" cellpadding="0" cellspacing="0">
+					<thead>
+						<tr class="odd">
+							<th width="50%"><?php echo $view_helper->m62Lang('file_backups'); ?></th>
+							<th> </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="even">
+						<td><strong><?php echo $view_helper->m62Lang('total_backups'); ?></strong></td>
+							<td><?php echo $backup_meta['files']['total_backups']; ?></td>
+						</tr>
+					<tr class="odd">
+						<td><strong><?php echo $view_helper->m62Lang('total_space_used'); ?></strong></td>
+						<td><?php echo $backup_meta['files']['total_space_used']; ?></td>
+					<tr class="even">
+						<td><strong><?php echo $view_helper->m62Lang('last_backup_taken'); ?></strong></td>
+						<td><?php echo ($backup_meta['files']['newest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['files']['newest_backup_taken']) : $view_helper->m62Lang('na')); ?></td>
+					</tr>
+				</tbody>
+				</table>		
+			</td>
+		</tr>
+	</tbody>
+	</table>
+
+
+
 <h3  class="accordion"><?=$view_helper->m62Lang('recent_backups').' ('.count($backups).')';?></h3>
 <div id="backups">
 	<?php 
@@ -80,4 +103,5 @@ $this->table->clear();
 	<?php endif; ?>
 </div>
 
-<?php echo form_close()?>
+<?php //echo form_close()?>
+</div>
