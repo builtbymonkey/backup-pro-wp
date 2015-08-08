@@ -1,15 +1,18 @@
-<?php $this->load->view('_includes/_errors'); ?>
-<?php $this->load->view('_includes/_backups_submenu'); ?>
+
+<h1>Backup Pro Dashboard</h1>
+
+<?php include '_includes/_errors.php'; ?>
+<?php include '_includes/_backups_submenu.php'; ?>
 <br clear="all" />
 <?php 
-echo $view_helper->m62Lang('module_instructions'); ?>
+//echo $this->view_helper->m62Lang('module_instructions'); ?>
 
 <div class="clear_left shun"></div>
 <div>
 <?php 
 
-$space_available_header = $view_helper->m62Lang('total_space_available');
-if($settings['auto_threshold'] != '0')
+$space_available_header = $this->view_helper->m62Lang('total_space_available');
+if($this->settings['auto_threshold'] != '0')
 {
 	$space_available_header .= ' ('.$available_space['available_percentage'].'%)';
 }

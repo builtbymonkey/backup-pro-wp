@@ -1,5 +1,5 @@
 <?php
-if(count($errors) >= 1)
+if(count($this->errors) >= 1)
 {
 	
 	foreach($errors AS $key => $error)
