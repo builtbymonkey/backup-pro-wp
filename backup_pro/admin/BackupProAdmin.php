@@ -1,11 +1,38 @@
 <?php
+/**
+ * mithra62 - Backup Pro
+ *
+ * @author		Eric Lamb <eric@mithra62.com>
+ * @copyright	Copyright (c) 2015, mithra62, Eric Lamb.
+ * @link		http://mithra62.com/
+ * @version		3.0
+ * @filesource 	./backup_pro/admin/BackupProAdmin.php
+ */
+ 
 use mithra62\BackupPro\Platforms\Controllers\Wordpress AS WpController;
+use mithra62\BackupPro\BackupPro AS BpInterface;
 
-class BackupProAdmin extends WpController
+/**
+ * Backup Pro - Admin Library
+ *
+ * Abstracts setting up the administration details
+ *
+ * @package 	Wordpress
+ * @author		Eric Lamb <eric@mithra62.com>
+ */
+class BackupProAdmin extends WpController implements BpInterface
 {
-	private $plugin_name;
+    /**
+     * The shortname for the plugin
+     * @var string
+     */
+	private $plugin_name = self::name;
 
-	private $version;
+	/**
+	 * The version of the plugin
+	 * @var number
+	 */
+	private $version = self::version;
 	
 	/**
 	 * An instance of the BackupPro object
@@ -13,11 +40,14 @@ class BackupProAdmin extends WpController
 	 */
 	private $context = null;
 
-	public function __construct( $plugin_name, $version ) 
+	/**
+	 * sets up the inital admin hooks
+	 * @param unknown $plugin_name
+	 * @param unknown $version
+	 */
+	public function __construct() 
 	{
 	    parent::__construct();
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
 		add_action('admin_init', array($this, 'proc_settings'));
 		add_action('admin_init', array($this, 'proc_storage_add'));
 		add_action('admin_init', array($this, 'proc_storage_edit'));
@@ -65,12 +95,26 @@ class BackupProAdmin extends WpController
 	public function dashboard()
 	{
 	    $page = new BackupProDashboardController($this);
-	    $page->setBackupLib($this->context)->index();
+	    $page = $page->setBackupLib($this->context);
+	    
+	    $section = $this->getPost('section');
+	    switch( $section )
+	    {
+	        case 'db_backups':
+	            $page->db_backups();
+            break;
+            
+	        case 'dashboard':
+	        default:
+	            $page->index();
+            break;
+	    }
 	}
 	
 	public function settings()
 	{
-	    
+	    $page = new BackupProSettingsController($this);
+	    $page->setBackupLib($this->context)->settings();
 	}
 	
 	public function backup_files()
@@ -99,10 +143,12 @@ class BackupProAdmin extends WpController
         add_submenu_page( 'backup_pro', 'Dashboard', 'Dashboard', 'manage_options', 'backup_pro', array($this, 'dashboard'));
         add_submenu_page( 'backup_pro', 'Backup Database', 'Backup Database', 'manage_options', 'backup_pro/backup_db', array($this, 'backup_db'));
         add_submenu_page( 'backup_pro', 'Backup Files', 'Backup Files', 'manage_options', 'backup_pro/backup_files', array($this, 'backup_files'));
+        add_submenu_page( 'backup_pro', 'Settings', 'Settings', 'manage_options', 'backup_pro/settings', array($this, 'settings'));
         
         //these shouldn't show up in the navigation
-        add_submenu_page( null, 'New Storage', 'New Storage', 'manage_options', 'backup_pro/settings&action=new_storage', array($this, 'settings'));
-        add_submenu_page( 'backup_pro', 'Settings', 'Settings', 'manage_options', 'backup_pro/settings', array($this, 'settings'));
+        //add_submenu_page( 'backup_profdsafdsa', 'Database Backups', null, 'manage_options', 'backup_pro/db_backups', array($this, 'backup_db'));
+        //add_submenu_page( 'backup_pro', 'New Storage', null, 'manage_options', 'backup_pro/new_storage', array($this, 'settings'));
+        //add_submenu_page( 'backup_pro', 'Newd Storage', null, 'manage_options', 'backup_pro/new_storagge', array($this, 'settings'));
 	}
 	
 	public function pluginLinks($links)

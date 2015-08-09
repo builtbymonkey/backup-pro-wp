@@ -23,7 +23,6 @@ use mithra62\BackupPro\BackupPro AS BpInterface;
  */
 class BackupPro implements BpInterface 
 {
-
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
@@ -114,6 +113,7 @@ class BackupPro implements BpInterface
 		 * Now load up all the controllers
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/controllers/BackupProDashboardController.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/controllers/BackupProSettingsController.php';
 
 		$this->loader = new BackupProLoader();
 
@@ -146,7 +146,7 @@ class BackupPro implements BpInterface
 	 */
 	private function defineAdminHooks() {
 
-		$plugin_admin = new BackupProAdmin( $this->getPluginName(), $this->getVersion() );
+		$plugin_admin = new BackupProAdmin();
 		$plugin_admin->setContext($this);
 
 		$this->loader->addAction( 'admin_enqueue_scripts', $plugin_admin, 'enqueueStyles' );
@@ -228,12 +228,6 @@ class BackupPro implements BpInterface
 	        'integrity_agent' => array('url' => 'integrity_agent', 'target' => '', 'div_class' => ''),
 	        'license' => array('url' => 'license', 'target' => '', 'div_class' => ''),
 	    );
-	
-	    if (ee()->extensions->active_hook('backup_pro_modify_settings_menu') === TRUE)
-	    {
-	        $menu = ee()->extensions->call('backup_pro_modify_settings_menu', $menu);
-	        if (ee()->extensions->end_script === TRUE) return $menu;
-	    }
 	
 	    return $menu;
 	}
