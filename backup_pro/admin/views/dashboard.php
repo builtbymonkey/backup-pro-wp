@@ -1,7 +1,7 @@
 <div class='wrap'>
 <h1>Backup Pro Dashboard</h1>
 
-<?php include '_includes/_errors.php'; ?>
+<?php //include '_includes/_errors.php'; ?>
 <?php include '_includes/_backups_submenu.php'; ?>
 <br clear="all" />
 <?php 
@@ -17,7 +17,7 @@ if($settings['auto_threshold'] != '0')
 	<table border="0" cellspacing="0" cellpadding="0" class="widefat"  width="100%" >
 	<thead>
 	<tr>
-		<th width="80"><?php echo $view_helper->m62Lang('total_backups'); ?></th>
+		<th width="120"><?php echo $view_helper->m62Lang('total_backups'); ?></th>
 		<th><?php echo $view_helper->m62Lang('total_space_used'); ?></th>
 		<th><?php echo $space_available_header; ?></th>
 		<th align='right'><?php echo $view_helper->m62Lang('last_backup_taken'); ?></th>
@@ -26,7 +26,7 @@ if($settings['auto_threshold'] != '0')
 	</thead>
 	<tbody>
 	<tr>
-		<td width='80'> <?php echo $backup_meta['global']['total_backups']; ?> </td>
+		<td width='120'> <?php echo $backup_meta['global']['total_backups']; ?> </td>
 		<td width='150'><?php echo $backup_meta['global']['total_space_used']; ?></td>
 		<td><?php echo ($settings['auto_threshold'] == '0' ? $view_helper->m62Lang('unlimited') : $available_space['available_space'].' / '.$available_space['max_space']); ?></td>
 		<td align='right' width='150'><?php echo ($backup_meta['global']['newest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['global']['newest_backup_taken']) : $view_helper->m62Lang('na')); ?></td>
@@ -103,5 +103,4 @@ if($settings['auto_threshold'] != '0')
 	<?php endif; ?>
 </div>
 
-<?php //echo form_close()?>
 </div>

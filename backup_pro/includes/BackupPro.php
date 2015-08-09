@@ -129,11 +129,14 @@ class BackupPro implements BpInterface {
 	private function defineAdminHooks() {
 
 		$plugin_admin = new BackupProAdmin( $this->getPluginName(), $this->getVersion() );
+		$plugin_admin->setContext($this);
 
 		$this->loader->addAction( 'admin_enqueue_scripts', $plugin_admin, 'enqueueStyles' );
 		$this->loader->addAction( 'admin_enqueue_scripts', $plugin_admin, 'enqueueScripts' );
 		$this->loader->addAction( 'admin_menu', $plugin_admin, 'loadMenu' );
+		$this->loader->addAction( 'admin_notices' , $plugin_admin, 'errorNotices');
 		$this->loader->addFilter( 'plugin_action_links_backup_pro/backup_pro.php', $plugin_admin, 'pluginLinks');
+		
 	}
 
 	/**
@@ -191,46 +194,12 @@ class BackupPro implements BpInterface {
 	public function getVersion() {
 		return $this->version;
 	}
-
-	/**
-	 * Sets up the right menu options
-	 * @return multitype:string
-	 */
-	public function get_right_menu(array $settings)
-	{
-	    if( empty($settings['working_directory']) )
-	    {
-	        return array('settings' => $this->url_base.'settings'.AMP.'section=general');
-	    }
-	     
-	    $menu = array(
-	        'dashboard'		=> $this->url_base.'index',
-	        'backup_db'		=> $this->url_base.'backup&type=database',
-	        'backup_files'	=> $this->url_base.'backup&type=files'
-	    );
-	
-	    if(ee()->session->userdata('group_id') == '1' || (isset($this->settings['allowed_access_levels']) && is_array($this->settings['allowed_access_levels'])))
-	    {
-	        if(ee()->session->userdata('group_id') == '1' || in_array(ee()->session->userdata('group_id'), $this->settings['allowed_access_levels']))
-	        {
-	            $menu['settings'] = $this->url_base.'settings'.AMP.'section=general';
-	        }
-	    }
-	
-	    if (ee()->extensions->active_hook('backup_pro_modify_right_menu') === TRUE)
-	    {
-	        $menu = ee()->extensions->call('backup_pro_modify_right_menu', $menu);
-	        if (ee()->extensions->end_script === TRUE) return $menu;
-	    }
-	
-	    return $menu;
-	}
 	
 	/**
 	 * Creates the Settings menu for the view script
 	 * @return multitype:multitype:string  multitype:string unknown
 	 */
-	public function get_settings_view_menu()
+	public function getSettingsViewMenu()
 	{
 	    $menu = array(
 	        'general' => array('url' => 'general', 'target' => '', 'div_class' => ''),
@@ -255,20 +224,13 @@ class BackupPro implements BpInterface {
 	 * Creates the Dashboard menu for the view script
 	 * @return multitype:multitype:string  multitype:string unknown
 	 */
-	public function get_dashboard_view_menu()
+	public function getDashboardViewMenu()
 	{
 	    $menu = array(
-	        'home' => array('url' => 'index', 'target' => '', 'div_class' => ''),
+	        'home' => array('url' => '', 'target' => '', 'div_class' => ''),
 	        'db' => array('url' => 'db_backups', 'target' => '', 'div_class' => ''),
 	        'files' => array('url' => 'file_backups', 'target' => '_self', 'div_class' => '')
 	    );
-	
-	    if (ee()->extensions->active_hook('backup_pro_modify_settings_menu') === TRUE)
-	    {
-	        $menu = ee()->extensions->call('backup_pro_modify_settings_menu', $menu);
-	        if (ee()->extensions->end_script === TRUE) return $menu;
-	    }
-	
 	    return $menu;
 	}
 }

@@ -15,6 +15,7 @@ class BackupProAdmin extends WpController
 
 	public function __construct( $plugin_name, $version ) 
 	{
+	    parent::__construct();
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		add_action('admin_init', array($this, 'proc_settings'));
@@ -23,6 +24,12 @@ class BackupProAdmin extends WpController
 		add_action('admin_init', array($this, 'proc_storage_remove'));
 		add_action('admin_init', array($this, 'proc_backup_note'));
 		add_action('admin_init', array($this, 'proc_remove_backup'));
+	}
+	
+	public function setContext(BackupPro $context)
+	{
+	    $this->context = $context;
+	    return $this;
 	}
 	
 	public function proc_settings()
@@ -57,8 +64,8 @@ class BackupProAdmin extends WpController
 	
 	public function dashboard()
 	{
-	    $page = new BackupProDashboardController();
-	    $page->index();
+	    $page = new BackupProDashboardController($this);
+	    $page->setBackupLib($this->context)->index();
 	}
 	
 	public function settings()
@@ -100,8 +107,31 @@ class BackupProAdmin extends WpController
 	
 	public function pluginLinks($links)
 	{
-	    $links['settings'] = sprintf( '<a href="%s"> %s </a>', admin_url( 'options-general.php?page=my_plugin_settings' ), __( 'Settings', 'plugin_domain' ) );
+	    $links['settings'] = sprintf( '<a href="%s"> %s </a>', admin_url( 'admin.php?page=backup_pro/settings' ), __( 'Settings', 'plugin_domain' ) );
 	    return $links;
+	}
+	
+	public function errorNotices()
+	{
+	    $screen_id = get_current_screen()->id;
+	    $display_notice = get_user_meta( get_current_user_id(), '_wptuts_display_notice', true );
+
+	    if ( !$display_notice && strpos($screen_id, 'backup_pro') !== FALSE ) 
+	    {
+	        $errors = $this->services['errors']->checkStorageLocations($this->settings['storage_details'])
+                        	         ->licenseCheck($this->settings['license_number'], $this->services['license'])
+                        	         ->getErrors();
+	        
+	        if( $errors && count($errors) >= 1)
+	        {	            
+	            foreach($errors AS $error)
+	            {
+        	        $class = "error";
+            	    $message = $error;
+            	    echo"<div class=\"$class\"> <p>$message</p></div>";
+	            }
+	        }
+	    }
 	}
 
 }
