@@ -1,5 +1,6 @@
 <div class='wrap'>
-<h1>Backup Pro Dashboard</h1>
+<h2>Backup Pro Dashboard</h2>
+
 
 <?php //include '_includes/_errors.php'; ?>
 <?php include '_includes/_backups_submenu.php'; ?>

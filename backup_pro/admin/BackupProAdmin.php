@@ -128,7 +128,7 @@ class BackupProAdmin extends WpController
 	            {
         	        $class = "error";
             	    $message = $error;
-            	    echo"<div class=\"$class\"> <p>$message</p></div>";
+            	    echo"<div class=\"$class\"> <p>".esc_html__($message)."</p></div>";
 	            }
 	        }
 	    }

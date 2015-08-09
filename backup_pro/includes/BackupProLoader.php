@@ -1,81 +1,83 @@
 <?php
+/**
+ * mithra62 - Backup Pro
+ *
+ * @author		Eric Lamb <eric@mithra62.com>
+ * @copyright	Copyright (c) 2015, mithra62, Eric Lamb.
+ * @link		http://mithra62.com/
+ * @version		3.0
+ * @filesource 	./backup_pro/includes/BackupProLoader.php
+ */
 
-class BackupProLoader {
-
+/**
+ * Backup Pro - Hook Loader
+ *
+ * Abstraction to load up all the hooks BP needs for WP
+ *
+ * @package 	Wordpress
+ * @author		Eric Lamb <eric@mithra62.com>
+ */
+class BackupProLoader 
+{
+    /**
+     * The actions we're registering
+     * @var array
+     */
+	protected $actions = array();
+	
 	/**
-	 * The array of actions registered with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      array    $actions    The actions registered with WordPress to fire when the plugin loads.
+	 * The filters we're registering
+	 * @var array
 	 */
-	protected $actions;
-
+	protected $filters = array();
+	
 	/**
-	 * The array of filters registered with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      array    $filters    The filters registered with WordPress to fire when the plugin loads.
+	 * Set it up
 	 */
-	protected $filters;
-
-	/**
-	 * Initialize the collections used to maintain the actions and filters.
-	 *
-	 * @since    1.0.0
-	 */
-	public function __construct() {
-
+	public function __construct() 
+	{
 		$this->actions = array();
 		$this->filters = array();
-
 	}
-
+	
 	/**
-	 * Add a new action to the collection to be registered with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @param      string               $hook             The name of the WordPress action that is being registered.
-	 * @param      object               $component        A reference to the instance of the object on which the action is defined.
-	 * @param      string               $callback         The name of the function definition on the $component.
-	 * @param      int      Optional    $priority         The priority at which the function should be fired.
-	 * @param      int      Optional    $accepted_args    The number of arguments that should be passed to the $callback.
+	 * Adds an action to the collection
+	 * @param string $hook
+	 * @param object $component
+	 * @param string $callback
+	 * @param number $priority
+	 * @param number $accepted_args
 	 */
-	public function addAction( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
+	public function addAction( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) 
+	{
 		$this->actions = $this->add( $this->actions, $hook, $component, $callback, $priority, $accepted_args );
 	}
-
+	
 	/**
-	 * Add a new filter to the collection to be registered with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @param      string               $hook             The name of the WordPress filter that is being registered.
-	 * @param      object               $component        A reference to the instance of the object on which the filter is defined.
-	 * @param      string               $callback         The name of the function definition on the $component.
-	 * @param      int      Optional    $priority         The priority at which the function should be fired.
-	 * @param      int      Optional    $accepted_args    The number of arguments that should be passed to the $callback.
+	 * Adds a filter to the collection
+	 * @param string $hook
+	 * @param object $component
+	 * @param string $callback
+	 * @param number $priority
+	 * @param number $accepted_args
 	 */
-	public function addFilter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
+	public function addFilter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) 
+	{
 		$this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
 	}
-
+	
 	/**
-	 * A utility function that is used to register the actions and hooks into a single
-	 * collection.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @param      array                $hooks            The collection of hooks that is being registered (that is, actions or filters).
-	 * @param      string               $hook             The name of the WordPress filter that is being registered.
-	 * @param      object               $component        A reference to the instance of the object on which the filter is defined.
-	 * @param      string               $callback         The name of the function definition on the $component.
-	 * @param      int      Optional    $priority         The priority at which the function should be fired.
-	 * @param      int      Optional    $accepted_args    The number of arguments that should be passed to the $callback.
-	 * @return   type                                   The collection of actions and filters registered with WordPress.
+	 * Compiles all the hooks into a collection
+	 * @param array $hooks
+	 * @param string $hook
+	 * @param object $component
+	 * @param string $callback
+	 * @param number $priority
+	 * @param number $accepted_args
+	 * @return array
 	 */
-	private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
-
+	private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) 
+	{
 		$hooks[] = array(
 			'hook'          => $hook,
 			'component'     => $component,
@@ -83,17 +85,14 @@ class BackupProLoader {
 			'priority'      => $priority,
 			'accepted_args' => $accepted_args
 		);
-
 		return $hooks;
-
 	}
 
 	/**
-	 * Register the filters and actions with WordPress.
-	 *
-	 * @since    1.0.0
+	 * Compiles the collected actions and filters with Wordpress
 	 */
-	public function run() {
+	public function run() 
+	{
 
 		foreach ( $this->filters as $hook ) {
 			add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
@@ -102,7 +101,6 @@ class BackupProLoader {
 		foreach ( $this->actions as $hook ) {
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
-
 	}
 
 }

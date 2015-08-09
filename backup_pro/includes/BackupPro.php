@@ -1,9 +1,28 @@
 <?php
+/**
+ * mithra62 - Backup Pro
+ *
+ * @author		Eric Lamb <eric@mithra62.com>
+ * @copyright	Copyright (c) 2015, mithra62, Eric Lamb.
+ * @link		http://mithra62.com/
+ * @version		3.0
+ * @filesource 	./backup_pro/includes/BackupPro.php
+ */
+ 
 require_once 'vendor/autoload.php';
 
 use mithra62\BackupPro\BackupPro AS BpInterface;
 
-class BackupPro implements BpInterface {
+/**
+ * Backup Pro - Wordpress Backup Pro Library 
+ *
+ * Contains the methods Wordpress needs to get started
+ *
+ * @package 	Wordpress
+ * @author		Eric Lamb <eric@mithra62.com>
+ */
+class BackupPro implements BpInterface 
+{
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -19,7 +38,7 @@ class BackupPro implements BpInterface {
 	 * @access   protected
 	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
-	protected $plugin_name;
+	protected $plugin_name = self::name;
 
 	/**
 	 * The current version of the plugin.
@@ -39,9 +58,8 @@ class BackupPro implements BpInterface {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
-
-		$this->plugin_name = 'backup_pro';
+	public function __construct() 
+	{
 		//$this->version = 
 
 		$this->loadDependencies();
@@ -135,7 +153,7 @@ class BackupPro implements BpInterface {
 		$this->loader->addAction( 'admin_enqueue_scripts', $plugin_admin, 'enqueueScripts' );
 		$this->loader->addAction( 'admin_menu', $plugin_admin, 'loadMenu' );
 		$this->loader->addAction( 'admin_notices' , $plugin_admin, 'errorNotices');
-		$this->loader->addFilter( 'plugin_action_links_backup_pro/backup_pro.php', $plugin_admin, 'pluginLinks');
+		$this->loader->addFilter( 'plugin_action_links_'.$this->plugin_name.'/'.$this->plugin_name.'.php', $plugin_admin, 'pluginLinks');
 		
 	}
 

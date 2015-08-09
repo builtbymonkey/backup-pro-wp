@@ -1,24 +1,21 @@
 <?php
-
 /**
- * Fired during plugin deactivation
+ * mithra62 - Backup Pro
  *
- * @link       http://example.com
- * @since      1.0.0
- *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
+ * @author		Eric Lamb <eric@mithra62.com>
+ * @copyright	Copyright (c) 2015, mithra62, Eric Lamb.
+ * @link		http://mithra62.com/
+ * @version		3.0
+ * @filesource 	./backup_pro/includes/BackupProDeactivate.php
  */
 
 /**
- * Fired during plugin deactivation.
+ * Backup Pro - Wordpress Dectivate Object
  *
- * This class defines all code necessary to run during the plugin's deactivation.
+ * Handles deactivating Backup Pro for Wordpress
  *
- * @since      1.0.0
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
- * @author     Your Name <email@example.com>
+ * @package 	Wordpress
+ * @author		Eric Lamb <eric@mithra62.com>
  */
 class BackupProDeactivate {
 
