@@ -104,6 +104,10 @@ class BackupProAdmin extends WpController implements BpInterface
 	            $page->db_backups();
             break;
             
+	        case 'file_backups':
+	            $page->file_backups();
+            break;
+            
 	        case 'dashboard':
 	        default:
 	            $page->index();
@@ -173,8 +177,16 @@ class BackupProAdmin extends WpController implements BpInterface
 	            foreach($errors AS $error)
 	            {
         	        $class = "error";
-            	    $message = $error;
-            	    echo"<div class=\"$class\"> <p>".esc_html__($message)."</p></div>";
+            	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang($error));
+            	    if( $error == 'no_storage_locations_setup' )
+            	    {
+            	        echo ' <a href="'.$this->url_base.'new_storage&engine=local">Setup Storage Location</a>';
+            	    }
+            	    elseif( $error == 'license_number' || $error == 'missing_license_number' )
+            	    {
+            	        echo ' <a href="'.$this->url_base.'settings&section=license">Enter License</a> or <a href="https://mithra62.com/projects/view/backup-pro">Purchase a License</a>';
+            	    }
+            	    echo "</p></div>";
 	            }
 	        }
 	    }

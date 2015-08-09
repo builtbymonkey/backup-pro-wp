@@ -1,52 +1,47 @@
-<?php $this->load->view('_includes/_errors'); ?>
-<?php $this->load->view('_includes/_backups_submenu'); ?>
+<div class='wrap'>
+<h2>Backup Pro Dashboard</h2>
 
-<br clear="all" />
-<?php 
-echo $view_helper->m62Lang('module_instructions'); ?>
+<?php include '_includes/_backups_submenu.php'; ?>
 <div class="clear_left shun"></div>
-<div>
-<?php 
-$this->table->set_heading(
-	$view_helper->m62Lang('total_backups'), 
-	$view_helper->m62Lang('total_space_used'), 
-	array('data' => $view_helper->m62Lang('last_backup_taken'), 'align' => 'right'), 
-	array('data' => $view_helper->m62Lang('first_backup_taken'), 'align' => 'right')
-);
-$data = array(
-	array('data' => $backup_meta['files']['total_backups'], 'width' => 80), 
-	array('data' => $backup_meta['files']['total_space_used'], 'width' => 150), 
-	array('data' => ($backup_meta['files']['newest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['files']['newest_backup_taken']) : $view_helper->m62Lang('na')), 'width' => 150, 'align' => 'right'),
-	array('data' => ($backup_meta['files']['oldest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['files']['oldest_backup_taken']) : $view_helper->m62Lang('na')), 'width' => 150, 'align' => 'right')
-);
-$this->table->add_row($data);
-echo $this->table->generate();
-$this->table->clear();
-?>
-</div>
+	<table class="widefat" width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<thead>
+		<tr class="even">
+			<th><?php echo $view_helper->m62Lang('total_backups'); ?></th>
+			<th style="width:65%"><?php echo $view_helper->m62Lang('total_space_used'); ?></th>
+			<th><div style="float:right"><?php echo $view_helper->m62Lang('last_backup_taken'); ?></div></th>
+			<th><div style="float:right"><?php echo $view_helper->m62Lang('first_backup_taken'); ?></div></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="odd">
+			<td><?php echo $backup_meta['files']['total_backups']; ?></td>
+			<td><?php echo $backup_meta['files']['total_space_used']; ?></td>
+			<td><?php echo ($backup_meta['files']['newest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['files']['newest_backup_taken']) : $view_helper->m62Lang('na')); ?></td>
+			<td width="150"><?php echo ($backup_meta['files']['oldest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['files']['oldest_backup_taken']) : $view_helper->m62Lang('na')); ?></td>
+		</tr>
+	</tbody>
+	</table>	
 <div class="clear_left shun"></div>
 
-<?php echo form_open($query_base.'delete_backup_confirm', array('id'=>'my_accordion')); ?>
+<?php //echo form_open($query_base.'delete_backup_confirm', array('id'=>'my_accordion')); ?>
 		<input type="hidden" name="type" id="hidden_backup_type" value="files" />
 
 <h3  class="accordion"><?php echo $view_helper->m62Lang('file_backups').' ('.count($backups['files']).')'?></h3>
-<div id="file_backups">
-	<?php if(count($backups['files']) > 0): ?>
-	<?php 
-
-	$options = array('enable_editable_note' => 'yes', 'enable_delete' => true, 'backups' => $backups['files'], 'toggle_dir' => 'files', 'enable_actions' => 'yes', );
-	$this->load->view('_includes/_backup_table', $options);	
-	?>
+	<?php if(count($backups['files']) == 0): ?>
+		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_database_backups')?> <a href="<?php echo $nav_links['backup_db']; ?>"><?php echo $view_helper->m62Lang('would_you_like_to_backup_now')?></a></div>
 	<?php else: ?>
-		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_file_backups')?> <a href="<?php echo $nav_links['backup_files']; ?>"><?php echo $view_helper->m62Lang('would_you_like_to_backup_now')?></a></div>
-	<?php endif; ?>	
+	
+	
+		<form name="update_settings" action="{{ url('backuppro/delete/confirm') }}" method="post" accept-charset="UTF-8" />
+
+		<input type="hidden" name="type" id="hidden_backup_type" value="database" />	
+			{% include 'backuppro/_includes/_backup_table' with {'enable_type': 'no', '_backups': backups.database, 'enable_delete':'yes', 'enable_editable_note':'yes', 'enable_actions':'yes' } %}
+		
+		<div class="buttons right">
+			<input type="submit" value="{{ "delete_backups"|m62Lang|t }}" class="btn submit" >
+		</div>
+		
+		</form>
+							
+	<?php endif; ?>
 </div>
-<br />
-<?php if(count($backups['files']) != '0'): ?>
-<div class="tableFooter">
-	<div class="tableSubmit">
-		<?php echo form_submit(array('name' => 'submit', 'value' => $view_helper->m62Lang('delete_selected'), 'class' => 'submit'));?>
-	</div>
-</div>	
-<?php endif;?>
-<?php echo form_close()?>
