@@ -31,7 +31,11 @@
         <label for="dashboard_recent_total"><?php echo $view_helper->m62Lang('auto_threshold'); ?></label>
     </th>
     <td>
-        <input name="auto_threshold" type="text" id="auto_threshold" value="<?php echo $form_data['auto_threshold']; ?>" class="regular-text code" />
+        <select name="auto_threshold" id="auto_threshold">
+        <?php foreach($threshold_options AS $key => $value): ?>
+            <option value="<?php echo $key; ?>" <?php selected( $form_data['auto_threshold'], $key); ?>><?php echo $value; ?></option>
+        <?php endforeach; ?>
+        </select>
         <p class="description" id="home-description"><?php echo $view_helper->m62Lang('auto_threshold_instructions'); ?></p>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['auto_threshold']); ?>
     </td>
