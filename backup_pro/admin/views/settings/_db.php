@@ -119,10 +119,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
 </tr>
 </table>
 
-
-
 <h3 class="title"><?=$view_helper->m62Lang('config_execute_sql')?></h3>
-
 <table class="form-table" >
 <tr>
     <th scope="row">
