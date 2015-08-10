@@ -245,4 +245,29 @@ class BackupPro implements BpInterface
 	    );
 	    return $menu;
 	}
+	
+	/**
+	 * Returns a string to use for the form field errors
+	 * @return string
+	 */
+	public function displayFormErrors($errors)
+	{
+	    if( is_string($errors) && $errors != '')
+	    {
+	        //$errors = array($errors);
+	    }
+	
+	    $return = '';
+	    if( is_array($errors) && count($errors) >= 1)
+	    {
+	        $return = '<ul style="padding-top:5px;">';
+	        foreach($errors AS $error)
+	        {
+	            $return .= '<li class="notice">'.$error.'</li>';
+	        }
+	        $return .= '</ul>';
+	    }
+	
+	    return $return;
+	}
 }

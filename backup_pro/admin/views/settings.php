@@ -7,7 +7,7 @@
 
 <div class="clear_left shun"></div>
 
-<?php //echo form_open($query_base.'settings', array('id'=>'my_accordion'))?>
+<form method="post">
 <input type="hidden" value="yes" name="go_settings" />
 <input type="hidden" value="<?php echo $section; ?>" name="section" />
 <?php 
@@ -18,11 +18,11 @@ switch($section)
 	case 'files':
 	case 'license':
 	case 'integrity_agent':
-		$this->load->view('settings/_'.$section, array('settings' => $settings));
+		include 'settings/_'.$section.'.php';
 		break;
 
 	default:
-		//$this->load->view('settings/_general');
+		include 'settings/_general.php';
 		break;
 }
 
@@ -32,15 +32,8 @@ switch($section)
 		<?php //echo form_submit(array('name' => 'submit', 'value' => $lang->__('update_settings'), 'class' => 'submit'));?>
 	</div>
 </div>	
-<?php //echo form_close()?>
+<?php submit_button($view_helper->m62Lang('update_settings'));?>
 
-<style>
+</form>
 
-#mainContent .pageContents {
-    overflow: visible !important;
-}
-.group::after {
-    visibility: visible !important;
-}
-</style>
 </div>
