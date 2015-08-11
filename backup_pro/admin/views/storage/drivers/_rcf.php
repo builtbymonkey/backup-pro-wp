@@ -1,22 +1,46 @@
-<?php 
-$cf_location_options = array('us' => 'US', 'uk' => 'UK');
-
-$this->table->add_row(
-    '<label for="rcf_username">'.$view_helper->m62Lang('rcf_username').'</label><div class="subtext">'.$view_helper->m62Lang('rcf_username_instructions').'</div>', 
-    form_input('rcf_username', $form_data['rcf_username'], 'id="rcf_username"').m62_form_errors($form_errors['rcf_username'])
-);
-
-$this->table->add_row(
-    '<label for="rcf_api">'.$view_helper->m62Lang('rcf_api').'</label><div class="subtext">'.$view_helper->m62Lang('rcf_api_instructions').'</div>', 
-    form_password('rcf_api', $form_data['rcf_api'], 'id="rcf_api"').m62_form_errors($form_errors['rcf_api'])
-);
-
-$this->table->add_row(
-    '<label for="rcf_container">'.$view_helper->m62Lang('rcf_container').'</label><div class="subtext">'.$view_helper->m62Lang('rcf_container_instructions').'</div>', 
-    form_input('rcf_container', $form_data['rcf_container'], 'id="rcf_container"').m62_form_errors($form_errors['rcf_container'])
-);
-
-$this->table->add_row(
-    '<label for="rcf_location">'.$view_helper->m62Lang('rcf_location').'</label><div class="subtext">'.$view_helper->m62Lang('rcf_location_instructions').'</div>', 
-    form_dropdown('rcf_location', $cf_location_options, $form_data['rcf_location'], 'id="rcf_location"').m62_form_errors($form_errors['rcf_location'])
-);
+<tr>
+    <th scope="row">
+        <label for="rcf_username"><?php echo $view_helper->m62Lang('rcf_username'); ?></label>
+    </th>
+    <td>
+        <input name="gcs_access_key" type="text" id="rcf_username" value="<?php echo $form_data['rcf_username']; ?>" class="regular-text code" />
+        <p class="description" id="rcf_username-description"><?php echo $view_helper->m62Lang('rcf_username_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['rcf_username']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="gcs_secret_key"><?php echo $view_helper->m62Lang('gcs_secret_key'); ?></label>
+    </th>
+    <td>
+        <input name="rcf_api" type="password" id="rcf_api" value="<?php echo $form_data['rcf_api']; ?>" class="regular-text code" />
+        <p class="description" id="rcf_api-description"><?php echo $view_helper->m62Lang('rcf_api_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['rcf_api']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="rcf_container"><?php echo $view_helper->m62Lang('rcf_container'); ?></label>
+    </th>
+    <td>
+        <input name="rcf_container" type="text" id="rcf_container" value="<?php echo $form_data['rcf_container']; ?>" class="regular-text code" />
+        <p class="description" id="rcf_container-description"><?php echo $view_helper->m62Lang('rcf_container_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['rcf_container']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="rcf_location"><?php echo $view_helper->m62Lang('rcf_location'); ?></label>
+    </th>
+    <td>
+        <select name="rcf_location" id="rcf_location">
+        <?php 
+        $cf_location_options = array('us' => 'US', 'uk' => 'UK');
+        foreach($cf_location_options AS $key => $value): ?>
+            <option value="<?php echo $key; ?>" <?php selected( $form_data['rcf_location'], $key); ?>><?php echo $value; ?></option>
+        <?php endforeach; ?>
+        </select>
+        <p class="description" id="db_backup_method-description"><?php echo $view_helper->m62Lang('rcf_location_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['rcf_location']); ?>
+    </td>
+</tr>

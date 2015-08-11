@@ -1,16 +1,30 @@
-<?php 
-		
-$this->table->add_row(
-    '<label for="gcs_access_key">'.$view_helper->m62Lang('gcs_access_key').'</label><div class="subtext">'.$view_helper->m62Lang('gcs_access_key_instructions').'</div>', 
-    form_input('gcs_access_key', $form_data['gcs_access_key'], 'id="gcs_access_key"').m62_form_errors($form_errors['gcs_access_key'])
-);
-
-$this->table->add_row(
-    '<label for="gcs_secret_key">'.$view_helper->m62Lang('gcs_secret_key').'</label><div class="subtext">'.$view_helper->m62Lang('gcs_secret_key_instructions').'</div>', 
-    form_password('gcs_secret_key', $form_data['gcs_secret_key'], 'id="gcs_secret_key"').m62_form_errors($form_errors['gcs_secret_key'])
-);
-
-$this->table->add_row(
-    '<label for="gcs_bucket">'.$view_helper->m62Lang('gcs_bucket').'</label><div class="subtext">'.$view_helper->m62Lang('gcs_bucket_instructions').'</div>', 
-    form_input('gcs_bucket', $form_data['gcs_bucket'], 'id="gcs_bucket"').m62_form_errors($form_errors['gcs_bucket'])
-);
+<tr>
+    <th scope="row">
+        <label for="gcs_access_key"><?php echo $view_helper->m62Lang('gcs_access_key'); ?></label>
+    </th>
+    <td>
+        <input name="gcs_access_key" type="text" id="gcs_access_key" value="<?php echo $form_data['gcs_access_key']; ?>" class="regular-text code" />
+        <p class="description" id="gcs_access_key-description"><?php echo $view_helper->m62Lang('gcs_access_key_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['gcs_access_key']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="gcs_secret_key"><?php echo $view_helper->m62Lang('gcs_secret_key'); ?></label>
+    </th>
+    <td>
+        <input name="gcs_secret_key" type="password" id="gcs_secret_key" value="<?php echo $form_data['gcs_secret_key']; ?>" class="regular-text code" />
+        <p class="description" id="gcs_secret_key-description"><?php echo $view_helper->m62Lang('gcs_secret_key_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['gcs_secret_key']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="gcs_bucket"><?php echo $view_helper->m62Lang('gcs_bucket'); ?></label>
+    </th>
+    <td>
+        <input name="gcs_bucket" type="text" id="gcs_bucket" value="<?php echo $form_data['gcs_bucket']; ?>" class="regular-text code" />
+        <p class="description" id="gcs_bucket-description"><?php echo $view_helper->m62Lang('gcs_bucket_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['gcs_bucket']); ?>
+    </td>
+</tr>
