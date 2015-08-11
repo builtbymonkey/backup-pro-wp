@@ -1,10 +1,20 @@
-<?php
-$this->table->add_row(
-    '<label for="email_storage_emails">'.$view_helper->m62Lang('email_storage_emails').'</label><div class="subtext">'.$view_helper->m62Lang('email_storage_emails_instructions').'</div>',
-    form_textarea('email_storage_emails', $form_data['email_storage_emails'], 'id="email_storage_emails"').m62_form_errors($form_errors['email_storage_emails'])
-);
-
-$this->table->add_row(
-    '<label for="email_storage_attach_threshold">'.$view_helper->m62Lang('email_storage_attach_threshold').'</label><div class="subtext">'.$view_helper->m62Lang('email_storage_attach_threshold_instructions').'</div>',
-    form_input('email_storage_attach_threshold', $form_data['email_storage_attach_threshold'], 'id="email_storage_attach_threshold"').m62_form_errors($form_errors['email_storage_attach_threshold'])
-);
+<tr>
+    <th scope="row">
+        <label for="email_storage_emails"><?php echo $view_helper->m62Lang('email_storage_emails'); ?></label>
+    </th>
+    <td>
+        <textarea name="email_storage_emails" rows="10" cols="50" id="email_storage_emails" class="large-text code"><?php echo $form_data['email_storage_emails']; ?></textarea>
+        <p class="description" id="email_storage_emails-description"><?php echo $view_helper->m62Lang('email_storage_emails_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['email_storage_emails']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="email_storage_attach_threshold"><?php echo $view_helper->m62Lang('email_storage_attach_threshold'); ?></label>
+    </th>
+    <td>
+        <input name="email_storage_attach_threshold" type="text" id="email_storage_attach_threshold" value="<?php echo $form_data['email_storage_attach_threshold']; ?>" class="regular-text code" />
+        <p class="description" id="email_storage_attach_threshold-description"><?php echo $view_helper->m62Lang('email_storage_attach_threshold_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['email_storage_attach_threshold']); ?>
+    </td>
+</tr>

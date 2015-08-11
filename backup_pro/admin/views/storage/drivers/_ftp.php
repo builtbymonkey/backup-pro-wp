@@ -1,43 +1,83 @@
 <input type="hidden" value="0" name="ftp_passive" />
-
-<?php 	
-$this->table->add_row(
-    '<label for="ftp_hostname">'.$view_helper->m62Lang('ftp_hostname').'</label><div class="subtext">'.$view_helper->m62Lang('ftp_hostname_instructions').'</div>', 
-    form_input('ftp_hostname', $form_data['ftp_hostname'], 'id="ftp_hostname"').m62_form_errors($form_errors['ftp_hostname'])
-);
-
-$this->table->add_row(
-    '<label for="ftp_username">'.$view_helper->m62Lang('ftp_username').'</label><div class="subtext">'.$view_helper->m62Lang('ftp_username_instructions').'</div>', 
-    form_input('ftp_username', $form_data['ftp_username'], 'id="ftp_username"').m62_form_errors($form_errors['ftp_username'])
-);
-
-$this->table->add_row(
-    '<label for="ftp_password">'.$view_helper->m62Lang('ftp_password').'</label><div class="subtext">'.$view_helper->m62Lang('ftp_password_instructions').'</div>', 
-    form_password('ftp_password', $form_data['ftp_password'], 'id="ftp_password"').m62_form_errors($form_errors['ftp_password'])
-);
-
-$this->table->add_row(
-    '<label for="ftp_port">'.$view_helper->m62Lang('ftp_port').'</label><div class="subtext">'.$view_helper->m62Lang('ftp_port_instructions').'</div>', 
-    form_input('ftp_port', $form_data['ftp_port'], 'id="ftp_port"').m62_form_errors($form_errors['ftp_port'])
-);
-
-$this->table->add_row(
-    '<label for="ftp_store_location">'.$view_helper->m62Lang('ftp_store_location').'</label><div class="subtext">'.$view_helper->m62Lang('ftp_store_location_instructions').'</div>', 
-    form_input('ftp_store_location', $form_data['ftp_store_location'], 'id="ftp_store_location"').m62_form_errors($form_errors['ftp_store_location'])
-);
-
-$this->table->add_row(
-    '<label for="ftp_passive">'.$view_helper->m62Lang('ftp_passive').'</label><div class="subtext">'.$view_helper->m62Lang('ftp_passive_instructions').'</div>',
-    form_checkbox('ftp_passive', '1', $form_data['ftp_passive'], 'id="ftp_passive"').m62_form_errors($form_errors['ftp_passive'])
-);
-
-$this->table->add_row(
-    '<label for="ftp_ssl">'.$view_helper->m62Lang('ftp_ssl').'</label><div class="subtext">'.$view_helper->m62Lang('ftp_ssl_instructions').'</div>',
-    form_checkbox('ftp_ssl', '1', $form_data['ftp_ssl'], 'id="ftp_ssl"').m62_form_errors($form_errors['ftp_ssl'])
-);
-
-
-$this->table->add_row(
-    '<label for="ftp_timeout">'.$view_helper->m62Lang('ftp_timeout').'</label><div class="subtext">'.$view_helper->m62Lang('ftp_timeout_instructions').'</div>',
-    form_input('ftp_timeout', $form_data['ftp_timeout'], 'id="ftp_timeout"').m62_form_errors($form_errors['ftp_timeout'])
-);
+<tr>
+    <th scope="row">
+        <label for="ftp_hostname"><?php echo $view_helper->m62Lang('ftp_hostname'); ?></label>
+    </th>
+    <td>
+        <input name="ftp_hostname" type="text" id="ftp_hostname" value="<?php echo $form_data['ftp_hostname']; ?>" class="regular-text code" />
+        <p class="description" id="ftp_hostname-description"><?php echo $view_helper->m62Lang('ftp_hostname_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['ftp_hostname']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="ftp_username"><?php echo $view_helper->m62Lang('ftp_username'); ?></label>
+    </th>
+    <td>
+        <input name="ftp_username" type="text" id="ftp_username" value="<?php echo $form_data['ftp_username']; ?>" class="regular-text code" />
+        <p class="description" id="ftp_username-description"><?php echo $view_helper->m62Lang('ftp_username_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['ftp_username']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="ftp_password"><?php echo $view_helper->m62Lang('ftp_password'); ?></label>
+    </th>
+    <td>
+        <input name="ftp_password" type="password" id="ftp_password" value="<?php echo $form_data['ftp_password']; ?>" class="regular-text code" />
+        <p class="description" id="email_storage_attach_threshold-description"><?php echo $view_helper->m62Lang('ftp_password_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['ftp_password']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="ftp_port"><?php echo $view_helper->m62Lang('ftp_port'); ?></label>
+    </th>
+    <td>
+        <input name="ftp_port" type="text" id="ftp_port" value="<?php echo $form_data['ftp_port']; ?>" class="regular-text code" />
+        <p class="description" id="ftp_port-description"><?php echo $view_helper->m62Lang('ftp_port_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['ftp_port']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="ftp_store_location"><?php echo $view_helper->m62Lang('ftp_store_location'); ?></label>
+    </th>
+    <td>
+        <input name="ftp_store_location" type="text" id="ftp_store_location" value="<?php echo $form_data['ftp_store_location']; ?>" class="regular-text code" />
+        <p class="description" id="ftp_store_location-description"><?php echo $view_helper->m62Lang('ftp_store_location_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['ftp_store_location']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="ftp_passive"><?php echo $view_helper->m62Lang('ftp_passive'); ?></label>
+    </th>
+    <td>
+        <fieldset><legend class="screen-reader-text"><span><?php echo $view_helper->m62Lang('ftp_passive_instructions'); ?></span></legend><label for="ftp_passive">
+            <input name="ftp_passive" id="ftp_passive" value="1" type="checkbox" <?php echo checked( $form_errors['ftp_passive'], 1, true); ?>>
+            <?php echo $view_helper->m62Lang('ftp_passive_instructions'); ?></label></fieldset>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['ftp_passive']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="ftp_ssl"><?php echo $view_helper->m62Lang('ftp_ssl'); ?></label>
+    </th>
+    <td>
+        <fieldset><legend class="screen-reader-text"><span><?php echo $view_helper->m62Lang('ftp_ssl_instructions'); ?></span></legend><label for="ftp_ssl">
+            <input name="ftp_ssl" id="ftp_ssl" value="1" type="checkbox" <?php echo checked( $form_errors['ftp_ssl'], 1, true); ?>>
+            <?php echo $view_helper->m62Lang('ftp_ssl_instructions'); ?></label></fieldset>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['ftp_ssl']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="ftp_timeout"><?php echo $view_helper->m62Lang('ftp_timeout'); ?></label>
+    </th>
+    <td>
+        <input name="ftp_timeout" type="text" id="ftp_timeout" value="<?php echo $form_data['ftp_timeout']; ?>" class="regular-text code" />
+        <p class="description" id="ftp_timeout-description"><?php echo $view_helper->m62Lang('ftp_timeout_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['ftp_timeout']); ?>
+    </td>
+</tr>

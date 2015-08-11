@@ -117,8 +117,27 @@ class BackupProAdmin extends WpController implements BpInterface
 	
 	public function settings()
 	{
-	    $page = new BackupProSettingsController($this);
-	    $page->setBackupLib($this->context)->settings();
+	    $section = $this->getPost('section');
+	    if($section == 'storage')   
+	    {
+            $action = $this->getPost('action');
+	        $page = new BackupProStorageController($this);
+	        $page = $page->setBackupLib($this->context);
+	        switch($action)
+	        {
+	            case 'new':
+	                $page->new_storage();
+                break;
+	            default:
+	                $page->view_storage();
+                break;
+	        }
+	    }
+	    else 
+	    {
+	        $page = new BackupProSettingsController($this);
+	        $page->setBackupLib($this->context)->settings();	        
+	    }
 	}
 	
 	public function backup_files()
@@ -180,7 +199,7 @@ class BackupProAdmin extends WpController implements BpInterface
             	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang($error));
             	    if( $error == 'no_storage_locations_setup' )
             	    {
-            	        echo ' <a href="'.$this->url_base.'new_storage&engine=local">Setup Storage Location</a>';
+            	        echo ' <a href="'.$this->url_base.'settings&section=storage&action=new&engine=local">Setup Storage Location</a>';
             	    }
             	    elseif( $error == 'license_number' || $error == 'missing_license_number' )
             	    {

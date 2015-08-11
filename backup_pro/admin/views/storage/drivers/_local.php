@@ -1,5 +1,10 @@
-<?php
-$this->table->add_row(
-    '<label for="backup_store_location">'.$view_helper->m62Lang('backup_store_location').'</label><div class="subtext">'.$view_helper->m62Lang('backup_store_location_instructions').'</div>',
-    form_input('backup_store_location', $form_data['backup_store_location'], 'id="backup_store_location"').m62_form_errors($form_errors['backup_store_location'])
-);
+<tr>
+    <th scope="row">
+        <label for="backup_store_location"><?php echo $view_helper->m62Lang('backup_store_location'); ?></label>
+    </th>
+    <td>
+        <input name="backup_store_location" type="text" id="backup_store_location" value="<?php echo $form_data['backup_store_location']; ?>" class="regular-text code" />
+        <p class="description" id="backup_store_location-description"><?php echo $view_helper->m62Lang('backup_store_location_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['backup_store_location']); ?>
+    </td>
+</tr>
