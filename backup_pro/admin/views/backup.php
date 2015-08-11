@@ -1,25 +1,21 @@
-<?php $this->load->view('_includes/_errors'); ?>
+<div class='wrap'>
+<h2>Backup Pro</h2>
+<h3>Backup Database</h3>
 
 <div id="backup_instructions">
-<?php echo $lang->__('backup_in_progress_instructions'); ?><br />
+<?php echo $view_helper->m62Lang('backup_in_progress_instructions'); ?>
 </div>
 
-<div class="bp_top_nav" id="_backup_start_container">
-	<div class="bp_nav">
-		<span class="button"> 
-			<a class="nav_button" href="<?php echo $proc_url; ?>" id="_backup_direct"><?php echo $view_helper->m62Lang('start_backup'); ?></a>
-        	<div id="backup_running_details"  style="display:none" >
-        	<?php echo $view_helper->m62Lang('backup_in_progress'); ?>
-        	<img src="<?php echo $theme_folder_url; ?>backup_pro/images/indicator.gif" id="animated_image" />
-        	</div>			
-		</span>	
-	</div>
-</div>
+<form action="<?php echo $url_base; ?>backup_database" method="post">
+<?php submit_button($view_helper->m62Lang('start_backup'));?>
 
-<div id="backup_dashboard_menu" style="display:none">
-<?php $this->load->view('_includes/_backups_submenu'); ?>
-</div>
-<br clear="all" />
+<div id="backup_running_details"  style="display:none" >
+<?php echo $view_helper->m62Lang('backup_in_progress'); ?>
+<img src="<?php echo $theme_folder_url; ?>backup_pro/images/indicator.gif" id="animated_image" />
+</div>		
+
+
+
 
 <input type="hidden" id="__backup_proc_url" value="<?php echo $proc_url; ?>">
 <input type="hidden" id="__url_base" value="<?php echo $url_base; ?>">
@@ -32,4 +28,7 @@
 	<div id="progressbar"></div>
 	Total Items: <span id="item_number"></span> of <span id="total_items"></span> <br />
 	<span id="backup_complete"></span>
+</div>
+
+</form>
 </div>

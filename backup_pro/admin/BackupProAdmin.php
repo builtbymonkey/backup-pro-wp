@@ -53,7 +53,7 @@ class BackupProAdmin extends WpController implements BpInterface
 		add_action('admin_init', array($this, 'proc_storage_edit'));
 		add_action('admin_init', array($this, 'proc_storage_remove'));
 		add_action('admin_init', array($this, 'proc_backup_note'));
-		add_action('admin_init', array($this, 'proc_remove_backup'));
+		add_action('admin_init', array($this, 'backup_database'));
 	}
 	
 	public function setContext(BackupPro $context)
@@ -147,7 +147,17 @@ class BackupProAdmin extends WpController implements BpInterface
 	
 	public function backup_db()
 	{
-	    
+	    $page = new BackupProBackupController($this);
+	    $page->backup();
+	}
+	
+	public function backup_database()
+	{
+	    if( $_SERVER['REQUEST_METHOD'] == 'POST' )
+	    {
+	        $page = new BackupProBackupController();
+	        $page->backup_database();
+	    }
 	}
 
 	public function enqueueStyles() 
@@ -169,7 +179,7 @@ class BackupProAdmin extends WpController implements BpInterface
         add_submenu_page( 'backup_pro', 'Settings', 'Settings', 'manage_options', 'backup_pro/settings', array($this, 'settings'));
         
         //these shouldn't show up in the navigation
-        //add_submenu_page( 'backup_profdsafdsa', 'Database Backups', null, 'manage_options', 'backup_pro/db_backups', array($this, 'backup_db'));
+        add_submenu_page( null, 'Database Backups', null, 'manage_options', 'backup_pro/backup_database', array($this, 'backup_database'));
         //add_submenu_page( 'backup_pro', 'New Storage', null, 'manage_options', 'backup_pro/new_storage', array($this, 'settings'));
         //add_submenu_page( 'backup_pro', 'Newd Storage', null, 'manage_options', 'backup_pro/new_storagge', array($this, 'settings'));
 	}
