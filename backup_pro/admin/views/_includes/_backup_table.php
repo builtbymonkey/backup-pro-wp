@@ -3,7 +3,7 @@
 		<input type="hidden" name="backups[]" value="<?php echo urlencode($view_helper->m62Encode($backup['file_name'])); ?>" />
 	<?php endforeach; ?>
 <?php endif; ?>
-<table width="100%" class="data existing_backups mainTable" id="mainTable" border="0" cellpadding="0" cellspacing="0">
+<table width="100%" class="data existing_backups widefat" id="mainTable" border="0" cellpadding="0" cellspacing="0">
 <thead>
 	<tr class="odd">
 		<th></th>

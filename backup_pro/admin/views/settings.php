@@ -7,7 +7,8 @@
 
 <div class="clear_left shun"></div>
 
-<form method="post">
+<form method="post" action="<?php echo $url_base; ?>settings">
+<?php echo wp_nonce_field( 'bpsettings' ); ?>
 <input type="hidden" value="yes" name="go_settings" />
 <input type="hidden" value="<?php echo $section; ?>" name="section" />
 <?php 

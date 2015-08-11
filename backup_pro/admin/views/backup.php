@@ -6,9 +6,9 @@
 <?php echo $view_helper->m62Lang('backup_in_progress_instructions'); ?>
 </div>
 
-<form action="<?php echo $url_base; ?>backup_database" method="post">
+<form action="<?php echo $url_base; ?>backup_database&noheader=true" method="post">
 <?php submit_button($view_helper->m62Lang('start_backup'));?>
-
+<?php echo wp_nonce_field( 'backup_db' ); ?>
 <div id="backup_running_details"  style="display:none" >
 <?php echo $view_helper->m62Lang('backup_in_progress'); ?>
 <img src="<?php echo $theme_folder_url; ?>backup_pro/images/indicator.gif" id="animated_image" />
@@ -16,7 +16,7 @@
 
 
 
-
+<input type="hidden" name="go_db" value="ok" />
 <input type="hidden" id="__backup_proc_url" value="<?php echo $proc_url; ?>">
 <input type="hidden" id="__url_base" value="<?php echo $url_base; ?>">
 <input type="hidden" id="__backup_type" value="<?php echo $backup_type; ?>">

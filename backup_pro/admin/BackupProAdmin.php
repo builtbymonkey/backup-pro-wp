@@ -64,7 +64,27 @@ class BackupProAdmin extends WpController implements BpInterface
 	
 	public function proc_settings()
 	{
-	    //wp_redirect('/');
+        if( $_SERVER['REQUEST_METHOD'] == 'POST' )
+        {
+            $data = array();
+            $data = array_map( 'stripslashes_deep', $_POST );
+    
+            $variables['form_data'] = array_merge(array('db_backup_ignore_tables' => '', 'db_backup_ignore_table_data' => ''), $data);
+            $backup = $this->services['backups'];
+            $backups = $backup->setBackupPath($this->settings['working_directory'])->getAllBackups($this->settings['storage_details']);
+            $data['meta'] = $backup->getBackupMeta($backups);
+            $extra = array('db_creds' => $this->platform->getDbCredentials());
+            $settings_errors = $this->services['settings']->validate($data, $extra);
+            if( !$settings_errors )
+            {
+                if( $this->services['settings']->update($data) )
+                {
+                    //ee()->session->set_flashdata('message_success', $this->services['lang']->__('settings_updated'));
+                    wp_redirect($this->url_base.'settings&section='.$this->getPost('section').'&updated=yes');
+                    exit;
+                }
+            }
+        }
 	}
 	
 	public function proc_storage_add()
@@ -153,7 +173,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	
 	public function backup_database()
 	{
-	    if( $_SERVER['REQUEST_METHOD'] == 'POST' )
+	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['go_db']) && $_POST['go_db'] == 'ok' && check_admin_referer( 'backup_db' ) )
 	    {
 	        $page = new BackupProBackupController();
 	        $page->backup_database();

@@ -97,7 +97,7 @@ if($settings['auto_threshold'] != '0')
 	<?php 
 		if(count($backups) > 0):
 			$options = array('enable_type' => 'yes', 'enable_editable_note' => 'yes', 'enable_actions' => 'yes', 'enable_delete' => 'no');
-			$this->load->view('_includes/_backup_table', $options);
+			include '_includes/_backup_table.php';
 	?>
 	<?php else: ?>
 		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_backups_exist')?> <a href="<?php echo $nav_links['backup_db']; ?>"><?php echo $view_helper->m62Lang('would_you_like_to_backup_database_now')?></a></div>
