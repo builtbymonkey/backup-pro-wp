@@ -97,6 +97,7 @@ if($settings['auto_threshold'] != '0')
 	<?php 
 		if(count($backups) > 0):
 			$options = array('enable_type' => 'yes', 'enable_editable_note' => 'yes', 'enable_actions' => 'yes', 'enable_delete' => 'no');
+            extract($options);
 			include '_includes/_backup_table.php';
 	?>
 	<?php else: ?>

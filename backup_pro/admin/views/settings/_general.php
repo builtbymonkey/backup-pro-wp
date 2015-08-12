@@ -46,7 +46,7 @@
     </th>
     <td>
         <fieldset><legend class="screen-reader-text"><span><?php echo $view_helper->m62Lang('allow_duplicates_instructions'); ?></span></legend><label for="allow_duplicates">
-            <input name="allow_duplicates" id="allow_duplicates" value="1" type="checkbox" <?php echo checked( $form_errors['allow_duplicates'], 1, true); ?>>
+            <input name="allow_duplicates" id="allow_duplicates" value="1" type="checkbox" <?php echo checked( $form_data['allow_duplicates'], 1, true); ?>>
             <?php echo $view_helper->m62Lang('allow_duplicates_instructions'); ?></label></fieldset>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['allow_duplicates']); ?>
     </td>
@@ -67,7 +67,7 @@
     </th>
     <td>
         <fieldset><legend class="screen-reader-text"><span><?php echo $view_helper->m62Lang('relative_time_instructions'); ?></span></legend><label for="relative_time">
-            <input name="relative_time" id="relative_time" value="1" type="checkbox" <?php echo checked( $form_errors['relative_time'], 1, true); ?>>
+            <input name="relative_time" id="relative_time" value="1" type="checkbox" <?php echo checked( $form_data['relative_time'], 1, true); ?>>
             <?php echo $view_helper->m62Lang('relative_time_instructions'); ?></label></fieldset>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['relative_time']); ?>
     </td>

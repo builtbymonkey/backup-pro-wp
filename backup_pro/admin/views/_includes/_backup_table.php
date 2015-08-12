@@ -49,7 +49,7 @@
 	<td style="white-space: nowrap">
     	<?php if(isset($backup['storage_locations']) && is_array($backup['storage_locations']) ): ?>
     		<?php foreach($backup['storage_locations'] AS $location_id => $storage): ?>
-    			<img src="<?php echo $theme_folder_url; ?>backup_pro/images/storage/<?php echo $storage['icon']; ?>.png" class="" title="<?php echo $storage['storage_location_name']; ?>">
+    			<img src="<?php echo $theme_folder_url; ?>backup_pro/admin/images/storage/<?php echo $storage['icon']; ?>.png" class="" title="<?php echo $storage['storage_location_name']; ?>">
     		<?php endforeach; ?>
     	<?php endif; ?>
 	</td>
@@ -78,19 +78,19 @@
             
             <?php if( $backup['can_restore'] ): ?>
     			<a href="<?php echo $url_base;?>restore_confirm&id=<?php echo urlencode($view_helper->m62Encode($backup['details_file_name'])); ?>&type=<?php echo $backup['backup_type']; ?>" title="<?php echo $view_helper->m62Lang('restore'); ?>">
-    				<img src="<?php echo $theme_folder_url; ?>backup_pro/images/restore.png" alt="<?php echo $view_helper->m62Lang('restore'); ?>" class="">
+    				<img src="<?php echo $theme_folder_url; ?>backup_pro/admin/images/restore.png" alt="<?php echo $view_helper->m62Lang('restore'); ?>" class="">
     			</a> 
             <?php else: ?>
-                <img src="<?php echo $theme_folder_url; ?>backup_pro/images/restore.png" alt="<?php echo $view_helper->m62Lang('restore'); ?>" class="desaturate">
+                <img src="<?php echo $theme_folder_url; ?>backup_pro/admin/images/restore.png" alt="<?php echo $view_helper->m62Lang('restore'); ?>" class="desaturate">
             <?php endif; ?>
 			
 		<?php endif; ?>
         <?php if( $backup['can_download'] ): ?>
     		<a href="<?php echo $url_base;?>download&id=<?php echo urlencode($view_helper->m62Encode($backup['details_file_name'])); ?>&type=<?php echo $backup['backup_type']; ?>" title="<?php echo $view_helper->m62Lang('download'); ?>">
-    			<img src="<?php echo $theme_folder_url; ?>backup_pro/images/download.png" alt="<?php echo $view_helper->m62Lang('download'); ?>" class="">
+    			<img src="<?php echo $theme_folder_url; ?>backup_pro/admin/images/download.png" alt="<?php echo $view_helper->m62Lang('download'); ?>" class="">
     		</a> 
 		<?php else: ?>
-			<img src="<?php echo $theme_folder_url; ?>backup_pro/images/download.png" alt="<?php echo $view_helper->m62Lang('download'); ?>" class="desaturate">
+			<img src="<?php echo $theme_folder_url; ?>backup_pro/admin/images/download.png" alt="<?php echo $view_helper->m62Lang('download'); ?>" class="desaturate">
 		<?php endif; ?>
 		</div>
 	</td>

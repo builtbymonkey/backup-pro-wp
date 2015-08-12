@@ -64,7 +64,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	
 	public function proc_settings()
 	{
-        if( $_SERVER['REQUEST_METHOD'] == 'POST' )
+        if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/settings' )
         {
             $data = array();
             $data = array_map( 'stripslashes_deep', $_POST );
@@ -83,6 +83,15 @@ class BackupProAdmin extends WpController implements BpInterface
                     wp_redirect($this->url_base.'settings&section='.$this->getPost('section').'&updated=yes');
                     exit;
                 }
+            }
+        }
+        else
+        {
+            
+            if( $this->getPost('updated') == 'yes' && $this->getPost('page') == 'backup_pro/settings' )
+            {
+                //$this->context->loader->addAction( 'admin_notices' , $this, 'settingsNotices');
+                add_action( 'admin_notices', array( $this, 'settingsNotices' ), 30, array('settings_updated'));
             }
         }
 	}
@@ -239,6 +248,14 @@ class BackupProAdmin extends WpController implements BpInterface
 	            }
 	        }
 	    }
+	}
+	
+	public function settingsNotices()
+	{
+	    $class =  $class = " updated ";
+	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('settings_updated'));
+
+	    echo "</p></div>";
 	}
 
 }
