@@ -56,19 +56,27 @@ class BackupProAdmin extends WpController implements BpInterface
 		add_action('admin_init', array($this, 'backup_database'));
 	}
 	
+	/**
+	 * Sets the BackupPro library for use
+	 * @param BackupPro $context
+	 */
 	public function setContext(BackupPro $context)
 	{
 	    $this->context = $context;
 	    return $this;
 	}
 	
+	/**
+	 * Action to process the Settings
+	 */
 	public function proc_settings()
 	{
-        if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/settings' )
+        if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/settings' && check_admin_referer( 'bpsettings' ) )
         {
             $data = array();
             $data = array_map( 'stripslashes_deep', $_POST );
     
+            echo 'f'; exit;
             $variables['form_data'] = array_merge(array('db_backup_ignore_tables' => '', 'db_backup_ignore_table_data' => ''), $data);
             $backup = $this->services['backups'];
             $backups = $backup->setBackupPath($this->settings['working_directory'])->getAllBackups($this->settings['storage_details']);
