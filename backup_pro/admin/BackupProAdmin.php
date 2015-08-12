@@ -13,7 +13,7 @@ use mithra62\BackupPro\Platforms\Controllers\Wordpress AS WpController;
 use mithra62\BackupPro\BackupPro AS BpInterface;
 
 /**
- * Backup Pro - Admin Library
+ * Backup Pro - Wordpress Admin Dispatcher
  *
  * Abstracts setting up the administration details
  *
@@ -54,6 +54,7 @@ class BackupProAdmin extends WpController implements BpInterface
 		add_action('admin_init', array($this, 'proc_storage_remove'));
 		add_action('admin_init', array($this, 'proc_backup_note'));
 		add_action('admin_init', array($this, 'backup_database'));
+		add_action('admin_init', array($this, 'download_backup'));
 	}
 	
 	/**
@@ -76,7 +77,6 @@ class BackupProAdmin extends WpController implements BpInterface
             $data = array();
             $data = array_map( 'stripslashes_deep', $_POST );
     
-            echo 'f'; exit;
             $variables['form_data'] = array_merge(array('db_backup_ignore_tables' => '', 'db_backup_ignore_table_data' => ''), $data);
             $backup = $this->services['backups'];
             $backups = $backup->setBackupPath($this->settings['working_directory'])->getAllBackups($this->settings['storage_details']);
@@ -177,6 +177,16 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	}
 	
+	public function download_backup()
+	{
+	    if( $this->getPost('page') == 'backup_pro/download' && check_admin_referer( urlencode($this->getPost('id')) ) )
+	    {
+    	    $page = new BackupProManageController($this);
+    	    $page->download();
+    	    exit;
+	    }
+	}
+	
 	public function backup_files()
 	{
 	    
@@ -217,7 +227,7 @@ class BackupProAdmin extends WpController implements BpInterface
         
         //these shouldn't show up in the navigation
         add_submenu_page( null, 'Database Backups', null, 'manage_options', 'backup_pro/backup_database', array($this, 'backup_database'));
-        //add_submenu_page( 'backup_pro', 'New Storage', null, 'manage_options', 'backup_pro/new_storage', array($this, 'settings'));
+        add_submenu_page( null, 'New Storage', null, 'manage_options', 'backup_pro/download', array($this, 'download_backup'));
         //add_submenu_page( 'backup_pro', 'Newd Storage', null, 'manage_options', 'backup_pro/new_storagge', array($this, 'settings'));
 	}
 	

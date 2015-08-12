@@ -85,8 +85,11 @@
             <?php endif; ?>
 			
 		<?php endif; ?>
-        <?php if( $backup['can_download'] ): ?>
-    		<a href="<?php echo $url_base;?>download&id=<?php echo urlencode($view_helper->m62Encode($backup['details_file_name'])); ?>&type=<?php echo $backup['backup_type']; ?>" title="<?php echo $view_helper->m62Lang('download'); ?>">
+        <?php if( $backup['can_download'] ): 
+        $encoded_name = urlencode($view_helper->m62Encode($backup['details_file_name']));
+        $download_url = wp_nonce_url($url_base.'download&noheader=true&id='.$encoded_name.'&type='.$backup['backup_type'], $encoded_name);
+        ?>
+    		<a href="<?php echo $download_url;?>" title="<?php echo $view_helper->m62Lang('download'); ?>">
     			<img src="<?php echo $theme_folder_url; ?>backup_pro/admin/images/download.png" alt="<?php echo $view_helper->m62Lang('download'); ?>" class="">
     		</a> 
 		<?php else: ?>
