@@ -5,6 +5,7 @@
 
 
 <form method="post">
+<?php echo wp_nonce_field( 'bpsettings' ); ?>
 <table class="form-table" >
 <?php include '_form.php'; ?>
 </table>

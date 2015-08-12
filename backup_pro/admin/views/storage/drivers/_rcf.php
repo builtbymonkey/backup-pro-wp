@@ -3,14 +3,14 @@
         <label for="rcf_username"><?php echo $view_helper->m62Lang('rcf_username'); ?></label>
     </th>
     <td>
-        <input name="gcs_access_key" type="text" id="rcf_username" value="<?php echo $form_data['rcf_username']; ?>" class="regular-text code" />
+        <input name="rcf_username" type="text" id="rcf_username" value="<?php echo $form_data['rcf_username']; ?>" class="regular-text code" />
         <p class="description" id="rcf_username-description"><?php echo $view_helper->m62Lang('rcf_username_instructions'); ?></p>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['rcf_username']); ?>
     </td>
 </tr>
 <tr>
     <th scope="row">
-        <label for="gcs_secret_key"><?php echo $view_helper->m62Lang('gcs_secret_key'); ?></label>
+        <label for="rcf_api"><?php echo $view_helper->m62Lang('rcf_api'); ?></label>
     </th>
     <td>
         <input name="rcf_api" type="password" id="rcf_api" value="<?php echo $form_data['rcf_api']; ?>" class="regular-text code" />

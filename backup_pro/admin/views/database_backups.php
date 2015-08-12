@@ -34,10 +34,14 @@
 		<form name="update_settings" action="{{ url('backuppro/delete/confirm') }}" method="post" accept-charset="UTF-8" />
 
 		<input type="hidden" name="type" id="hidden_backup_type" value="database" />	
-			{% include 'backuppro/_includes/_backup_table' with {'enable_type': 'no', '_backups': backups.database, 'enable_delete':'yes', 'enable_editable_note':'yes', 'enable_actions':'yes' } %}
-		
+<?php 
+$options = array('enable_type' => 'no', 'enable_editable_note' => 'yes', 'enable_actions' => 'yes', 'enable_delete' => 'yes');
+extract($options);
+$backups = $backups['database'];
+include '_includes/_backup_table.php';
+?>		
 		<div class="buttons right">
-			<input type="submit" value="{{ "delete_backups"|m62Lang|t }}" class="btn submit" >
+<?php submit_button($view_helper->m62Lang('delete_backups'));?>
 		</div>
 		
 		</form>

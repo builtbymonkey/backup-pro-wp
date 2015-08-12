@@ -1,32 +1,31 @@
-$(document).ready(function() {
+jQuery(document).ready(function() {
 
-	$('#NewStorageDropdown').change(function(){
-		window.location = $("#NewStorageDropdown").val();
+	jQuery('#NewStorageDropdown').change(function(){
+		window.location = jQuery("#NewStorageDropdown").val();
 	});
 
 	//check all checkboxes
-	$(".toggle_all_db").toggle(
+	jQuery(".toggle_all_db").toggle(
 		function(){
-			$("input.toggle_db").each(function() {
+			jQuery("input.toggle_db").each(function() {
 				this.checked = true;
 			});
 		}, function (){
 			var checked_status = this.checked;
-			$("input.toggle_db").each(function() {
+			jQuery("input.toggle_db").each(function() {
 				this.checked = false;
 			});
 		}
 	);
 
-	$(".toggle_all_files").toggle(
+	jQuery(".toggle_all_files").toggle(
 		function(){
-			alert('fdsa');
-			$("input.toggle_files").each(function() {
+			jQuery("input.toggle_files").each(function() {
 				this.checked = true;
 			});
 		}, function (){
 			var checked_status = this.checked;
-			$("input.toggle_files").each(function() {
+			jQuery("input.toggle_files").each(function() {
 				this.checked = false;
 			});
 		}
@@ -37,16 +36,16 @@ $(document).ready(function() {
 	//alert('fdsa');
 	
 	//backup note editable
-	$(".bp_editable").on("click", function(e) {
+	jQuery(".bp_editable").on("click", function(e) {
 		
-		var file_id = "#note_"+$(this).attr("rel");
-		var note_div = "#note_div_"+$(this).attr("rel");
-		var note_html = "#note_div_"+$(this).attr("rel");
-		var backup_type = $(file_id).attr("data-backup-type");
-		var def_value = $(file_id).val();
+		var file_id = "#note_"+jQuery(this).attr("rel");
+		var note_div = "#note_div_"+jQuery(this).attr("rel");
+		var note_html = "#note_div_"+jQuery(this).attr("rel");
+		var backup_type = jQuery(file_id).attr("data-backup-type");
+		var def_value = jQuery(file_id).val();
 		
 		//first, prevent using Enter to submit the parent form
-		$(file_id).bind("keypress", function(e) {
+		jQuery(file_id).bind("keypress", function(e) {
 			  var code = e.keyCode || e.which; 
 			  if (code  == 13) 
 			  {               
@@ -56,21 +55,21 @@ $(document).ready(function() {
 			  }
 		});	
 		
-		$(document).keyup(function(e) {
+		jQuery(document).keyup(function(e) {
 			  if (e.keyCode == 27) { 
-					$(note_div).html($(note_html).html()).show();
-					$(file_id).val(def_value);
-					$(file_id).hide();
+				  jQuery(note_div).html(jQuery(note_html).html()).show();
+				  jQuery(file_id).val(def_value);
+				  jQuery(file_id).hide();
 			  }   // esc
 		});		
 
 		//now do first display
-		$(this).hide();
-		$(file_id).show();
-		$(file_id).focus();
-		$(file_id).on("blur", function(e) {
-			$(note_div).html($(note_html).html()).show();
-			$(file_id).hide();
+		jQuery(this).hide();
+		jQuery(file_id).show();
+		jQuery(file_id).focus();
+		jQuery(file_id).on("blur", function(e) {
+			jQuery(note_div).html(jQuery(note_html).html()).show();
+			jQuery(file_id).hide();
 		});
 	});
 	//end backup note editable

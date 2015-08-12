@@ -72,7 +72,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	 */
 	public function proc_settings()
 	{
-        if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/settings' && check_admin_referer( 'bpsettings' ) )
+        if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/settings' && $this->getPost('section') != 'storage' && check_admin_referer( 'bpsettings' ) )
         {
             $data = array();
             $data = array_map( 'stripslashes_deep', $_POST );
@@ -104,9 +104,41 @@ class BackupProAdmin extends WpController implements BpInterface
         }
 	}
 	
+	/**
+	 * action to process adding a new storage engine
+	 */
 	public function proc_storage_add()
 	{
-	    //wp_redirect('/');
+	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/settings' && $this->getPost('section') == 'storage' && check_admin_referer( 'bpsettings' ) )
+	    {
+	        $data = array();
+	        $data = array_map( 'stripslashes_deep', $_POST );
+	    
+	        $variables['form_data'] = array_merge(array('db_backup_ignore_tables' => '', 'db_backup_ignore_table_data' => ''), $data);
+	        $backup = $this->services['backups'];
+	        $backups = $backup->setBackupPath($this->settings['working_directory'])->getAllBackups($this->settings['storage_details']);
+	        $data['meta'] = $backup->getBackupMeta($backups);
+	        $extra = array('db_creds' => $this->platform->getDbCredentials());
+	        $settings_errors = $this->services['settings']->validate($data, $extra);
+	        if( !$settings_errors )
+	        {
+	            if( $this->services['settings']->update($data) )
+	            {
+	                //ee()->session->set_flashdata('message_success', $this->services['lang']->__('settings_updated'));
+	                wp_redirect($this->url_base.'settings&section='.$this->getPost('section').'&updated=yes');
+	                exit;
+	            }
+	        }
+	    }
+	    else
+	    {
+	    
+	        if( $this->getPost('updated') == 'yes' && $this->getPost('page') == 'backup_pro/settings' )
+	        {
+	            //$this->context->loader->addAction( 'admin_notices' , $this, 'settingsNotices');
+	            add_action( 'admin_notices', array( $this, 'settingsNotices' ), 30, array('settings_updated'));
+	        }
+	    }
 	}
 	
 	public function proc_storage_edit()
@@ -214,7 +246,10 @@ class BackupProAdmin extends WpController implements BpInterface
 
 	public function enqueueScripts() 
 	{
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( 'bpchosen', plugin_dir_url( __FILE__ ) . 'js/chosen.jquery.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'bpdashboard', plugin_dir_url( __FILE__ ) . 'js/dashboard.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'bpsettings', plugin_dir_url( __FILE__ ) . 'js/settings.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'bpglobal', plugin_dir_url( __FILE__ ) . 'js/global.js', array( 'jquery' ), $this->version, true );
 	}
 	
 	public function loadMenu()
