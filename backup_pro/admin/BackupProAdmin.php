@@ -39,30 +39,46 @@ class BackupProAdmin extends WpController implements BpInterface
 	 * @var BackupPro
 	 */
 	private $context = null;
+	
+	/**
+	 * Below starts the initialization scripts and setup for the WP event system
+	 * Note that none of this feels right to me...
 
 	/**
-	 * sets up the inital admin hooks
+	 * Sets the CSS file for the Admin 
 	 */
-	public function __construct() 
+	public function enqueueStyles() 
 	{
-	    parent::__construct();
-		add_action('admin_init', array($this, 'procSettings'));
-		add_action('admin_init', array($this, 'procStorageAdd'));
-		add_action('admin_init', array($this, 'proc_storage_edit'));
-		add_action('admin_init', array($this, 'proc_storage_remove'));
-		add_action('admin_init', array($this, 'proc_backup_note'));
-		add_action('admin_init', array($this, 'backup_database'));
-		add_action('admin_init', array($this, 'download_backup'));
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/backup_pro_admin.css', array(), $this->version, 'all' );
+	}
+
+	/**
+	 * Loads up the JavaScript for the Admin
+	 */
+	public function enqueueScripts() 
+	{
+		wp_enqueue_script( 'bpchosen', plugin_dir_url( __FILE__ ) . 'js/chosen.jquery.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'bpdashboard', plugin_dir_url( __FILE__ ) . 'js/dashboard.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'bpsettings', plugin_dir_url( __FILE__ ) . 'js/settings.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'bpglobal', plugin_dir_url( __FILE__ ) . 'js/global.js', array( 'jquery' ), $this->version, true );
 	}
 	
 	/**
-	 * Sets the BackupPro library for use
-	 * @param BackupPro $context
+	 * Defines the Left Menu for the Admin
 	 */
-	public function setContext(BackupPro $context)
+	public function loadMenu()
 	{
-	    $this->context = $context;
-	    return $this;
+	    add_menu_page('Backup Pro', 'Backup Pro', 'manage_options', 'backup_pro', array($this, 'dashboard'), plugin_dir_url( __FILE__ ).'images/bp3_32.png', '23.56');
+        add_submenu_page( 'backup_pro', 'Dashboard', 'Dashboard', 'manage_options', 'backup_pro', array($this, 'dashboard'));
+        add_submenu_page( 'backup_pro', 'Backup Database', 'Backup Database', 'manage_options', 'backup_pro/confirm_backup_db', array($this, 'confirmBackupDb'));
+        add_submenu_page( 'backup_pro', 'Backup Files', 'Backup Files', 'manage_options', 'backup_pro/confirm_backup_files', array($this, 'confirmBackupFiles'));
+        add_submenu_page( 'backup_pro', 'Settings', 'Settings', 'manage_options', 'backup_pro/settings', array($this, 'settings'));
+        
+        //these shouldn't show up in the navigation
+        add_submenu_page( null, 'Backup Database', null, 'manage_options', 'backup_pro/backup_database', array($this, 'backupDatabase'));
+        add_submenu_page( null, 'Backup Files', null, 'manage_options', 'backup_pro/backup_files', array($this, 'backupFiles'));
+        add_submenu_page( null, 'New Storage', null, 'manage_options', 'backup_pro/download', array($this, 'downloadBackup'));
+        //add_submenu_page( 'backup_pro', 'Newd Storage', null, 'manage_options', 'backup_pro/new_storagge', array($this, 'settings'));
 	}
 	
 	/**
@@ -92,7 +108,6 @@ class BackupProAdmin extends WpController implements BpInterface
         }
         else
         {
-            
             if( $this->getPost('updated') == 'yes' && $this->getPost('page') == 'backup_pro/settings' )
             {
                 add_action( 'admin_notices', array( $this, 'settingsNotices' ), 30, array('settings_updated'));
@@ -135,22 +150,22 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	}
 	
-	public function proc_storage_edit()
+	public function procStorageEdit()
 	{
 	    //wp_redirect('/');
 	}
 	
-	public function proc_storage_remove()
+	public function procStorageRemove()
 	{
 	    //wp_redirect('/');
 	}
 	
-	public function proc_backup_note()
+	public function procBackupNote()
 	{
 	    //wp_redirect('/');
 	}
 	
-	public function proc_remove_backup()
+	public function procRemoveBackup()
 	{
 	    //wp_redirect('/');
 	}
@@ -203,7 +218,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	}
 	
-	public function download_backup()
+	public function downloadBackup()
 	{
 	    if( $this->getPost('page') == 'backup_pro/download' && check_admin_referer( urlencode($this->getPost('id')) ) )
 	    {
@@ -213,19 +228,19 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	}
 	
-	public function confirm_backup_files()
+	public function confirmBackupFiles()
 	{
 	    $page = new BackupProBackupController($this);
 	    $page->backup('files');
 	}
 	
-	public function confirm_backup_db()
+	public function confirmBackupDb()
 	{
 	    $page = new BackupProBackupController($this);
 	    $page->backup();
 	}
 	
-	public function backup_database()
+	public function backupDatabase()
 	{
 	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['go_db']) && $_POST['go_db'] == 'ok' && check_admin_referer( 'backup_db' ) )
 	    {
@@ -234,41 +249,13 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	}
 	
-	public function backup_files()
+	public function backupFiles()
 	{
 	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['go_files']) && $_POST['go_files'] == 'ok' && check_admin_referer( 'backup_files' ) )
 	    {
 	        $page = new BackupProBackupController();
 	        $page->backup_files();
 	    }
-	}
-
-	public function enqueueStyles() 
-	{
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/backup_pro_admin.css', array(), $this->version, 'all' );
-	}
-
-	public function enqueueScripts() 
-	{
-		wp_enqueue_script( 'bpchosen', plugin_dir_url( __FILE__ ) . 'js/chosen.jquery.js', array( 'jquery' ), $this->version, true );
-		wp_enqueue_script( 'bpdashboard', plugin_dir_url( __FILE__ ) . 'js/dashboard.js', array( 'jquery' ), $this->version, true );
-		wp_enqueue_script( 'bpsettings', plugin_dir_url( __FILE__ ) . 'js/settings.js', array( 'jquery' ), $this->version, true );
-		wp_enqueue_script( 'bpglobal', plugin_dir_url( __FILE__ ) . 'js/global.js', array( 'jquery' ), $this->version, true );
-	}
-	
-	public function loadMenu()
-	{
-	    add_menu_page('Backup Pro', 'Backup Pro', 'manage_options', 'backup_pro', array($this, 'dashboard'), plugin_dir_url( __FILE__ ).'images/bp3_32.png', '23.56');
-        add_submenu_page( 'backup_pro', 'Dashboard', 'Dashboard', 'manage_options', 'backup_pro', array($this, 'dashboard'));
-        add_submenu_page( 'backup_pro', 'Backup Database', 'Backup Database', 'manage_options', 'backup_pro/confirm_backup_db', array($this, 'confirm_backup_db'));
-        add_submenu_page( 'backup_pro', 'Backup Files', 'Backup Files', 'manage_options', 'backup_pro/confirm_backup_files', array($this, 'confirm_backup_files'));
-        add_submenu_page( 'backup_pro', 'Settings', 'Settings', 'manage_options', 'backup_pro/settings', array($this, 'settings'));
-        
-        //these shouldn't show up in the navigation
-        add_submenu_page( null, 'Backup Database', null, 'manage_options', 'backup_pro/backup_database', array($this, 'backup_database'));
-        add_submenu_page( null, 'Backup Files', null, 'manage_options', 'backup_pro/backup_files', array($this, 'backup_files'));
-        add_submenu_page( null, 'New Storage', null, 'manage_options', 'backup_pro/download', array($this, 'download_backup'));
-        //add_submenu_page( 'backup_pro', 'Newd Storage', null, 'manage_options', 'backup_pro/new_storagge', array($this, 'settings'));
 	}
 	
 	public function pluginLinks($links)
@@ -321,4 +308,14 @@ class BackupProAdmin extends WpController implements BpInterface
 	    echo "</p></div>";
 	}
 
+
+	/**
+	 * Sets the BackupPro library for use
+	 * @param BackupPro $context
+	 */
+	public function setContext(BackupPro $context)
+	{
+	    $this->context = $context;
+	    return $this;
+	}
 }
