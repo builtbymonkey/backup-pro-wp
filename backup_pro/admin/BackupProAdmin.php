@@ -42,14 +42,12 @@ class BackupProAdmin extends WpController implements BpInterface
 
 	/**
 	 * sets up the inital admin hooks
-	 * @param unknown $plugin_name
-	 * @param unknown $version
 	 */
 	public function __construct() 
 	{
 	    parent::__construct();
-		add_action('admin_init', array($this, 'proc_settings'));
-		add_action('admin_init', array($this, 'proc_storage_add'));
+		add_action('admin_init', array($this, 'procSettings'));
+		add_action('admin_init', array($this, 'procStorageAdd'));
 		add_action('admin_init', array($this, 'proc_storage_edit'));
 		add_action('admin_init', array($this, 'proc_storage_remove'));
 		add_action('admin_init', array($this, 'proc_backup_note'));
@@ -70,7 +68,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	/**
 	 * Action to process the Settings
 	 */
-	public function proc_settings()
+	public function procSettings()
 	{
         if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/settings' && $this->getPost('section') != 'storage' && check_admin_referer( 'bpsettings' ) )
         {
@@ -87,7 +85,6 @@ class BackupProAdmin extends WpController implements BpInterface
             {
                 if( $this->services['settings']->update($data) )
                 {
-                    //ee()->session->set_flashdata('message_success', $this->services['lang']->__('settings_updated'));
                     wp_redirect($this->url_base.'settings&section='.$this->getPost('section').'&updated=yes');
                     exit;
                 }
@@ -98,7 +95,6 @@ class BackupProAdmin extends WpController implements BpInterface
             
             if( $this->getPost('updated') == 'yes' && $this->getPost('page') == 'backup_pro/settings' )
             {
-                //$this->context->loader->addAction( 'admin_notices' , $this, 'settingsNotices');
                 add_action( 'admin_notices', array( $this, 'settingsNotices' ), 30, array('settings_updated'));
             }
         }
@@ -107,7 +103,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	/**
 	 * action to process adding a new storage engine
 	 */
-	public function proc_storage_add()
+	public function procStorageAdd()
 	{
 	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/settings' && $this->getPost('section') == 'storage' && check_admin_referer( 'bpsettings' ) )
 	    {
@@ -124,7 +120,6 @@ class BackupProAdmin extends WpController implements BpInterface
 	        {
 	            if( $this->services['settings']->update($data) )
 	            {
-	                //ee()->session->set_flashdata('message_success', $this->services['lang']->__('settings_updated'));
 	                wp_redirect($this->url_base.'settings&section='.$this->getPost('section').'&updated=yes');
 	                exit;
 	            }
@@ -135,7 +130,6 @@ class BackupProAdmin extends WpController implements BpInterface
 	    
 	        if( $this->getPost('updated') == 'yes' && $this->getPost('page') == 'backup_pro/settings' )
 	        {
-	            //$this->context->loader->addAction( 'admin_notices' , $this, 'settingsNotices');
 	            add_action( 'admin_notices', array( $this, 'settingsNotices' ), 30, array('settings_updated'));
 	        }
 	    }
@@ -219,12 +213,13 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	}
 	
-	public function backup_files()
+	public function confirm_backup_files()
 	{
-	    
+	    $page = new BackupProBackupController($this);
+	    $page->backup('files');
 	}
 	
-	public function backup_db()
+	public function confirm_backup_db()
 	{
 	    $page = new BackupProBackupController($this);
 	    $page->backup();
@@ -236,6 +231,15 @@ class BackupProAdmin extends WpController implements BpInterface
 	    {
 	        $page = new BackupProBackupController();
 	        $page->backup_database();
+	    }
+	}
+	
+	public function backup_files()
+	{
+	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['go_files']) && $_POST['go_files'] == 'ok' && check_admin_referer( 'backup_files' ) )
+	    {
+	        $page = new BackupProBackupController();
+	        $page->backup_files();
 	    }
 	}
 
@@ -256,12 +260,13 @@ class BackupProAdmin extends WpController implements BpInterface
 	{
 	    add_menu_page('Backup Pro', 'Backup Pro', 'manage_options', 'backup_pro', array($this, 'dashboard'), plugin_dir_url( __FILE__ ).'images/bp3_32.png', '23.56');
         add_submenu_page( 'backup_pro', 'Dashboard', 'Dashboard', 'manage_options', 'backup_pro', array($this, 'dashboard'));
-        add_submenu_page( 'backup_pro', 'Backup Database', 'Backup Database', 'manage_options', 'backup_pro/backup_db', array($this, 'backup_db'));
-        add_submenu_page( 'backup_pro', 'Backup Files', 'Backup Files', 'manage_options', 'backup_pro/backup_files', array($this, 'backup_files'));
+        add_submenu_page( 'backup_pro', 'Backup Database', 'Backup Database', 'manage_options', 'backup_pro/confirm_backup_db', array($this, 'confirm_backup_db'));
+        add_submenu_page( 'backup_pro', 'Backup Files', 'Backup Files', 'manage_options', 'backup_pro/confirm_backup_files', array($this, 'confirm_backup_files'));
         add_submenu_page( 'backup_pro', 'Settings', 'Settings', 'manage_options', 'backup_pro/settings', array($this, 'settings'));
         
         //these shouldn't show up in the navigation
-        add_submenu_page( null, 'Database Backups', null, 'manage_options', 'backup_pro/backup_database', array($this, 'backup_database'));
+        add_submenu_page( null, 'Backup Database', null, 'manage_options', 'backup_pro/backup_database', array($this, 'backup_database'));
+        add_submenu_page( null, 'Backup Files', null, 'manage_options', 'backup_pro/backup_files', array($this, 'backup_files'));
         add_submenu_page( null, 'New Storage', null, 'manage_options', 'backup_pro/download', array($this, 'download_backup'));
         //add_submenu_page( 'backup_pro', 'Newd Storage', null, 'manage_options', 'backup_pro/new_storagge', array($this, 'settings'));
 	}
@@ -272,6 +277,9 @@ class BackupProAdmin extends WpController implements BpInterface
 	    return $links;
 	}
 	
+	/**
+	 * Action method to dispaly global error messages
+	 */
 	public function errorNotices()
 	{
 	    $screen_id = get_current_screen()->id;
@@ -303,11 +311,13 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	}
 	
+	/**
+	 * Wrapper to add success messages on settings save
+	 */
 	public function settingsNotices()
 	{
 	    $class =  $class = " updated ";
 	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('settings_updated'));
-
 	    echo "</p></div>";
 	}
 
