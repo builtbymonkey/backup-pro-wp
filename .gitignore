@@ -3,3 +3,7 @@
 /.project
 /backup_pro/includes/mithra62
 /backup_pro/includes/vendor
+/backups
+/backup_pro/backups/files
+/backup_pro/backups/progress.data
+/backup_pro/backups/database

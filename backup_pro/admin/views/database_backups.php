@@ -1,9 +1,6 @@
 <div class='wrap'>
-<h2>Backup Pro Database Backups</h2>
-
-
-<?php //include '_includes/_errors.php'; ?>
-<?php include '_includes/_backups_submenu.php'; ?>
+    <h2>Backup Pro Database Backups</h2>
+    <?php include '_includes/_backups_submenu.php'; ?>
 
 	<table class="widefat"  width="100%"  border="0" cellpadding="0" cellspacing="0">
 	<thead>
@@ -34,17 +31,15 @@
 		<form name="update_settings" action="{{ url('backuppro/delete/confirm') }}" method="post" accept-charset="UTF-8" />
 
 		<input type="hidden" name="type" id="hidden_backup_type" value="database" />	
-<?php 
-$options = array('enable_type' => 'no', 'enable_editable_note' => 'yes', 'enable_actions' => 'yes', 'enable_delete' => 'yes');
-extract($options);
-$backups = $backups['database'];
-include '_includes/_backup_table.php';
-?>		
-		<div class="buttons right">
-<?php submit_button($view_helper->m62Lang('delete_backups'));?>
-		</div>
-		
-		</form>
-							
+        <?php 
+        $options = array('enable_type' => 'no', 'enable_editable_note' => 'yes', 'enable_actions' => 'yes', 'enable_delete' => 'yes');
+        extract($options);
+        $backups = $backups['database'];
+        include '_includes/_backup_table.php';
+        ?>		
+        <div class="buttons right">
+            <?php submit_button($view_helper->m62Lang('delete_backups'));?>
+        </div>
+		</form>		
 	<?php endif; ?>
 </div>

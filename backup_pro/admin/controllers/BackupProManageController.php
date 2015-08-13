@@ -11,6 +11,14 @@
 use mithra62\BackupPro\Platforms\Controllers\Wordpress AS WpController;
 use mithra62\BackupPro\BackupPro AS BpInterface;
 
+/**
+ * Backup Pro - Wordpress Manage Backup Controller
+ *
+ * Contains the Manage Backup Controller Actions for Wordpress
+ *
+ * @package 	BackupPro\Wordpress\Controllers
+ * @author		Eric Lamb <eric@mithra62.com>
+ */
 class BackupProManageController extends WpController implements BpInterface
 {   
     /**
@@ -48,14 +56,8 @@ class BackupProManageController extends WpController implements BpInterface
     
         if($download_file_path && file_exists($download_file_path))
         {
-            //$new_name = $backup->getStorage()->makePrettyFilename($file_name, $type, craft()->config->get('siteName'));
             $this->services['files']->fileDownload($download_file_path);
             exit;
-        }
-        else
-        {
-            ee()->session->set_flashdata('message_error', $this->services['lang']->__('db_backup_not_found'));
-            ee()->functions->redirect($this->url_base.'index');
         }
     }
     
