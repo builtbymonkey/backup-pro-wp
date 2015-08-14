@@ -1,8 +1,24 @@
 <?php
-
+/**
+ * mithra62 - Backup Pro
+ *
+ * @copyright	Copyright (c) 2015, mithra62, Eric Lamb.
+ * @link		http://mithra62.com/
+ * @version		3.0
+ * @filesource 	./backup_pro/admin/controllers/BackupProBackupController.php
+ */
+ 
 use mithra62\BackupPro\Platforms\Controllers\Wordpress AS WpController;
 use mithra62\BackupPro\BackupPro AS BpInterface;
 
+/**
+ * Backup Pro - Wordpress Storage Controller
+ *
+ * Contains the Storage Controller Actions for Wordpress
+ *
+ * @package 	BackupPro\Wordpress\Controllers
+ * @author		Eric Lamb <eric@mithra62.com>
+ */
 class BackupProStorageController extends WpController implements BpInterface
 {   
     /**
@@ -21,7 +37,7 @@ class BackupProStorageController extends WpController implements BpInterface
      * View all the storage entries 
      * @return string
      */
-    public function view_storage()
+    public function viewStorage()
     {
         $variables = array();
         $variables['can_remove'] = true;
@@ -46,7 +62,7 @@ class BackupProStorageController extends WpController implements BpInterface
      * Add a storage entry
      * @return string
      */
-    public function new_storage()
+    public function newStorage()
     {
         $engine = $this->getPost('engine', 'local');
         $variables = array();
@@ -107,9 +123,9 @@ class BackupProStorageController extends WpController implements BpInterface
      * Edit a storage entry
      * @return string
      */    
-    public function edit_storage()
+    public function editStorage()
     {
-        $storage_id = ee()->input->get_post('id');
+        $storage_id = $this->getPost('id');
         if( empty($this->settings['storage_details'][$storage_id]) )
         {
             ee()->session->set_flashdata('message_error', $this->services['lang']->__('invalid_storage_id'));
@@ -117,7 +133,6 @@ class BackupProStorageController extends WpController implements BpInterface
         }
     
         $storage_details = $this->settings['storage_details'][$storage_id];
-    
         $variables = array();
         $variables['storage_details'] = $storage_details;
         $variables['form_data'] = array_merge($this->storage_form_data_defaults, $storage_details);
@@ -125,9 +140,9 @@ class BackupProStorageController extends WpController implements BpInterface
         $variables['errors'] = $this->errors;
         $variables['available_storage_engines'] = $this->services['backup']->getStorage()->getAvailableStorageOptions();
         $variables['storage_engine'] = $variables['available_storage_engines'][$storage_details['storage_location_driver']];
-        $variables['_form_template'] = 'storage/drivers/_'.$storage_details['storage_location_driver'];
+        $variables['_form_template'] = 'drivers/_'.$storage_details['storage_location_driver'].'.php';
     
-        if( ee()->input->server('REQUEST_METHOD') == 'POST' )
+        if( $_SERVER['REQUEST_METHOD'] == 'POST' )
         {
             $data = array();
             foreach($_POST as $key => $value){
@@ -150,18 +165,22 @@ class BackupProStorageController extends WpController implements BpInterface
             }
         }
 
-        $variables['menu_data'] = ee()->backup_pro->get_settings_view_menu();
+        $variables['menu_data'] = $this->backup_lib->getSettingsViewMenu();
         $variables['section'] = 'storage';
+        $variables['view_helper'] = $this->view_helper;
+        $variables['url_base'] = $this->url_base;
+        $variables['theme_folder_url'] = plugin_dir_url(self::name);
         $variables['storage_id'] = $storage_id;
-        ee()->view->cp_page_title = $this->services['lang']->__('storage_bp_settings_menu');
-        return ee()->load->view('storage/edit', $variables, true);
+        
+        $template = 'admin/views/storage/edit';
+        $this->renderTemplate($template, $variables);
     }
     
     /**
      * Remove a storage entry
      * @return string
      */    
-    public function remove_storage()
+    public function removeStorage()
     {
         if( count($this->settings['storage_details']) <= 1 )
         {

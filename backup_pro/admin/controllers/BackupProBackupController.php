@@ -5,7 +5,7 @@
  * @copyright	Copyright (c) 2015, mithra62, Eric Lamb.
  * @link		http://mithra62.com/
  * @version		3.0
- * @filesource 	./mithra62/BackupPro/Controllers/Wordpress/Backup.php
+ * @filesource 	./backup_pro/admin/controllers/BackupProBackupController.php
  */
 
 use mithra62\BackupPro\Platforms\Controllers\Wordpress AS WpController;

@@ -64,7 +64,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	}
 	
 	/**
-	 * Defines the Left Menu for the Admin
+	 * Defines the Left Menu and internal view pages for the Admin
 	 */
 	public function loadMenu()
 	{
@@ -77,9 +77,28 @@ class BackupProAdmin extends WpController implements BpInterface
         //these shouldn't show up in the navigation
         add_submenu_page( null, 'Backup Database', null, 'manage_options', 'backup_pro/backup_database', array($this, 'backupDatabase'));
         add_submenu_page( null, 'Backup Files', null, 'manage_options', 'backup_pro/backup_files', array($this, 'backupFiles'));
-        add_submenu_page( null, 'New Storage', null, 'manage_options', 'backup_pro/download', array($this, 'downloadBackup'));
+        add_submenu_page( null, 'Download Backup', null, 'manage_options', 'backup_pro/download', array($this, 'downloadBackup'));
+        add_submenu_page( null, 'Confirm Remove Backup', null, 'manage_options', 'backup_pro/confirm_remove_backup', array($this, 'confirmRemoveBackup'));
         //add_submenu_page( 'backup_pro', 'Newd Storage', null, 'manage_options', 'backup_pro/new_storagge', array($this, 'settings'));
 	}
+	
+	/**
+	 * Now we're defining the processing scripts
+	 * Wordpress, being an event based system, handles output all screwy
+	 * so will send headers before our controller actions ccan work with them
+	 * 
+	 * This means that we can't redirect in our controllers so any action that
+	 * required such has to have that logic in a proc* method
+	 * 
+	 * Oh, and even better, there also isn't any FlashMessenger mechanism so
+	 * if we want to display messages, or notices/errors, we have to do some 
+	 * fancy logic in query strings and checks
+	 * 
+	 * Also. Fuck me. WP also has a weird CSRF mechanism so we have to do 
+	 * some logic there too
+	 * 
+	 * See procSettings() for a solid example
+	 */
 	
 	/**
 	 * Action to process the Settings
@@ -115,8 +134,41 @@ class BackupProAdmin extends WpController implements BpInterface
         }
 	}
 	
+	public function procConfirmBackup()
+	{
+	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/confirm_remove_backup' && check_admin_referer( 'remove_bp_backups' ) )
+	    {
+	        $delete_backups = $this->getPost('backups');
+	        $type = $this->getPost('type');
+	        if(!$delete_backups || count($delete_backups) == 0)
+	        {
+	            $section = ( $type == 'database' ? 'db_backups' : 'file_backups' );
+                wp_redirect($this->url_base.'&section='.$section.'&remove_fail=yes');
+                exit;
+	        }
+	        
+	        print_r($_POST);
+	        $page = new BackupProManageController($this);
+	        $page->setBackupLib($this->context);
+	        exit;
+	    }
+	    else
+	    {
+	        if( $this->getPost('remove_fail') == 'yes' && in_array($this->getPost('section'), array('db_backups', 'file_backups')) )
+	        {
+	            add_action( 'admin_notices', array( $this, 'backupRemoveErrorNotice' ), 30, array('settings_updated'));
+	        }
+	    }
+	}
+	
+	public function procBackupRemove()
+	{
+	    
+	}
+	
+	
 	/**
-	 * action to process adding a new storage engine
+	 * Action to process adding a new storage engine
 	 */
 	public function procStorageAdd()
 	{
@@ -142,7 +194,6 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	    else
 	    {
-	    
 	        if( $this->getPost('updated') == 'yes' && $this->getPost('page') == 'backup_pro/settings' )
 	        {
 	            add_action( 'admin_notices', array( $this, 'settingsNotices' ), 30, array('settings_updated'));
@@ -203,11 +254,15 @@ class BackupProAdmin extends WpController implements BpInterface
 	        $page = $page->setBackupLib($this->context);
 	        switch($action)
 	        {
+	            case 'edit':
+	               $page->editStorage();    
+	            break;
+	            
 	            case 'new':
-	                $page->new_storage();
+	                $page->newStorage();
                 break;
 	            default:
-	                $page->view_storage();
+	                $page->viewStorage();
                 break;
 	        }
 	    }
@@ -218,12 +273,18 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	}
 	
+	public function confirmRemoveBackup()
+	{
+	    $page = new BackupProManageController($this);
+	    $page->setBackupLib($this->context)->deleteBackupConfirm();	    
+	}
+	
 	public function downloadBackup()
 	{
 	    if( $this->getPost('page') == 'backup_pro/download' && check_admin_referer( urlencode($this->getPost('id')) ) )
 	    {
     	    $page = new BackupProManageController($this);
-    	    $page->download();
+    	    $page->setBackupLib($this->context)->download();
     	    exit;
 	    }
 	}
@@ -231,13 +292,13 @@ class BackupProAdmin extends WpController implements BpInterface
 	public function confirmBackupFiles()
 	{
 	    $page = new BackupProBackupController($this);
-	    $page->backup('files');
+	    $page->setBackupLib($this->context)->backup('files');
 	}
 	
 	public function confirmBackupDb()
 	{
 	    $page = new BackupProBackupController($this);
-	    $page->backup();
+	    $page->setBackupLib($this->context)->backup();
 	}
 	
 	public function backupDatabase()
@@ -308,6 +369,15 @@ class BackupProAdmin extends WpController implements BpInterface
 	    echo "</p></div>";
 	}
 
+	/**
+	 * Wrapper to add success messages on settings save
+	 */
+	public function backupRemoveErrorNotice()
+	{
+	    $class =  $class = " error ";
+	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('backups_not_found'));
+	    echo "</p></div>";
+	}
 
 	/**
 	 * Sets the BackupPro library for use

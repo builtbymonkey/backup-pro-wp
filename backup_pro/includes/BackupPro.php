@@ -161,6 +161,8 @@ class BackupPro implements BpInterface
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procStorageAdd');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procStorageEdit');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procStorageRemove');
+		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procConfirmBackup');
+		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procBackupRemove');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procBackupNote');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'backupDatabase');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'backupFiles');

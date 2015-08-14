@@ -64,12 +64,12 @@ class BackupProManageController extends WpController implements BpInterface
     /**
      * AJAX Action for updating a backup note
      */
-    public function update_backup_note()
+    public function updateBackupNote()
     {
         $encrypt = $this->services['encrypt'];
-        $file_name = $encrypt->decode(ee()->input->get_post('backup'));
-        $backup_type = ee()->input->get_post('backup_type'); 
-        $note_text = ee()->input->get_post('note_text'); 
+        $file_name = $encrypt->decode($this->getPost('backup'));
+        $backup_type = $this->getPost('backup_type');
+        $note_text = $this->getPost('note_text'); 
         if($note_text && $file_name)
         {
             $path = rtrim($this->settings['working_directory'], DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$backup_type;
@@ -82,30 +82,31 @@ class BackupProManageController extends WpController implements BpInterface
     /**
      * Delete Backup Confirmation Action
      */
-    public function delete_backup_confirm()
+    public function deleteBackupConfirm()
     {
-        $delete_backups = ee()->input->get_post('backups');
-        $type = ee()->input->get_post('type'); 
+        $delete_backups =$this->getPost('backups');
+        $type = $this->getPost('type');
         $backups = $this->validateBackups($delete_backups, $type);
         $variables = array(
             'settings' => $this->settings,
             'backups' => $backups,
             'backup_type' => $type,
-            'menu_data' => ee()->backup_pro->get_dashboard_view_menu(),
-            'method' => ee()->input->get_post('method'),
+            'menu_data' => $this->backup_lib->getDashboardViewMenu(),
+            'method' => $this->getPost('method'),
             'errors' => $this->errors
         );
     
         //$template = 'backuppro/delete_confirm';
     
-        ee()->view->cp_page_title = $this->services['lang']->__('dashboard');
-        return ee()->load->view('delete_confirm', $variables, true);
+        //ee()->view->cp_page_title = $this->services['lang']->__('dashboard');
+        $template = 'admin/views/delete_confirm';
+        $this->renderTemplate($template, $variables);
     }
     
     /**
      * Delete Backup Action
      */
-    public function delete_backups()
+    public function deleteBackups()
     {
         $delete_backups = ee()->input->get_post('backups');
         $type = ee()->input->get_post('type'); 
@@ -128,14 +129,8 @@ class BackupProManageController extends WpController implements BpInterface
      * @param string $type
      * @return multitype:array
      */
-    private function validateBackups($delete_backups, $type)
-    {
-        if(!$delete_backups || count($delete_backups) == 0)
-        {
-            ee()->session->set_flashdata('message_error', $this->services['lang']->__('backups_not_found'));
-            ee()->functions->redirect($this->url_base.'index');
-        }
-    
+    public function validateBackups($delete_backups, $type)
+    {   
         $encrypt = $this->services['encrypt'];
         $backups = array();
     

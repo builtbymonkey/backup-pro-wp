@@ -32,7 +32,7 @@
 	<?php else: ?>
 	
 	
-		<form name="update_settings" action="{{ url('backuppro/delete/confirm') }}" method="post"  />
+		<form name="remove_backups" action="<?php echo $url_base; ?>confirm_remove_backup" method="post"  />
         <?php 
         $options = array('enable_type' => 'no', 'enable_editable_note' => 'yes', 'enable_actions' => 'yes', 'enable_delete' => 'yes');
         extract($options);

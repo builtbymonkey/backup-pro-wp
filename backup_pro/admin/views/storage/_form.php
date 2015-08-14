@@ -22,7 +22,7 @@
     </th>
     <td>
         <fieldset><legend class="screen-reader-text"><span><?php echo $view_helper->m62Lang('storage_location_status_instructions'); ?></span></legend><label for="storage_location_status">
-            <input name="storage_location_status" id="storage_location_status" value="1" type="checkbox" <?php echo checked( $form_errors['storage_location_status'], 1, true); ?>>
+            <input name="storage_location_status" id="storage_location_status" value="1" type="checkbox" <?php echo checked( $form_data['storage_location_status'], 1, true); ?>>
             <?php echo $view_helper->m62Lang('storage_location_status_instructions'); ?></label></fieldset>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['storage_location_status']); ?>
     </td>
@@ -33,7 +33,7 @@
     </th>
     <td>
         <fieldset><legend class="screen-reader-text"><span><?php echo $view_helper->m62Lang('storage_location_file_use_instructions'); ?></span></legend><label for="storage_location_file_use">
-            <input name="storage_location_file_use" id="storage_location_file_use" value="1" type="checkbox" <?php echo checked( $form_errors['storage_location_file_use'], 1, true); ?>>
+            <input name="storage_location_file_use" id="storage_location_file_use" value="1" type="checkbox" <?php echo checked( $form_data['storage_location_file_use'], 1, true); ?>>
             <?php echo $view_helper->m62Lang('storage_location_file_use_instructions'); ?></label></fieldset>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['storage_location_file_use']); ?>
     </td>
@@ -44,7 +44,7 @@
     </th>
     <td>
         <fieldset><legend class="screen-reader-text"><span><?php echo $view_helper->m62Lang('storage_location_db_use_instructions'); ?></span></legend><label for="storage_location_db_use">
-            <input name="storage_location_db_use" id="storage_location_db_use" value="1" type="checkbox" <?php echo checked( $form_errors['storage_location_db_use'], 1, true); ?>>
+            <input name="storage_location_db_use" id="storage_location_db_use" value="1" type="checkbox" <?php echo checked( $form_data['storage_location_db_use'], 1, true); ?>>
             <?php echo $view_helper->m62Lang('storage_location_db_use_instructions'); ?></label></fieldset>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['storage_location_db_use']); ?>
     </td>
@@ -55,7 +55,7 @@
     </th>
     <td>
         <fieldset><legend class="screen-reader-text"><span><?php echo $view_helper->m62Lang('storage_location_include_prune_instructions'); ?></span></legend><label for="storage_location_include_prune">
-            <input name="storage_location_include_prune" id="storage_location_include_prune" value="1" type="checkbox" <?php echo checked( $form_errors['storage_location_include_prune'], 1, true); ?>>
+            <input name="storage_location_include_prune" id="storage_location_include_prune" value="1" type="checkbox" <?php echo checked( $form_data['storage_location_include_prune'], 1, true); ?>>
             <?php echo $view_helper->m62Lang('storage_location_include_prune_instructions'); ?></label></fieldset>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['storage_location_include_prune']); ?>
     </td>

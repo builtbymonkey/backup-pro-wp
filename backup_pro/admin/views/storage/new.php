@@ -1,6 +1,8 @@
 <div class='wrap'>
-<h2  class="accordion"><?=$view_helper->m62Lang('add_storage_location')?> (<?=$view_helper->m62Lang($storage_engine['name'])?>)</h2>
-<?php include '_submenu.php'; ?> <br />
+<h2  class="accordion"><?=$view_helper->m62Lang('add_storage_location')?> </h2>
+<?php include '_submenu.php'; ?> <br /><br />
+
+<h3><?=$view_helper->m62Lang($storage_engine['name'])?></h3>
 <p><?php echo $view_helper->m62Lang($storage_engine['desc']); ?></p>
 
 
