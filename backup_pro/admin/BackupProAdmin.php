@@ -79,6 +79,7 @@ class BackupProAdmin extends WpController implements BpInterface
         add_submenu_page( null, 'Backup Files', null, 'manage_options', 'backup_pro/backup_files', array($this, 'backupFiles'));
         add_submenu_page( null, 'Download Backup', null, 'manage_options', 'backup_pro/download', array($this, 'downloadBackup'));
         add_submenu_page( null, 'Confirm Remove Backup', null, 'manage_options', 'backup_pro/confirm_remove_backup', array($this, 'confirmRemoveBackup'));
+        add_submenu_page( null, 'Confirm Remove Backup', null, 'manage_options', 'backup_pro/remove_backup', array($this, 'procBackupRemove'));
         //add_submenu_page( 'backup_pro', 'Newd Storage', null, 'manage_options', 'backup_pro/new_storagge', array($this, 'settings'));
 	}
 	
@@ -101,7 +102,9 @@ class BackupProAdmin extends WpController implements BpInterface
 	 */
 	
 	/**
-	 * Action to process the Settings
+	 * Action to process the Settings form submission
+	 * Note that this happens independantly from the 
+	 * Settings Action 
 	 */
 	public function procSettings()
 	{
@@ -134,6 +137,15 @@ class BackupProAdmin extends WpController implements BpInterface
         }
 	}
 	
+	/**
+	 * Backup Remove Confirmation Action 
+	 * 
+	 * All we're really doing here is validating the POST data to ensure the backups are
+	 * 1. Being passed correctly
+	 * 2. Actually real backups
+	 * 
+	 * If they're not, we're just bouncing out and setting a flag to set the error message
+	 */
 	public function procConfirmBackup()
 	{
 	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/confirm_remove_backup' && check_admin_referer( 'remove_bp_backups' ) )
@@ -147,13 +159,25 @@ class BackupProAdmin extends WpController implements BpInterface
                 exit;
 	        }
 	        
-	        print_r($_POST);
 	        $page = new BackupProManageController($this);
 	        $page->setBackupLib($this->context);
-	        exit;
+	        $delete_backups = $page->validateBackups($delete_backups, $type);
+	        if(!$delete_backups || count($delete_backups) == 0)
+	        {
+	            $section = ( $type == 'database' ? 'db_backups' : 'file_backups' );
+	            wp_redirect($this->url_base.'&section='.$section.'&remove_fail=yes');
+	            exit;
+	        }
 	    }
 	    else
 	    {
+	        //the confirm remove page should only be accessible via POST so bounce out if we're not even doing that
+	        if($this->getPost('page') == 'backup_pro/confirm_remove_backup' && $_SERVER['REQUEST_METHOD'] != 'POST' )
+	        {
+	            wp_redirect($this->url_base);
+	            exit;
+	        }
+	        
 	        if( $this->getPost('remove_fail') == 'yes' && in_array($this->getPost('section'), array('db_backups', 'file_backups')) )
 	        {
 	            add_action( 'admin_notices', array( $this, 'backupRemoveErrorNotice' ), 30, array('settings_updated'));
@@ -161,9 +185,39 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	}
 	
+	/**
+	 * Backup Remove Processing Action
+	 */
 	public function procBackupRemove()
 	{
-	    
+	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/remove_backup' && check_admin_referer( 'really_for_reals_remove_bp_backups' ) )
+	    {
+	        $delete_backups = $this->getPost('backups');
+	        $type = $this->getPost('type');
+	        $page = new BackupProManageController($this);
+	        $page->setBackupLib($this->context);
+	        $backups = $page->validateBackups($delete_backups, $type);
+	        
+	        if( $this->services['backups']->setBackupPath($this->settings['working_directory'])->removeBackups($backups) )
+	        {
+	            $section = ( $type == 'database' ? 'db_backups' : 'file_backups' );
+	            wp_redirect($this->url_base.'&section='.$section.'&remove_success=yes');
+	            exit;	            
+	        }
+	        else
+	        {
+	            $section = ( $type == 'database' ? 'db_backups' : 'file_backups' );
+	            wp_redirect($this->url_base.'&section='.$section.'&remove_fail=yes');
+	            exit;
+	        }	        
+	    }
+	    else
+	    {
+	        if( $this->getPost('remove_success') == 'yes' && in_array($this->getPost('section'), array('db_backups', 'file_backups')) )
+	        {
+	            add_action( 'admin_notices', array( $this, 'backupRemoveSuccessNotice' ), 30, array('settings_updated'));
+	        }	        
+	    }
 	}
 	
 	
@@ -370,7 +424,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	}
 
 	/**
-	 * Wrapper to add success messages on settings save
+	 * Wrapper to add error message on backup remove
 	 */
 	public function backupRemoveErrorNotice()
 	{
@@ -378,6 +432,17 @@ class BackupProAdmin extends WpController implements BpInterface
 	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('backups_not_found'));
 	    echo "</p></div>";
 	}
+
+	/**
+	 * Wrapper to add success messages on settings save
+	 */
+	public function backupRemoveSuccessNotice()
+	{
+	    $class =  $class = " updated ";
+	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('backups_deleted'));
+	    echo "</p></div>";
+	}
+	
 
 	/**
 	 * Sets the BackupPro library for use

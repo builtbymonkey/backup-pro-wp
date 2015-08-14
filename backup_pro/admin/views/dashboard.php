@@ -5,9 +5,7 @@
 <?php //include '_includes/_errors.php'; ?>
 <?php include '_includes/_backups_submenu.php'; ?>
 <br clear="all" />
-<?php 
-//echo $this->view_helper->m62Lang('module_instructions'); ?>
-<?php 
+<?php
 $space_available_header = $view_helper->m62Lang('total_space_available');
 if($settings['auto_threshold'] != '0')
 {
@@ -90,19 +88,17 @@ if($settings['auto_threshold'] != '0')
 	</tbody>
 	</table>
 
-
-
-<h3  class="accordion"><?=$view_helper->m62Lang('recent_backups').' ('.count($backups).')';?></h3>
-<div id="backups">
-	<?php 
-		if(count($backups) > 0):
-			$options = array('enable_type' => 'yes', 'enable_editable_note' => 'yes', 'enable_actions' => 'yes', 'enable_delete' => 'no');
-            extract($options);
-			include '_includes/_backup_table.php';
-	?>
-	<?php else: ?>
-		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_backups_exist')?> <a href="<?php echo $nav_links['backup_db']; ?>"><?php echo $view_helper->m62Lang('would_you_like_to_backup_database_now')?></a></div>
-	<?php endif; ?>
-</div>
+    <h3  class="accordion"><?=$view_helper->m62Lang('recent_backups').' ('.count($backups).')';?></h3>
+    <div id="backups">
+    	<?php 
+    		if(count($backups) > 0):
+    			$options = array('enable_type' => 'yes', 'enable_editable_note' => 'yes', 'enable_actions' => 'yes', 'enable_delete' => 'no');
+                extract($options);
+    			include '_includes/_backup_table.php';
+    	?>
+    	<?php else: ?>
+    		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_backups_exist')?> <a href="<?php echo $nav_links['backup_db']; ?>"><?php echo $view_helper->m62Lang('would_you_like_to_backup_database_now')?></a></div>
+    	<?php endif; ?>
+    </div>
 
 </div>

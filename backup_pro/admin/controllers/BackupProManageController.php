@@ -91,9 +91,13 @@ class BackupProManageController extends WpController implements BpInterface
             'settings' => $this->settings,
             'backups' => $backups,
             'backup_type' => $type,
-            'menu_data' => $this->backup_lib->getDashboardViewMenu(),
             'method' => $this->getPost('method'),
-            'errors' => $this->errors
+            'errors' => $this->errors,
+            'view_helper' => $this->view_helper,
+            'url_base' => $this->url_base,
+            'menu_data' => $this->backup_lib->getDashboardViewMenu(),
+            'section' => 'db_backups',
+            'theme_folder_url' => plugin_dir_url(self::name)
         );
     
         //$template = 'backuppro/delete_confirm';
@@ -108,19 +112,7 @@ class BackupProManageController extends WpController implements BpInterface
      */
     public function deleteBackups()
     {
-        $delete_backups = ee()->input->get_post('backups');
-        $type = ee()->input->get_post('type'); 
-        $backups = $this->validateBackups($delete_backups, $type);
-        if( $this->services['backups']->setBackupPath($this->settings['working_directory'])->removeBackups($backups) )
-        {
-            ee()->session->set_flashdata('message_success', $this->services['lang']->__('backups_deleted'));
-            ee()->functions->redirect($this->url_base.'index');
-        }
-        else
-        {
-            ee()->session->set_flashdata('message_error', $this->services['lang']->__('backup_delete_failure'));
-            ee()->functions->redirect($this->url_base.'index');
-        }
+
     }
     
     /**
@@ -146,12 +138,6 @@ class BackupProManageController extends WpController implements BpInterface
                 $file_data = $this->services['backups']->getBackupStorageData($file_data, $locations, $drivers);
                 $backups[] = $file_data;
             }
-        }
-    
-        if(count($backups) == 0)
-        {
-            ee()->session->set_flashdata('message_error', $this->services['lang']->__('backups_not_found'));
-            ee()->functions->redirect($this->url_base.'index');
         }
     
         return $backups;
