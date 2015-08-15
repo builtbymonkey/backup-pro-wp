@@ -50,6 +50,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	public function enqueueStyles() 
 	{
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/backup_pro_admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name.'_chosen', plugin_dir_url( __FILE__ ) . 'css/chosen.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -254,6 +255,58 @@ class BackupProAdmin extends WpController implements BpInterface
 	        }
 	    }
 	}
+
+	/**
+	 * Action to take a backup
+	 * 
+	 * This should NEVER be called outside of a secure POST along with the nonce
+	 */
+	public function procBackupDatabase()
+	{
+	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/backup_database' && $this->getPost('go_db') == 'ok' && check_admin_referer( 'backup_db' ) )
+	    {
+	        $page = new BackupProBackupController();
+	        if( $page->backup_database() )
+	        {
+	            wp_redirect($this->url_base.'&section=db_backups&backup_complete=yes');
+	            exit;
+	        }
+	        else
+	        {
+	            echo "Something went terriby wrong and your backup coudn't complete...";
+	            exit;
+	        }
+	        
+	        exit;
+	    }
+	    else
+	    {
+	        if( $this->getPost('page') == 'backup_pro/' && $this->getPost('section') == 'db_backups' && $this->getPost('backup_complete') == 'yes' )
+	        {
+	            add_action( 'admin_notices', array( $this, 'backupCompleteNotice' ), 30, array('settings_updated'));
+	        }
+	    }
+	}
+	
+	public function procBackupFiles()
+	{
+	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/backup_files' && $this->getPost('go_files') == 'ok' && check_admin_referer( 'backup_files' ) )
+	    {
+	        $page = new BackupProBackupController();
+	        if( $page->backup_files() )
+	        {
+	            wp_redirect($this->url_base.'&section=file_backups&backup_complete=yes');
+	            exit;	            
+	        }
+	    }
+	    else
+	    {
+	        if( $this->getPost('page') == 'backup_pro/' && $this->getPost('section') == 'file_backups' && $this->getPost('backup_complete') == 'yes' )
+	        {
+	            add_action( 'admin_notices', array( $this, 'backupCompleteNotice' ), 30, array('settings_updated'));
+	        }
+	    }	    
+	}	
 	
 	public function procStorageEdit()
 	{
@@ -266,11 +319,6 @@ class BackupProAdmin extends WpController implements BpInterface
 	}
 	
 	public function procBackupNote()
-	{
-	    //wp_redirect('/');
-	}
-	
-	public function procRemoveBackup()
 	{
 	    //wp_redirect('/');
 	}
@@ -355,24 +403,6 @@ class BackupProAdmin extends WpController implements BpInterface
 	    $page->setBackupLib($this->context)->backup();
 	}
 	
-	public function backupDatabase()
-	{
-	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['go_db']) && $_POST['go_db'] == 'ok' && check_admin_referer( 'backup_db' ) )
-	    {
-	        $page = new BackupProBackupController();
-	        $page->backup_database();
-	    }
-	}
-	
-	public function backupFiles()
-	{
-	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['go_files']) && $_POST['go_files'] == 'ok' && check_admin_referer( 'backup_files' ) )
-	    {
-	        $page = new BackupProBackupController();
-	        $page->backup_files();
-	    }
-	}
-	
 	public function pluginLinks($links)
 	{
 	    $links['settings'] = sprintf( '<a href="%s"> %s </a>', admin_url( 'admin.php?page=backup_pro/settings' ), __( 'Settings', 'plugin_domain' ) );
@@ -443,6 +473,15 @@ class BackupProAdmin extends WpController implements BpInterface
 	    echo "</p></div>";
 	}
 	
+	/**
+	 * Wrapper to add the success message on backup complete
+	 */
+	public function backupCompleteNotice()
+	{
+	    $class =  $class = " updated ";
+	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('backup_progress_bar_stop'));
+	    echo "</p></div>";
+	}
 
 	/**
 	 * Sets the BackupPro library for use

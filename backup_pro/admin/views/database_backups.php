@@ -15,8 +15,8 @@
 		<tr class="odd">
 			<td><?php echo $backup_meta['database']['total_backups']; ?></td>
 			<td><?php echo $backup_meta['database']['total_space_used']; ?></td>
-			<td><?php echo ($backup_meta['database']['newest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['database']['newest_backup_taken']) : $view_helper->m62Lang('na')); ?></td>
-			<td><?php echo ($backup_meta['database']['oldest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['database']['oldest_backup_taken']) : $view_helper->m62Lang('na')); ?></td>
+			<td><div style="float:right"><?php echo ($backup_meta['database']['newest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['database']['newest_backup_taken']) : $view_helper->m62Lang('na')); ?></div></td>
+			<td><div style="float:right"><?php echo ($backup_meta['database']['oldest_backup_taken'] != '' ? $view_helper->m62DateTime($backup_meta['database']['oldest_backup_taken']) : $view_helper->m62Lang('na')); ?></div></td>
 		</tr>
 	</tbody>
 	</table>	
@@ -24,7 +24,7 @@
 	<h3><?=$view_helper->m62Lang('database_backups').' ('.count($backups['database']).')';?></h3>
 	
 	<?php if(count($backups['database']) == 0): ?>
-		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_database_backups')?> <a href="<?php echo $nav_links['backup_db']; ?>"><?php echo $view_helper->m62Lang('would_you_like_to_backup_now')?></a></div>
+		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_database_backups')?> <a href="<?php echo $url_base; ?>confirm_backup_db"><?php echo $view_helper->m62Lang('would_you_like_to_backup_now')?></a></div>
 	<?php else: ?>
 	
 	

@@ -50,18 +50,9 @@ class BackupProBackupController extends WpController
                                      ->autoThreshold($this->settings['auto_threshold'])
                                      ->counts($this->settings['max_db_backups'])
                                      ->duplicates($this->settings['allow_duplicates']);
-                
-                ee()->session->set_flashdata('message_success', $this->services['lang']->__('backup_progress_bar_stop'));
-                ee()->functions->redirect($this->url_base.'db_backups');
+                return true;
             }
         }
-        else
-        {
-            ee()->session->set_flashdata('message_error', $this->services['lang']->__($error->getError()));
-            ee()->functions->redirect($this->url_base.'db_backups');
-        }
-    
-        exit;
     }
     
     /**
@@ -90,10 +81,7 @@ class BackupProBackupController extends WpController
                                      ->autoThreshold($this->settings['auto_threshold'])
                                      ->counts($this->settings['max_file_backups'], 'files')
                                      ->duplicates($this->settings['allow_duplicates']);
-                
-                ee()->session->set_flashdata('message_success', $this->services['lang']->__('backup_progress_bar_stop'));
-                ee()->functions->redirect($this->url_base.'file_backups');
-                exit;
+                return true;
             }
         }
         else

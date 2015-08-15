@@ -19,8 +19,8 @@ if($settings['auto_threshold'] != '0')
 		<th width="120"><?php echo $view_helper->m62Lang('total_backups'); ?></th>
 		<th><?php echo $view_helper->m62Lang('total_space_used'); ?></th>
 		<th><?php echo $space_available_header; ?></th>
-		<th align='right'><?php echo $view_helper->m62Lang('last_backup_taken'); ?></th>
-		<th align='right'><?php echo $view_helper->m62Lang('first_backup_taken'); ?></th>
+		<th><div style="float:right"><?php echo $view_helper->m62Lang('last_backup_taken'); ?></div></th>
+		<th><div style="float:right"><?php echo $view_helper->m62Lang('first_backup_taken'); ?></div></th>
 	</tr>
 	</thead>
 	<tbody>

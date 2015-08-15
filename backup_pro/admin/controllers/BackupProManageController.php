@@ -84,7 +84,7 @@ class BackupProManageController extends WpController implements BpInterface
      */
     public function deleteBackupConfirm()
     {
-        $delete_backups =$this->getPost('backups');
+        $delete_backups = $this->getPost('backups');
         $type = $this->getPost('type');
         $backups = $this->validateBackups($delete_backups, $type);
         $variables = array(
