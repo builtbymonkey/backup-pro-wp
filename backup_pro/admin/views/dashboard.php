@@ -1,10 +1,8 @@
 <div class='wrap'>
 <h2>Backup Pro Dashboard</h2>
 
-
-<?php //include '_includes/_errors.php'; ?>
 <?php include '_includes/_backups_submenu.php'; ?>
-<br clear="all" />
+<div class="clear_left shun"></div>
 <?php
 $space_available_header = $view_helper->m62Lang('total_space_available');
 if($settings['auto_threshold'] != '0')
