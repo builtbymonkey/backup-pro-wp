@@ -45,8 +45,11 @@ if( !function_exists('run_backup_pro') )
 {
     function run_backup_pro() 
     {
-        $plugin = new BackupPro();
-        $plugin->run();
+        if( in_array( 'backup_pro/backup_pro.php', get_option( 'active_plugins', array() )))
+        {
+            $plugin = new BackupPro();
+            $plugin->run();
+        }
     
     }
 }
