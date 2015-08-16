@@ -30,7 +30,7 @@
 			<td><div style="float:right"><?php echo $view_helper->m62DateTime($storage['storage_location_create_date']); ?></div></td>
 			<td><div style="float:right">
 			<?php if($can_remove): ?>
-			<a href="{{ url('backuppro/settings/storage/remove') }}?id={{ key }}" class="delete icon" title="Delete" role="button"></a>
+			<a href="<?php echo $url_base.'settings&section=storage&action=remove&id='.$key; ?>" class="delete icon" title="Delete" role="button">Delete</a>
 			<?php endif; ?>
 			</div></td>
 		</tr>

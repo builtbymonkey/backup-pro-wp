@@ -126,12 +126,6 @@ class BackupProStorageController extends WpController implements BpInterface
     public function editStorage()
     {
         $storage_id = $this->getPost('id');
-        if( empty($this->settings['storage_details'][$storage_id]) )
-        {
-            ee()->session->set_flashdata('message_error', $this->services['lang']->__('invalid_storage_id'));
-            ee()->functions->redirect($this->url_base.'view_storage');
-        }
-    
         $storage_details = $this->settings['storage_details'][$storage_id];
         $variables = array();
         $variables['storage_details'] = $storage_details;

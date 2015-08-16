@@ -143,7 +143,12 @@ class BackupProAdmin extends WpController implements BpInterface
 	 */
 	public function procStorageAdd()
 	{
-	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/settings' && $this->getPost('section') == 'storage' && check_admin_referer( 'bpstorage' ) )
+	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && 
+	        $this->getPost('page') == 'backup_pro/settings' && 
+	        $this->getPost('section') == 'storage' && 
+	        $this->getPost('action') == 'new' &&
+	        $this->getPost('engine') != '' &&
+	        check_admin_referer( 'bpstorage' ) )
 	    {
 	        $data = array();
 	        $data = array_map( 'stripslashes_deep', $_POST );
@@ -178,6 +183,70 @@ class BackupProAdmin extends WpController implements BpInterface
 	        }
 	    }
 	}	
+	
+	/**
+	 * Action to edit a storage location
+	 * 
+	 * We have to validate things on GET and POST, both, and
+	 * ONLY process on POST
+	 */
+	public function procStorageEdit()
+	{
+	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && 
+	        $this->getPost('page') == 'backup_pro/settings' && 
+	        $this->getPost('section') == 'storage' && 
+	        $this->getPost('id') != '' && 
+	        $this->getPost('action') == 'edit' && 
+	        check_admin_referer( 'bpstorage-'.$this->getPost('id')) )
+	    {
+	        $storage_id = $this->getPost('id');
+	        if( empty($this->settings['storage_details'][$storage_id]) )
+	        {
+	            wp_redirect($this->url_base.'settings&section=storage&edit_fail=yes');
+	            exit;
+	        }
+	        
+	        $storage_details = $this->settings['storage_details'][$storage_id];
+	        
+	        $data = array();
+	        $data = array_map( 'stripslashes_deep', $_POST );
+            $settings_errors = $this->services['backup']->getStorage()->validateDriver($this->services['validate'], $storage_details['storage_location_driver'], $data, $this->settings['storage_details']);
+            if( !$settings_errors )
+            {
+                if( $this->services['backup']->getStorage()->getLocations()->setSetting($this->services['settings'])->update($storage_id, $data) )
+                {
+	                wp_redirect($this->url_base.'settings&section='.$this->getPost('section').'&storage_edited=yes');
+	                exit;
+                    ee()->session->set_flashdata('message_success', $this->services['lang']->__('storage_location_updated'));
+                    ee()->functions->redirect($this->url_base.'view_storage');
+                }
+            }
+	    }
+	    else
+	    {    
+	        if( $this->getPost('page') == 'backup_pro/settings' && 
+	            $this->getPost('section') == 'storage' && 
+	            $this->getPost('id') != '' && 
+	            $this->getPost('action') == 'edit' )
+	        {
+	            $storage_id = $this->getPost('id');
+	            if( empty($this->settings['storage_details'][$storage_id]) )
+	            {
+	                
+	                //ee()->session->set_flashdata('message_error', $this->services['lang']->__('invalid_storage_id'));
+	                //ee()->functions->redirect($this->url_base.'view_storage');
+                    wp_redirect($this->url_base.'settings&section=storage&edit_fail=yes');
+                    exit;
+	            }
+	        }
+	    
+	    }
+	}
+	
+	public function procStorageRemove()
+	{
+	    //wp_redirect('/');
+	}
 	
 	/**
 	 * Backup Remove Confirmation Action 
@@ -314,16 +383,6 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }	    
 	}	
 	
-	public function procStorageEdit()
-	{
-	    //wp_redirect('/');
-	}
-	
-	public function procStorageRemove()
-	{
-	    //wp_redirect('/');
-	}
-	
 	public function procBackupNote()
 	{
 	    //wp_redirect('/');
@@ -364,6 +423,10 @@ class BackupProAdmin extends WpController implements BpInterface
 	        {
 	            case 'edit':
 	               $page->editStorage();    
+	            break;
+	            
+	            case 'remove':
+	               $page->removeStorage();    
 	            break;
 	            
 	            case 'new':
