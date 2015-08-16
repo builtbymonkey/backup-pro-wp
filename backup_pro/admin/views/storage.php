@@ -4,8 +4,8 @@
 <?php include 'storage/_submenu.php'; ?>
 
     <br clear="all" />
-	<h2><?php echo $view_helper->m62Lang('existing_storage_locations'); ?></h2>
-	<table border="0" cellspacing="0" cellpadding="0" class="data "  width="100%" >
+	<h3><?php echo $view_helper->m62Lang('existing_storage_locations'); ?></h3>
+	<table border="0" cellspacing="0" cellpadding="0" class="widefat"  width="100%" >
 	<thead>
 	<tr>
 		<th><div style="float:left"><?php echo $view_helper->m62Lang('storage_location_name'); ?></div></th>

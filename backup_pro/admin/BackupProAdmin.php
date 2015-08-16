@@ -87,7 +87,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	/**
 	 * Now we're defining the processing scripts
 	 * Wordpress, being an event based system, handles output all screwy
-	 * so will send headers before our controller actions ccan work with them
+	 * so will send headers before our controller actions can work with them
 	 * 
 	 * This means that we can't redirect in our controllers so any action that
 	 * required such has to have that logic in a proc* method
@@ -131,12 +131,53 @@ class BackupProAdmin extends WpController implements BpInterface
         }
         else
         {
-            if( $this->getPost('updated') == 'yes' && $this->getPost('page') == 'backup_pro/settings' )
+            if( $this->getPost('updated') == 'yes' && $this->getPost('page') == 'backup_pro/settings' && $this->getPost('section') != 'storage' )
             {
                 add_action( 'admin_notices', array( $this, 'settingsNotices' ), 30, array('settings_updated'));
             }
         }
 	}
+	
+	/**
+	 * Action to process adding a new storage engine
+	 */
+	public function procStorageAdd()
+	{
+	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/settings' && $this->getPost('section') == 'storage' && check_admin_referer( 'bpstorage' ) )
+	    {
+	        $data = array();
+	        $data = array_map( 'stripslashes_deep', $_POST );
+	
+	        $engine = $this->getPost('engine', 'local');
+	        $variables = array();
+	        $variables['available_storage_engines'] = $this->services['backup']->getStorage()->getAvailableStorageDrivers();
+	
+	        if( !isset($variables['available_storage_engines'][$engine]) )
+	        {
+	            $engine = 'local';
+	        }
+	
+	        $variables['form_data'] = $data;
+	        $settings_errors = $this->services['backup']->getStorage()->validateDriver($this->services['validate'], $engine, $data, $this->settings['storage_details']);
+	        if( !$settings_errors )
+	        {
+	            if( $this->services['backup']->getStorage()->getLocations()->setSetting($this->services['settings'])->create($engine, $variables['form_data']) )
+	            {
+	                ee()->session->set_flashdata('message_success', $this->services['lang']->__('storage_location_added'));
+	                ee()->functions->redirect($this->url_base.'view_storage');
+	                wp_redirect($this->url_base.'settings&section='.$this->getPost('section').'&storage_added=yes');
+	                exit;
+	            }
+	        }
+	    }
+	    else
+	    {
+	        if( $this->getPost('storage_added') == 'yes' && $this->getPost('page') == 'backup_pro/settings' && $this->getPost('section') == 'storage' )
+	        {
+	            add_action( 'admin_notices', array( $this, 'storageAddNotice' ), 30, array('settings_updated'));
+	        }
+	    }
+	}	
 	
 	/**
 	 * Backup Remove Confirmation Action 
@@ -218,41 +259,6 @@ class BackupProAdmin extends WpController implements BpInterface
 	        {
 	            add_action( 'admin_notices', array( $this, 'backupRemoveSuccessNotice' ), 30, array('settings_updated'));
 	        }	        
-	    }
-	}
-	
-	
-	/**
-	 * Action to process adding a new storage engine
-	 */
-	public function procStorageAdd()
-	{
-	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && $this->getPost('page') == 'backup_pro/settings' && $this->getPost('section') == 'storage' && check_admin_referer( 'bpsettings' ) )
-	    {
-	        $data = array();
-	        $data = array_map( 'stripslashes_deep', $_POST );
-	    
-	        $variables['form_data'] = array_merge(array('db_backup_ignore_tables' => '', 'db_backup_ignore_table_data' => ''), $data);
-	        $backup = $this->services['backups'];
-	        $backups = $backup->setBackupPath($this->settings['working_directory'])->getAllBackups($this->settings['storage_details']);
-	        $data['meta'] = $backup->getBackupMeta($backups);
-	        $extra = array('db_creds' => $this->platform->getDbCredentials());
-	        $settings_errors = $this->services['settings']->validate($data, $extra);
-	        if( !$settings_errors )
-	        {
-	            if( $this->services['settings']->update($data) )
-	            {
-	                wp_redirect($this->url_base.'settings&section='.$this->getPost('section').'&updated=yes');
-	                exit;
-	            }
-	        }
-	    }
-	    else
-	    {
-	        if( $this->getPost('updated') == 'yes' && $this->getPost('page') == 'backup_pro/settings' )
-	        {
-	            add_action( 'admin_notices', array( $this, 'settingsNotices' ), 30, array('settings_updated'));
-	        }
 	    }
 	}
 
@@ -363,6 +369,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	            case 'new':
 	                $page->newStorage();
                 break;
+                
 	            default:
 	                $page->viewStorage();
                 break;
