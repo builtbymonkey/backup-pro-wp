@@ -168,8 +168,6 @@ class BackupProAdmin extends WpController implements BpInterface
 	        {
 	            if( $this->services['backup']->getStorage()->getLocations()->setSetting($this->services['settings'])->create($engine, $variables['form_data']) )
 	            {
-	                ee()->session->set_flashdata('message_success', $this->services['lang']->__('storage_location_added'));
-	                ee()->functions->redirect($this->url_base.'view_storage');
 	                wp_redirect($this->url_base.'settings&section='.$this->getPost('section').'&storage_added=yes');
 	                exit;
 	            }
@@ -192,6 +190,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	 */
 	public function procStorageEdit()
 	{
+	    //here we process a storage edit location assuming we're good
 	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && 
 	        $this->getPost('page') == 'backup_pro/settings' && 
 	        $this->getPost('section') == 'storage' && 
@@ -217,13 +216,12 @@ class BackupProAdmin extends WpController implements BpInterface
                 {
 	                wp_redirect($this->url_base.'settings&section='.$this->getPost('section').'&storage_edited=yes');
 	                exit;
-                    ee()->session->set_flashdata('message_success', $this->services['lang']->__('storage_location_updated'));
-                    ee()->functions->redirect($this->url_base.'view_storage');
                 }
             }
 	    }
 	    else
 	    {    
+	        //on default edt, here, all we want to do is validate the ID is accurate if we have one
 	        if( $this->getPost('page') == 'backup_pro/settings' && 
 	            $this->getPost('section') == 'storage' && 
 	            $this->getPost('id') != '' && 
@@ -232,12 +230,14 @@ class BackupProAdmin extends WpController implements BpInterface
 	            $storage_id = $this->getPost('id');
 	            if( empty($this->settings['storage_details'][$storage_id]) )
 	            {
-	                
-	                //ee()->session->set_flashdata('message_error', $this->services['lang']->__('invalid_storage_id'));
-	                //ee()->functions->redirect($this->url_base.'view_storage');
                     wp_redirect($this->url_base.'settings&section=storage&edit_fail=yes');
                     exit;
 	            }
+	        }
+	        
+            if( $this->getPost('storage_edited') == 'yes' && $this->getPost('page') == 'backup_pro/settings' && $this->getPost('section') == 'storage' )
+	        {
+	            add_action( 'admin_notices', array( $this, 'storageEditNotice' ), 30, array('settings_updated'));
 	        }
 	    
 	    }
@@ -245,6 +245,47 @@ class BackupProAdmin extends WpController implements BpInterface
 	
 	public function procStorageRemove()
 	{
+	    if( $this->getPost('page') == 'backup_pro/settings' &&
+	        $this->getPost('section') == 'storage' &&
+	        $this->getPost('id') != '' &&
+	        $this->getPost('action') == 'remove' )
+	    {
+	        if( count($this->settings['storage_details']) <= 1 )
+	        {
+	            add_action( 'admin_notices', array( $this, 'storageMinNeedFail' ), 30, array('settings_updated'));
+	        }
+	        
+	        $storage_id = $this->getPost('id');
+	        if( empty($this->settings['storage_details'][$storage_id]) )
+	        {
+                wp_redirect($this->url_base.'settings&section=storage&remove_fail=yes');
+                exit;
+	        }
+	        
+	        if( $_SERVER['REQUEST_METHOD'] == 'POST' && check_admin_referer( 'bpstorage-'.$storage_id) )
+	        {
+                $data = array();
+                $data = array_map( 'stripslashes_deep', $_POST );
+                $backups = $this->services['backups']->setBackupPath($this->settings['working_directory'])
+                                                     ->getAllBackups($this->settings['storage_details'], $this->services['backup']->getStorage()->getAvailableStorageDrivers());
+                
+                if( $this->services['backup']->getStorage()->getLocations()->setSetting($this->services['settings'])->remove($storage_id, $data, $backups) )
+                {
+                    wp_redirect($this->url_base.'settings&section=storage&remove_success=yes');
+                    exit;
+                }                
+	        }
+	    }
+	    
+	    if( $this->getPost('remove_fail') == 'yes' )
+	    {
+            add_action( 'admin_notices', array( $this, 'storageRemoveFail' ), 30, array('settings_updated'));
+	    }
+	    
+	    if( $this->getPost('remove_success') == 'yes' )
+	    {
+            add_action( 'admin_notices', array( $this, 'storageRemoveNotice' ), 30, array('settings_updated'));
+	    }
 	    //wp_redirect('/');
 	}
 	
@@ -553,6 +594,47 @@ class BackupProAdmin extends WpController implements BpInterface
 	    echo "</p></div>";
 	}
 
+	/**
+	 * Wrapper to add the success message on successful storage edting
+	 */
+	public function storageEditNotice()
+	{
+	    $class =  $class = " updated ";
+	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('storage_location_updated'));
+	    echo "</p></div>";
+	}
+
+	/**
+	 * Wrapper to add the success message on successful storage ad
+	 */
+	public function storageAddNotice()
+	{
+	    $class =  $class = " updated ";
+	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('storage_location_added'));
+	    echo "</p></div>";
+	}
+	
+	public function storageMinNeedFail()
+	{
+	    $class =  $class = " error ";
+	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('min_storage_location_needs'));
+	    echo "</p></div>";
+	}
+	
+	public function storageRemoveFail()
+	{
+	    $class =  $class = " error ";
+	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('invalid_storage_id'));
+	    echo "</p></div>";
+	}
+	
+	public function storageRemoveNotice()
+	{
+	    $class =  $class = " updated ";
+	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('storage_location_removed'));
+	    echo "</p></div>";
+	}
+	
 	/**
 	 * Sets the BackupPro library for use
 	 * @param BackupPro $context

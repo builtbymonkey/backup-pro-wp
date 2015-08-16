@@ -85,15 +85,7 @@ class BackupProStorageController extends WpController implements BpInterface
             
             $variables['form_data'] = $data;
             $settings_errors = $this->services['backup']->getStorage()->validateDriver($this->services['validate'], $engine, $data, $this->settings['storage_details']);
-            if( !$settings_errors )
-            {
-                if( $this->services['backup']->getStorage()->getLocations()->setSetting($this->services['settings'])->create($engine, $variables['form_data']) )
-                {
-                    ee()->session->set_flashdata('message_success', $this->services['lang']->__('storage_location_added'));
-                    ee()->functions->redirect($this->url_base.'view_storage');
-                }
-            }
-            else
+            if( $settings_errors )
             {
                 $variables['form_errors'] = array_merge($variables['form_errors'], $settings_errors);
             }
@@ -139,21 +131,11 @@ class BackupProStorageController extends WpController implements BpInterface
         if( $_SERVER['REQUEST_METHOD'] == 'POST' )
         {
             $data = array();
-            foreach($_POST as $key => $value){
-                $data[$key] = ee()->input->post($key);
-            }
+            $data = array_map( 'stripslashes_deep', $_POST );
             
             $variables['form_data'] = $data;
             $settings_errors = $this->services['backup']->getStorage()->validateDriver($this->services['validate'], $storage_details['storage_location_driver'], $data, $this->settings['storage_details']);
-            if( !$settings_errors )
-            {
-                if( $this->services['backup']->getStorage()->getLocations()->setSetting($this->services['settings'])->update($storage_id, $variables['form_data']) )
-                {
-                    ee()->session->set_flashdata('message_success', $this->services['lang']->__('storage_location_updated'));
-                    ee()->functions->redirect($this->url_base.'view_storage');
-                }
-            }
-            else
+            if( $settings_errors )
             {
                 $variables['form_errors'] = array_merge($variables['form_errors'], $settings_errors);
             }
@@ -176,19 +158,7 @@ class BackupProStorageController extends WpController implements BpInterface
      */    
     public function removeStorage()
     {
-        if( count($this->settings['storage_details']) <= 1 )
-        {
-            ee()->session->set_flashdata('message_error', $this->services['lang']->__('min_storage_location_needs'));
-            ee()->functions->redirect($this->url_base.'view_storage');
-        }
-    
-        $storage_id = ee()->input->get_post('id');
-        if( empty($this->settings['storage_details'][$storage_id]) )
-        {
-            ee()->session->set_flashdata('message_error', $this->services['lang']->__('invalid_storage_id'));
-            ee()->functions->redirect($this->url_base.'view_storage');
-        }
-    
+        $storage_id = $this->getPost('id');
         $storage_details = $this->settings['storage_details'][$storage_id];
     
         $variables = array();
@@ -198,16 +168,14 @@ class BackupProStorageController extends WpController implements BpInterface
         $variables['available_storage_engines'] = $this->services['backup']->getStorage()->getAvailableStorageDrivers();
         $variables['storage_engine'] = $variables['available_storage_engines'][$storage_details['storage_location_driver']];
         $variables['storage_details'] = $storage_details;
-    
-        if( ee()->input->server('REQUEST_METHOD') == 'POST' )
+
+        if( $_SERVER['REQUEST_METHOD'] == 'POST' )
         {
             $data = array();
-            foreach($_POST as $key => $value){
-                $data[$key] = ee()->input->post($key);
-            }
+            $data = array_map( 'stripslashes_deep', $_POST );
             
             $backups = $this->services['backups']->setBackupPath($this->settings['working_directory'])
-            ->getAllBackups($this->settings['storage_details'], $this->services['backup']->getStorage()->getAvailableStorageDrivers());
+                            ->getAllBackups($this->settings['storage_details'], $this->services['backup']->getStorage()->getAvailableStorageDrivers());
     
             if( $this->services['backup']->getStorage()->getLocations()->setSetting($this->services['settings'])->remove($storage_id, $data, $backups) )
             {
@@ -219,12 +187,16 @@ class BackupProStorageController extends WpController implements BpInterface
                 $variables['form_errors'] = array_merge($variables['form_errors'], $settings_errors);
             }
         }
-
-        $variables['menu_data'] = ee()->backup_pro->get_settings_view_menu();
+        
+        $variables['menu_data'] = $this->backup_lib->getSettingsViewMenu();
         $variables['section'] = 'storage';
+        $variables['view_helper'] = $this->view_helper;
+        $variables['url_base'] = $this->url_base;
+        $variables['theme_folder_url'] = plugin_dir_url(self::name);
         $variables['storage_id'] = $storage_id;
-        ee()->view->cp_page_title = $this->services['lang']->__('storage_bp_settings_menu');
-        return ee()->load->view('storage/remove', $variables, true);
+        
+        $template = 'admin/views/storage/remove';
+        $this->renderTemplate($template, $variables);
     }
     
 }

@@ -1,14 +1,15 @@
-<?php $this->load->view('_includes/_errors'); ?>
-<?php $this->load->view('storage/_submenu')?>
-<div class="clear_left shun"></div>
+<div class='wrap'>
+    <h2  class="accordion"><?=$view_helper->m62Lang('remove_storage_location')?> (<?php echo $storage_details['storage_location_name']; ?>)</h2>
+    <?php include '_submenu.php'; ?> <br clear="all" /><br />
+    
 	
-	<h2><?php echo $view_helper->m62Lang('remove_storage_location'); ?> (<?php echo $storage_details['storage_location_name']; ?>)</h2>
-	
-	<p><strong><?php echo $view_helper->m62Lang($storage_engine['name']); ?>:</strong> <?php echo $view_helper->m62Lang($storage_engine['desc']); ?></p>
-	<?php echo form_open($query_base.'remove_storage&id='.$storage_id, array('id'=>'my_accordion'))?>
-<div class="tableFooter">
-	<div class="tableSubmit">
-		<?php echo form_submit(array('name' => 'submit', 'value' => $view_helper->m62Lang('remove_storage_location'), 'class' => 'submit'));?>
-	</div>
+    <h3><?=$view_helper->m62Lang($storage_engine['name'])?></h3>
+    <p><?php echo $view_helper->m62Lang($storage_engine['desc']); ?></p>
+    
+	<form method="post">
+    <?php echo wp_nonce_field( 'bpstorage-'.$storage_id ); ?>
+        <div class="tableFooter">
+        	<div class="tableSubmit"><?php submit_button($view_helper->m62Lang('remove_storage_location'));?></div>
+        </div>	
+	</form>
 </div>	
-	<?php echo form_close()?>
