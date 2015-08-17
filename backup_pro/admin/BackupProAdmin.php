@@ -143,6 +143,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	 */
 	public function procStorageAdd()
 	{
+	    //check if we're processing the addition of a new storage location
 	    if( $_SERVER['REQUEST_METHOD'] == 'POST' && 
 	        $this->getPost('page') == 'backup_pro/settings' && 
 	        $this->getPost('section') == 'storage' && 
@@ -175,6 +176,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	    else
 	    {
+	        //check if we're on the storage add action, and if we have to display  a success message, then do so
 	        if( $this->getPost('storage_added') == 'yes' && $this->getPost('page') == 'backup_pro/settings' && $this->getPost('section') == 'storage' )
 	        {
 	            add_action( 'admin_notices', array( $this, 'storageAddNotice' ), 30, array('settings_updated'));
@@ -548,6 +550,11 @@ class BackupProAdmin extends WpController implements BpInterface
             	    {
             	        echo ' <a href="'.$this->url_base.'settings&section=license">Enter License</a> or <a href="https://mithra62.com/projects/view/backup-pro">Purchase a License</a>';
             	    }
+            	    elseif( $error == 'invalid_working_directory' )
+            	    {
+            	        echo ' <a href="'.$this->url_base.'settings">Check Working Directory</a>';
+            	    }
+            	    
             	    echo "</p></div>";
 	            }
 	        }
