@@ -45,6 +45,16 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
         <?php echo $this->backup_lib->displayFormErrors($form_errors['db_backup_method']); ?>
     </td>
 </tr>
+<tr style="display:none" id="mysqldump_command_wrap">
+    <th scope="row">
+        <label for="mysqldump_command"><?php echo $view_helper->m62Lang('mysqldump_command'); ?></label>
+    </th>
+    <td>
+        <input name="mysqldump_command" type="text" id="mysqldump_command" value="<?php echo $form_data['mysqldump_command']; ?>" class="regular-text code" />
+        <p class="description" id="mysqldump_command-description"><?php echo $view_helper->m62Lang('mysqldump_command_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['mysqldump_command']); ?>
+    </td>
+</tr>
 <tr>
     <th scope="row">
         <label for="db_restore_method"><?php echo $view_helper->m62Lang('db_restore_method'); ?></label>
@@ -57,6 +67,16 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
         </select>
         <p class="description" id="db_restore_method-description"><?php echo $view_helper->m62Lang('db_restore_method_instructions'); ?></p>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['db_restore_method']); ?>
+    </td>
+</tr>
+<tr style="display:none" id="mysqlcli_command_wrap">
+    <th scope="row">
+        <label for="mysqlcli_command"><?php echo $view_helper->m62Lang('mysqlcli_command'); ?></label>
+    </th>
+    <td>
+        <input name="mysqlcli_command" type="text" id="mysqlcli_command" value="<?php echo $form_data['mysqlcli_command']; ?>" class="regular-text code" />
+        <p class="description" id="mysqlcli_command-description"><?php echo $view_helper->m62Lang('mysqlcli_command_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['mysqlcli_command']); ?>
     </td>
 </tr>
 </table>
