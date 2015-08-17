@@ -49,8 +49,11 @@ class BackupProAdmin extends WpController implements BpInterface
 	 */
 	public function enqueueStyles() 
 	{
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/backup_pro_admin.css', array(), $this->version, 'all' );
-		wp_enqueue_style( $this->plugin_name.'_chosen', plugin_dir_url( __FILE__ ) . 'css/chosen.css', array(), $this->version, 'all' );
+	    if( strpos($this->getPost('page'), 'backup_pro') !== FALSE ) 
+	    {
+    		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/backup_pro_admin.css', array(), $this->version, 'all' );
+    		wp_enqueue_style( $this->plugin_name.'_chosen', plugin_dir_url( __FILE__ ) . 'css/chosen.css', array(), $this->version, 'all' );
+	    }
 	}
 
 	/**
@@ -58,10 +61,14 @@ class BackupProAdmin extends WpController implements BpInterface
 	 */
 	public function enqueueScripts() 
 	{
-		wp_enqueue_script( 'bpchosen', plugin_dir_url( __FILE__ ) . 'js/chosen.jquery.js', array( 'jquery' ), $this->version, true );
-		wp_enqueue_script( 'bpdashboard', plugin_dir_url( __FILE__ ) . 'js/dashboard.js', array( 'jquery' ), $this->version, true );
-		wp_enqueue_script( 'bpsettings', plugin_dir_url( __FILE__ ) . 'js/settings.js', array( 'jquery' ), $this->version, true );
-		wp_enqueue_script( 'bpglobal', plugin_dir_url( __FILE__ ) . 'js/global.js', array( 'jquery' ), $this->version, true );
+	    if( strpos($this->getPost('page'), 'backup_pro') !== FALSE )
+	    {
+    		wp_enqueue_script( 'bpchosen', plugin_dir_url( __FILE__ ) . 'js/chosen.jquery.js', array( 'jquery' ), $this->version, true );
+    		wp_enqueue_script( 'bpdashboard', plugin_dir_url( __FILE__ ) . 'js/dashboard.js', array( 'jquery' ), $this->version, true );
+    		wp_enqueue_script( 'bpsettings', plugin_dir_url( __FILE__ ) . 'js/settings.js', array( 'jquery' ), $this->version, true );
+    		wp_enqueue_script( 'wp_backup_pro', plugin_dir_url( __FILE__ ) . 'js/wp/backup_pro.js', array( 'jquery' ), $this->version, true );
+    		wp_enqueue_script( 'bpglobal', plugin_dir_url( __FILE__ ) . 'js/global.js', array( 'jquery' ), $this->version, true );
+	    }
 	}
 	
 	/**
