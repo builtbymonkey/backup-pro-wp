@@ -107,17 +107,24 @@ class BackupProBackupController extends WpController
             case 'database':
                 $proc_url = $this->url_base.'backup_database';
                 $template = 'admin/views/backup_db';
-                break;
+                $errors = $this->services['errors']->clearErrors()->checkWorkingDirectory($this->settings['working_directory'])
+                                                 ->checkStorageLocations($this->settings['storage_details'])
+                                                 ->getErrors();
+            break;
+            
             case 'files':
                 $proc_url = $this->url_base.'backup_files';
                 $template = 'admin/views/backup_files';
-                break;
+                $errors = $this->services['errors']->clearErrors()->checkWorkingDirectory($this->settings['working_directory'])
+                                                 ->checkStorageLocations($this->settings['storage_details'])
+                                                 ->checkFileBackupLocations($this->settings['backup_file_location'])
+                                                 ->getErrors();
+            break;
         }
     
         if(!$proc_url)
         {
-            ee()->session->set_flashdata('message_failure', $this->services['lang']->__('can_not_backup'));
-            ee()->functions->redirect($this->url_base.'index');
+            wp_redirect($this->url_base.'settings&section=storage&backup_fail=yes');
             exit;
         }
     
@@ -126,7 +133,7 @@ class BackupProBackupController extends WpController
         //ee()->javascript->compile();
     
         $variables = array('proc_url' => $proc_url);
-        $variables['errors'] = $this->errors;
+        $variables['errors'] = $errors;
         $variables['proc_url'] = $proc_url;
         $variables['url_base'] = $this->url_base;
         $variables['backup_type'] = $type;

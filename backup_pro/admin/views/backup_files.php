@@ -2,6 +2,7 @@
     <h2>Backup Pro</h2>
     <h3>Backup Files</h3>
     
+    <?php if( count($errors) == '0'): ?>
     <div id="backup_instructions">
     <?php echo $view_helper->m62Lang('backup_in_progress_instructions'); ?>
     </div>
@@ -31,4 +32,29 @@
     </div>
     
     </form>
+    
+    <?php else: ?>
+        <p>You're going to need to fix the below configuration errors before you can start taking backups:</p>
+        <?php 
+        foreach($errors AS $key => $error): 
+            echo $view_helper->m62Lang($error);
+            if( $error == 'no_storage_locations_setup' )
+            {
+                echo ' <a href="'.$this->url_base.'settings&section=storage&action=new&engine=local">Setup Storage Location</a>';
+            }
+            elseif( $error == 'license_number' || $error == 'missing_license_number' )
+            {
+                echo ' <a href="'.$this->url_base.'settings&section=license">Enter License</a> or <a href="https://mithra62.com/projects/view/backup-pro">Purchase a License</a>';
+            }
+            elseif( $error == 'invalid_working_directory' )
+            {
+                echo ' <a href="'.$this->url_base.'settings">Check Working Directory</a>';
+            }
+            elseif( $error == 'no_backup_file_location' )
+            {
+                echo ' <a href="'.$this->url_base.'settings&section=files">Set File Backup Locations</a>';
+            }
+            echo '<br />';
+        endforeach;?>
+    <?php endif; ?>    
 </div>
