@@ -28,7 +28,7 @@
 </tr>
 <tr>
     <th scope="row">
-        <label for="dashboard_recent_total"><?php echo $view_helper->m62Lang('auto_threshold'); ?></label>
+        <label for="auto_threshold"><?php echo $view_helper->m62Lang('auto_threshold'); ?></label>
     </th>
     <td>
         <select name="auto_threshold" id="auto_threshold">
@@ -38,6 +38,16 @@
         </select>
         <p class="description" id="home-description"><?php echo $view_helper->m62Lang('auto_threshold_instructions'); ?></p>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['auto_threshold']); ?>
+    </td>
+</tr>
+<tr id="auto_threshold_custom_wrap" style="display:none;">
+    <th scope="row">
+        <label for="auto_threshold_custom"><?php echo $view_helper->m62Lang('auto_threshold_custom'); ?></label>
+    </th>
+    <td>
+        <input name="auto_threshold_custom" type="text" id="auto_threshold_custom" value="<?php echo $form_data['auto_threshold_custom']; ?>" class="regular-text code" />
+        <p class="description" id="auto_threshold_custom-description"><?php echo $view_helper->m62Lang('auto_threshold_custom_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['auto_threshold_custom']); ?>
     </td>
 </tr>
 <tr>
@@ -53,7 +63,7 @@
 </tr>
 <tr>
     <th scope="row">
-        <label for="dashboard_recent_total"><?php echo $view_helper->m62Lang('date_format'); ?></label>
+        <label for="date_format"><?php echo $view_helper->m62Lang('date_format'); ?></label>
     </th>
     <td>
         <input name="date_format" type="text" id="date_format" value="<?php echo $form_data['date_format']; ?>" class="regular-text code" />
