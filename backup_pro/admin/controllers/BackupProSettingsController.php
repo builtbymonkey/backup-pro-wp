@@ -44,7 +44,7 @@ class BackupProSettingsController extends WpController
         $variables['errors'] = $this->errors;
         $variables['threshold_options'] = $this->services['settings']->getAutoPruneThresholdOptions();
         $variables['available_db_backup_engines'] = $this->services['backup']->getDataBase()->getAvailableEnginesOptions();
-        $variables['menu_data'] = $this->backup_lib->getSettingsViewMenu();//ee()->backup_pro->get_settings_view_menu();
+        $variables['menu_data'] = $this->backup_lib->getSettingsViewMenu();
     
         $variables['view_helper'] = $this->view_helper;
         $variables['url_base'] = $this->url_base;

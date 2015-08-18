@@ -57,7 +57,7 @@
 	</td>
 	<td style="width:55%">
 		<?php if(isset($enable_editable_note) && $enable_editable_note == 'yes' ): ?>
-		<div class="bp_editable" rel="<?php echo $backup['hash']; ?>" id="note_div_<?php echo $backup['hash']; ?>"><?php if($backup['note'] == ''): ?>Click to add note...<?php else: ?><?php echo $backup['note']; ?> <?php endif; ?></div>
+		<div class="bp_editable" rel="<?php echo $backup['hash']; ?>" id="note_div_<?php echo $backup['hash']; ?>"><?php if($backup['note'] == ''): ?><?php echo $view_helper->m62Lang('click_to_add_note');?><?php else: ?><?php echo $backup['note']; ?> <?php endif; ?></div>
 		<input name="note_<?php echo $backup['hash']; ?>" value="<?php echo $backup['note']; ?>" id="note_<?php echo $backup['hash']; ?>" data-backup-type="<?php echo $backup['backup_type']; ?>" class="note_container" rel="<?php echo urlencode($view_helper->m62Encode($backup['file_name'])); ?>" style="display:none; width:100%" type="text">
 		
 		<?php else: ?>
@@ -79,7 +79,7 @@
             <?php if( $backup['backup_type'] == 'database'): ?> 
             
             <?php if( $backup['can_restore'] ): ?>
-    			<a href="<?php echo $url_base;?>restore_confirm&id=<?php echo urlencode($view_helper->m62Encode($backup['details_file_name'])); ?>&type=<?php echo $backup['backup_type']; ?>" title="<?php echo $view_helper->m62Lang('restore'); ?>">
+    			<a href="<?php echo $url_base;?>&section=restore&type=database&id=<?php echo urlencode($view_helper->m62Encode($backup['details_file_name'])); ?>&type=<?php echo $backup['backup_type']; ?>" title="<?php echo $view_helper->m62Lang('restore'); ?>">
     				<img src="<?php echo $theme_folder_url; ?>backup_pro/admin/images/restore.png" alt="<?php echo $view_helper->m62Lang('restore'); ?>" class="">
     			</a> 
             <?php else: ?>

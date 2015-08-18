@@ -117,6 +117,7 @@ class BackupPro implements BpInterface
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/BackupProStorageController.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/BackupProBackupController.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/BackupProManageController.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/BackupProRestoreController.php';
 
 		$this->loader = new BackupProLoader();
 
@@ -167,6 +168,9 @@ class BackupPro implements BpInterface
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procBackupDatabase');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procBackupFiles');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'downloadBackup');
+		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procDbRestore');
+		
+		
 		
 		$this->loader->addFilter( 'plugin_action_links_'.$this->plugin_name.'/'.$this->plugin_name.'.php', $plugin_admin, 'pluginLinks');
 		

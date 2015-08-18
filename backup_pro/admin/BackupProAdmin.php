@@ -87,7 +87,8 @@ class BackupProAdmin extends WpController implements BpInterface
         add_submenu_page( null, 'Backup Files', null, 'manage_options', 'backup_pro/backup_files', array($this, 'backupFiles'));
         add_submenu_page( null, 'Download Backup', null, 'manage_options', 'backup_pro/download', array($this, 'downloadBackup'));
         add_submenu_page( null, 'Confirm Remove Backup', null, 'manage_options', 'backup_pro/confirm_remove_backup', array($this, 'confirmRemoveBackup'));
-        add_submenu_page( null, 'Confirm Remove Backup', null, 'manage_options', 'backup_pro/remove_backup', array($this, 'procBackupRemove'));
+        add_submenu_page( null, 'Actually, for realsy, Remove the Backup', null, 'manage_options', 'backup_pro/remove_backup', array($this, 'procBackupRemove'));
+        add_submenu_page( null, 'Restore Database', null, 'manage_options', 'backup_pro/restore_database', array($this, 'procDbRestore'));
         //add_submenu_page( 'backup_pro', 'Newd Storage', null, 'manage_options', 'backup_pro/new_storagge', array($this, 'settings'));
 	}
 	
@@ -95,18 +96,19 @@ class BackupProAdmin extends WpController implements BpInterface
 	 * Now we're defining the processing scripts
 	 * Wordpress, being an event based system, handles output all screwy
 	 * so will send headers before our controller actions can work with them
+	 * unless we do soemthing with a noheader=true query nonsense.
 	 * 
 	 * This means that we can't redirect in our controllers so any action that
 	 * required such has to have that logic in a proc* method
 	 * 
 	 * Oh, and even better, there also isn't any FlashMessenger mechanism so
-	 * if we want to display messages, or notices/errors, we have to do some 
-	 * fancy logic in query strings and checks
+	 * if we want to display messages, or notices/errors, we have to do dumb 
+	 * logic in query strings and checks
 	 * 
 	 * Also. Fuck me. WP also has a weird CSRF mechanism so we have to do 
 	 * some logic there too
 	 * 
-	 * See procSettings() for a solid example
+	 * See procSettings() for a generic example
 	 */
 	
 	/**
@@ -431,7 +433,63 @@ class BackupProAdmin extends WpController implements BpInterface
 	            add_action( 'admin_notices', array( $this, 'backupCompleteNotice' ), 30, array('settings_updated'));
 	        }
 	    }	    
-	}	
+	}
+	
+	public function procDbRestore()
+	{
+        if( $_SERVER['REQUEST_METHOD'] == 'POST' && 
+	        $this->getPost('page') == 'backup_pro/restore_database' && 
+	        $this->getPost('id') != '' && 
+	        check_admin_referer( 'restore_db_'.urlencode($this->getPost('id'))) )
+	    {
+            $encrypt = $this->services['encrypt'];
+            $file_name = $encrypt->decode($this->getPost('id'));
+            $storage = $this->services['backup']->setStoragePath($this->settings['working_directory']);
+        
+            $file = $storage->getStorage()->getDbBackupNamePath($file_name);
+            $backup_info = $this->services['backups']->setLocations($this->settings['storage_details'])->getBackupData($file);
+            $restore_file_path = false;
+            foreach($backup_info['storage_locations'] AS $storage_location)
+            {
+                if( $storage_location['obj']->canRestore() )
+                {
+                    $restore_file_path = $storage_location['obj']->getFilePath($backup_info['file_name'], $backup_info['backup_type']); //next, get file path
+                    break;
+                }
+            }
+        
+            if($restore_file_path && file_exists($restore_file_path))
+            {
+                $db_info = $this->platform->getDbCredentials();
+                if( $this->services['restore']->setDbInfo($db_info)->setBackupInfo($backup_info)->database($db_info['database'], $restore_file_path, $this->settings, $this->services['shell']) )
+                {
+                    //ee()->session->set_flashdata('message_success', $this->services['lang']->__('database_restored'));
+                    //ee()->functions->redirect($this->url_base.'db_backups');
+                    wp_redirect($this->url_base.'&db_restore_complete=yes');
+                    exit;                    
+                }
+            }
+            else
+            {
+                //ee()->session->set_flashdata('message_error', $this->services['lang']->__('db_backup_not_found'));
+                //ee()->functions->redirect($this->url_base.'db_backups');
+                wp_redirect($this->url_base.'&db_restore_fail=yes');
+                exit;                
+            }
+	    }
+	    else 
+	    {
+	        if( $this->getPost('db_restore_complete') == 'yes' )
+	        {
+	            add_action( 'admin_notices', array( $this, 'dbRestoreCompleteNotice' ), 30, array('settings_updated'));
+	        }
+	        
+	        if( $this->getPost('db_restore_fail') == 'yes' )
+	        {
+	            add_action( 'admin_notices', array( $this, 'dbRestoreFailNotice' ), 30, array('settings_updated'));
+	        }	        
+	    }
+	}
 	
 	public function procBackupNote()
 	{
@@ -440,7 +498,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	
 	public function dashboard()
 	{
-	    $page = new BackupProDashboardController($this);
+	    $page = new BackupProDashboardController();
 	    $page = $page->setBackupLib($this->context);
 	    
 	    $section = $this->getPost('section');
@@ -453,6 +511,11 @@ class BackupProAdmin extends WpController implements BpInterface
 	        case 'file_backups':
 	            $page->file_backups();
             break;
+            
+	        case 'restore':
+	            $page = new BackupProRestoreController();
+	            $page->setBackupLib($this->context)->restore_confirm();
+	        break;
             
 	        case 'dashboard':
 	        default:
@@ -648,6 +711,21 @@ class BackupProAdmin extends WpController implements BpInterface
 	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('storage_location_removed'));
 	    echo "</p></div>";
 	}
+	
+	public function dbRestoreCompleteNotice()
+	{
+	    $class =  $class = " updated ";
+	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('database_restored'));
+	    echo "</p></div>";
+	}
+	
+	public function dbRestoreFailNotice()
+	{
+	    $class =  $class = " error ";
+	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('database_restore_fail'));
+	    echo "</p></div>";
+	}
+	
 	
 	/**
 	 * Sets the BackupPro library for use

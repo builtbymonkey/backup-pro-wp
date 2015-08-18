@@ -27,14 +27,6 @@ class BackupProDashboardController extends WpController implements BpInterface
      */
     public function index()
     {
-        if( empty($this->settings['working_directory']) )
-        {
-            //\Craft\craft()->userSession->setFlash('error', $this->services['lang']->__('working_dir_not_setup'));
-            $location = '/wp-admin/admin.php?page=backup_pro/settings';
-            //wp_redirect( $location, 200 );
-            //exit;
-        }
-        
         $backup = $this->services['backups'];
         $backups = $backup->setBackupPath($this->settings['working_directory'])->getAllBackups($this->settings['storage_details']);
         

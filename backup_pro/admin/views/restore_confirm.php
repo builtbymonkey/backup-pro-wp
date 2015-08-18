@@ -1,5 +1,6 @@
-<?php $this->load->view('_includes/_errors'); ?>
-<?php $this->load->view('_includes/_backups_submenu'); ?>
+<div class='wrap'>
+    <h2>Backup Pro Database Backups</h2>
+    <?php include '_includes/_backups_submenu.php'; ?>
 <br clear="all" />
 	
 <h2><?php echo $view_helper->m62Lang('restore_db'); ?></h2>
@@ -23,9 +24,12 @@
 	<strong><?php echo $view_helper->m62Lang('md5_hash'); ?>:</strong> <?php echo $backup['hash']; ?>
 </p>
 
-<?php echo form_open($query_base.'restore_database&id='.urlencode($view_helper->m62Encode($backup['details_file_name'])), array('id'=>'backup_form')); ?>
+<?php //echo form_open($query_base.'restore_database&id='.urlencode($view_helper->m62Encode($backup['details_file_name'])), array('id'=>'backup_form')); ?>
+    <form action="<?php echo $url_base; ?>restore_database&id=<?php echo urlencode($view_helper->m62Encode($backup['details_file_name'])); ?>" method="post">
+    <?php echo wp_nonce_field( 'restore_db_'.urlencode($view_helper->m62Encode($backup['details_file_name'])) ); ?>
+    <?php submit_button($view_helper->m62Lang('restore'));?>
+    
+    </form>
+<?php //echo form_close()?>
 
-	<div class="buttons">
-		<input type="submit" value="<?php echo $view_helper->m62Lang('restore'); ?>" class="btn submit" >
-	</div>
-<?php echo form_close()?>
+</div>
