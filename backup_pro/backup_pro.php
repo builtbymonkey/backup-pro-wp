@@ -23,18 +23,24 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-function activate_backup_pro() 
+
+if( !function_exists('activateBackupPro') )
 {
-    require_once plugin_dir_path( __FILE__ ) . 'includes/BackupProActivate.php';
-    BackupProActivate::activate();
+    function activateBackupPro() 
+    {
+        require_once plugin_dir_path( __FILE__ ) . 'includes/BackupProActivate.php';
+        BackupProActivate::activate();
+    }
 }
 
-function deactivate_backup_pro() 
+if( !function_exists('deactivateBackupPro') )
 {
-    require_once plugin_dir_path( __FILE__ ) . 'includes/BackupProDeactivate.php';
-    BackupProDeactivate::deactivate();
+    function deactivateBackupPro() 
+    {
+        require_once plugin_dir_path( __FILE__ ) . 'includes/BackupProDeactivate.php';
+        BackupProDeactivate::deactivate();
+    }
 }
-
 
 if( !class_exists('BackupPro') )
 {
@@ -54,7 +60,19 @@ if( !function_exists('run_backup_pro') )
     }
 }
 
-register_activation_hook( basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ), 'activate_backup_pro' );
-register_deactivation_hook( basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ), 'deactivate_backup_pro' );
+if( !function_exists('procBackupProNoteAction') )
+{
+    function procBackupProNoteAction()
+    {
+        $page = new BackupProManageController();
+        $page = $page->setBackupLib(new BackupPro());
+        $page->updateBackupNote();
+        wp_die();
+    }
+
+    add_action( 'wp_ajax_procBackupProNoteAction', 'procBackupProNoteAction' );
+}
+register_activation_hook( basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ), 'activateBackupPro' );
+register_deactivation_hook( basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ), 'deactivateBackupPro' );
 
 run_backup_pro();

@@ -68,8 +68,8 @@ class BackupProManageController extends WpController implements BpInterface
     {
         $encrypt = $this->services['encrypt'];
         $file_name = $encrypt->decode($this->getPost('backup'));
-        $backup_type = $this->getPost('backup_type');
-        $note_text = $this->getPost('note_text'); 
+        $backup_type = stripslashes_deep($this->getPost('backup_type'));
+        $note_text = stripslashes_deep($this->getPost('note_text')); 
         if($note_text && $file_name)
         {
             $path = rtrim($this->settings['working_directory'], DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$backup_type;

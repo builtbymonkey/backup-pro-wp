@@ -1,28 +1,28 @@
-$(document).ready(function() {
+jQuery(document).ready(function() {
 
 	function clean_bp_errors(backup_type)
 	{
 		switch(backup_type)
 		{
 			case 'combined':
-				$("#backup_pro_system_error_db_backup_state, #backup_pro_system_error_backup_state_db_backups").hide();
-				$("#backup_pro_system_error_file_backup_state").hide();
+				jQuery("#backup_pro_system_error_db_backup_state, #backup_pro_system_error_backup_state_db_backups").hide();
+				jQuery("#backup_pro_system_error_file_backup_state").hide();
 			break;
 			
 			case 'file_backup':
-				$("#backup_pro_system_error_file_backup_state, #backup_pro_system_error_backup_state_files_backups").hide();
+				jQuery("#backup_pro_system_error_file_backup_state, #backup_pro_system_error_backup_state_files_backups").hide();
 			break;
 			
 			default:
 			case 'db_backup':
-				$("#backup_pro_system_error_db_backup_state, #backup_pro_system_error_backup_state_db_backups").hide();
+				jQuery("#backup_pro_system_error_db_backup_state, #backup_pro_system_error_backup_state_db_backups").hide();
 			break;
 		}
 	}
 	
-	$("#_backup_direct").on("click", function(e) {
-		$("#backup_running_details").show();
-		$(this).hide();
+	jQuery("#_backup_direct").on("click", function(e) {
+		jQuery("#backup_running_details").show();
+		jQuery(this).hide();
 	});
 	
 	/*

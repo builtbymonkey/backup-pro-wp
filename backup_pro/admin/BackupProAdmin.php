@@ -65,9 +65,11 @@ class BackupProAdmin extends WpController implements BpInterface
 	    {
     		wp_enqueue_script( 'bpchosen', plugin_dir_url( __FILE__ ) . 'js/chosen.jquery.js', array( 'jquery' ), $this->version, true );
     		wp_enqueue_script( 'bpdashboard', plugin_dir_url( __FILE__ ) . 'js/dashboard.js', array( 'jquery' ), $this->version, true );
+    		wp_enqueue_script( 'bpbackup', plugin_dir_url( __FILE__ ) . 'js/backup.js', array( 'jquery' ), $this->version, true );
     		wp_enqueue_script( 'bpsettings', plugin_dir_url( __FILE__ ) . 'js/settings.js', array( 'jquery' ), $this->version, true );
     		wp_enqueue_script( 'wp_backup_pro', plugin_dir_url( __FILE__ ) . 'js/wp/backup_pro.js', array( 'jquery' ), $this->version, true );
     		wp_enqueue_script( 'bpglobal', plugin_dir_url( __FILE__ ) . 'js/global.js', array( 'jquery' ), $this->version, true );
+    		
 	    }
 	}
 	
@@ -491,11 +493,6 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	}
 	
-	public function procBackupNote()
-	{
-	    //wp_redirect('/');
-	}
-	
 	public function dashboard()
 	{
 	    $page = new BackupProDashboardController();
@@ -725,7 +722,6 @@ class BackupProAdmin extends WpController implements BpInterface
 	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('database_restore_fail'));
 	    echo "</p></div>";
 	}
-	
 	
 	/**
 	 * Sets the BackupPro library for use

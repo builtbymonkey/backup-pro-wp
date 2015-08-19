@@ -6,11 +6,11 @@ jQuery(document).ready(function() {
 	{
 		var note_text = jQuery(element).val();
 		var note_backup = jQuery(element).attr("rel");
-		var dataString = "backup="+note_backup+"&note_text="+note_text+"&backup_type="+backup_type + "&"+jQuery.param({ "XID": EE.XID});
+		var dataString = "backup="+note_backup+"&note_text="+note_text+"&backup_type="+backup_type+"&action=procBackupProNoteAction";
 		
 		jQuery.ajax({
 			type: "POST",
-			url: EE.BASE+"&C=addons_modules&M=show_module_cp&module=backup_pro&method=update_backup_note&",
+			url: ajaxurl,
 			data: dataString,
 			success: function(){
 

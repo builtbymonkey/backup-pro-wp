@@ -10,6 +10,7 @@
 
 use mithra62\BackupPro\Platforms\Controllers\Wordpress AS WpController;
 use mithra62\Traits\Log;
+use mithra62\BackupPro\BackupPro AS BpInterface;
 
 /**
  * Backup Pro - Wordpress Backup Controller
@@ -19,7 +20,7 @@ use mithra62\Traits\Log;
  * @package 	BackupPro\Wordpress\Controllers
  * @author		Eric Lamb <eric@mithra62.com>
  */
-class BackupProBackupController extends WpController
+class BackupProBackupController extends WpController implements BpInterface
 {   
     use Log;
     
@@ -141,6 +142,7 @@ class BackupProBackupController extends WpController
         $variables['method'] = '';
         $variables['view_helper'] = $this->view_helper;
         $variables['url_base'] = $this->url_base;
+        $variables['theme_folder_url'] = plugin_dir_url(self::name);
         $this->renderTemplate($template, $variables);
     }
     

@@ -8,11 +8,11 @@
     </div>
     
     <form action="<?php echo $url_base; ?>backup_files&noheader=true" method="post">
-    <?php submit_button($view_helper->m62Lang('start_backup'));?>
+    <?php submit_button($view_helper->m62Lang('start_backup'), 'primary', '_backup_direct');?>
     <?php echo wp_nonce_field( 'backup_files' ); ?>
     <div id="backup_running_details"  style="display:none" >
     <?php echo $view_helper->m62Lang('backup_in_progress'); ?>
-    <img src="<?php echo $theme_folder_url; ?>backup_pro/images/indicator.gif" id="animated_image" />
+    <img src="<?php echo $theme_folder_url; ?>backup_pro/admin/images/indicator.gif" id="animated_image" />
     </div>		
     
     
