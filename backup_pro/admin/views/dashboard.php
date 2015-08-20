@@ -95,7 +95,7 @@ if($settings['auto_threshold'] != '0')
     			include '_includes/_backup_table.php';
     	?>
     	<?php else: ?>
-    		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_backups_exist')?> <a href="<?php echo $nav_links['backup_db']; ?>"><?php echo $view_helper->m62Lang('would_you_like_to_backup_database_now')?></a></div>
+    		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_backups_exist')?> <a href="<?php echo $url_base.'confirm_backup_db'; ?>"><?php echo $view_helper->m62Lang('would_you_like_to_backup_database_now')?></a></div>
     	<?php endif; ?>
     </div>
 
