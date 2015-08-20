@@ -1,103 +1,58 @@
 <?php
+/**
+ * mithra62 - Backup Pro
+ *
+ * @author		Eric Lamb <eric@mithra62.com>
+ * @copyright	Copyright (c) 2015, mithra62, Eric Lamb.
+ * @link		http://mithra62.com/
+ * @version		3.0
+ * @filesource 	./backup_pro/public/BackupProPublic.php
+ */
+ 
+use mithra62\BackupPro\Platforms\Controllers\Wordpress AS WpController;
+use mithra62\BackupPro\BackupPro AS BpInterface;
 
 /**
- * The public-facing functionality of the plugin.
+ * Backup Pro - Wordpress Public Dispatcher
  *
- * @link       http://example.com
- * @since      1.0.0
+ * Abstracts setting up the administration details
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/public
+ * @package 	Wordpress
+ * @author		Eric Lamb <eric@mithra62.com>
  */
-
-/**
- * The public-facing functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/public
- * @author     Your Name <email@example.com>
- */
-class BackupProPublic {
+class BackupProPublic extends WpController implements BpInterface
+{
+    /**
+     * The shortname for the plugin
+     * @var string
+     */
+	private $plugin_name = self::name;
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * The version of the plugin
+	 * @var number
 	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
+	private $version = self::version;
+	
+	public function procCronBackup()
+	{
+	    if( $this->getPost('backup_pro') && $this->getPost('backup') != '' )
+	    {
+	        $page = new BackupProCronController();
+	        $page->setContext($this->context);
+	        $page->cron();
+	        exit;
+	    }
 	}
-
-	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueueStyles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Plugin_Name_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-name-public.css', array(), $this->version, 'all' );
-
+	
+	public function procIntegrityCron()
+	{
+	    if( $this->getPost('backup_pro') && $this->getPost('integrity') == 'check' )
+	    {
+	        $page = new BackupProCronController();
+	        $page->setContext($this->context);
+	        $page->integrity();
+	        exit;
+	    }
 	}
-
-	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueueScripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Plugin_Name_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-public.js', array( 'jquery' ), $this->version, false );
-
-	}
-
 }

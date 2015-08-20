@@ -35,12 +35,6 @@ class BackupProAdmin extends WpController implements BpInterface
 	private $version = self::version;
 	
 	/**
-	 * An instance of the BackupPro object
-	 * @var BackupPro
-	 */
-	private $context = null;
-	
-	/**
 	 * Below starts the initialization scripts and setup for the WP event system
 	 * Note that none of this feels right to me...
 
@@ -721,15 +715,5 @@ class BackupProAdmin extends WpController implements BpInterface
 	    $class =  $class = " error ";
 	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang('database_restore_fail'));
 	    echo "</p></div>";
-	}
-	
-	/**
-	 * Sets the BackupPro library for use
-	 * @param BackupPro $context
-	 */
-	public function setContext(BackupPro $context)
-	{
-	    $this->context = $context;
-	    return $this;
 	}
 }

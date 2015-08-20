@@ -26,6 +26,9 @@ if ( ! defined( 'WPINC' ) ) {
 
 if( !function_exists('activateBackupPro') )
 {
+    /**
+     * Silly little function to activate the plugin
+     */
     function activateBackupPro() 
     {
         require_once plugin_dir_path( __FILE__ ) . 'includes/BackupProActivate.php';
@@ -35,6 +38,9 @@ if( !function_exists('activateBackupPro') )
 
 if( !function_exists('deactivateBackupPro') )
 {
+    /**
+     * Another silly little function for deactivating the plugin
+     */
     function deactivateBackupPro() 
     {
         require_once plugin_dir_path( __FILE__ ) . 'includes/BackupProDeactivate.php';
@@ -44,11 +50,17 @@ if( !function_exists('deactivateBackupPro') )
 
 if( !class_exists('BackupPro') )
 {
+    /**
+     * Grab the BackupPro object 
+     */
     require plugin_dir_path( __FILE__ ) . 'includes/BackupPro.php';
 }
 
 if( !function_exists('run_backup_pro') )
 {
+    /**
+     * Silly little funciton to execute the Backup Pro MVC silliness
+     */
     function run_backup_pro() 
     {
         if( in_array( 'backup_pro/backup_pro.php', get_option( 'active_plugins', array() )))
@@ -62,17 +74,21 @@ if( !function_exists('run_backup_pro') )
 
 if( !function_exists('procBackupProNoteAction') )
 {
+    /**
+     * And... ANOTHER silly little function for wrapping up the backup note ajax
+     */
     function procBackupProNoteAction()
     {
         $page = new BackupProManageController();
-        $page = $page->setBackupLib(new BackupPro());
+        $page = $page->setBackupLib( new BackupPro() );
         $page->updateBackupNote();
         wp_die();
     }
 
     add_action( 'wp_ajax_procBackupProNoteAction', 'procBackupProNoteAction' );
 }
+
+//fist pump
 register_activation_hook( basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ), 'activateBackupPro' );
 register_deactivation_hook( basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ), 'deactivateBackupPro' );
-
 run_backup_pro();

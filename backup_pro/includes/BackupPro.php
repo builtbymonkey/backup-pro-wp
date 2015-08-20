@@ -119,6 +119,8 @@ class BackupPro implements BpInterface
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/BackupProManageController.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/BackupProRestoreController.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/controllers/BackupProCronController.php';
+		
 		$this->loader = new BackupProLoader();
 
 	}
@@ -164,13 +166,10 @@ class BackupPro implements BpInterface
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procStorageRemove');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procConfirmBackup');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procBackupRemove');
-		//$this->loader->addAction( 'admin_init' , $plugin_admin, 'procBackupNote');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procBackupDatabase');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procBackupFiles');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'downloadBackup');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procDbRestore');
-		
-		
 		
 		$this->loader->addFilter( 'plugin_action_links_'.$this->plugin_name.'/'.$this->plugin_name.'.php', $plugin_admin, 'pluginLinks');
 		
@@ -185,10 +184,10 @@ class BackupPro implements BpInterface
 	 */
 	private function definePublicHooks() {
 
-		$plugin_public = new BackupProPublic( $this->getPluginName(), $this->getVersion() );
-
-		$this->loader->addAction( 'wp_enqueue_scripts', $plugin_public, 'enqueueStyles' );
-		$this->loader->addAction( 'wp_enqueue_scripts', $plugin_public, 'enqueueScripts' );
+		$plugin_public = new BackupProPublic();
+		$plugin_public->setContext($this);
+		$this->loader->addAction('init', $plugin_public, 'procCronBackup');
+		$this->loader->addAction('init', $plugin_public, 'procIntegrityCron');
 
 	}
 
