@@ -1,8 +1,9 @@
 <?php
 
 use mithra62\BackupPro\Platforms\Controllers\Wordpress AS WpController;
+use mithra62\BackupPro\BackupPro AS BpInterface;
 
-class BackupProSettingsController extends WpController
+class BackupProSettingsController extends WpController implements BpInterface
 {   
     /**
      * The Settings Control Panel page
@@ -39,8 +40,8 @@ class BackupProSettingsController extends WpController
     
         $variables['section']= $section;
         $variables['db_tables'] = $this->services['db']->getTables();
-        $variables['backup_cron_commands'] = $this->platform->getBackupCronCommands();
-        $variables['ia_cron_commands'] = $this->platform->getIaCronCommands();
+        $variables['backup_cron_commands'] = $this->platform->getBackupCronCommands($this->settings);
+        $variables['ia_cron_commands'] = $this->platform->getIaCronCommands($this->settings);
         $variables['errors'] = $this->errors;
         $variables['threshold_options'] = $this->services['settings']->getAutoPruneThresholdOptions();
         $variables['available_db_backup_engines'] = $this->services['backup']->getDataBase()->getAvailableEnginesOptions();
@@ -48,6 +49,7 @@ class BackupProSettingsController extends WpController
     
         $variables['view_helper'] = $this->view_helper;
         $variables['url_base'] = $this->url_base;
+        $variables['theme_folder_url'] = plugin_dir_url(self::name);
         
         //ee()->view->cp_page_title = $this->services['lang']->__($variables['section'].'_bp_settings_menu');
         //return ee()->load->view('settings', $variables, true);

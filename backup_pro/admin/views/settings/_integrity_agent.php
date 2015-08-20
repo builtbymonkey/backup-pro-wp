@@ -4,7 +4,7 @@
 
 <input type="hidden" name="cron_notify_member_ids[]" value="" />
 
-<table class="mainTable" border="0" cellspacing="0" cellpadding="0">
+<table class="widefat" border="0" cellspacing="0" cellpadding="0">
 <thead>
 	<tr>
 		<th width='50%'></th>
@@ -13,19 +13,16 @@
 	</tr>
 </thead>
 <tbody>
-<?php foreach($ia_cron_commands AS $key => $value): ?>
+<?php foreach($ia_cron_commands AS $key => $cron): ?>
 <tr class="even">
-	<td width='50%' style="width:50%;">{{ key|m62Lang|t }}</td>
+	<td width='50%' style="width:50%;"><?php echo $view_helper->m62Lang($key); ?></td>
 	<td style="width:50%;">
-		<div class="select_all">{{ cron.cmd }}</div>
+		<div class="select_all"><?php echo $cron['cmd']; ?></div>
 	</td>
 	<td style="width:50%;">
-		{% if cron.type == 'curl' %}
-		<a href="{{ cron.url }}" class="test_cron" rel="{{ key }}">
-			<img src="{{ resourceUrl('backuppro/images/test.png') }}" />
-		</a> <img src="{{ resourceUrl('backuppro/images/indicator.gif') }}" id="animated_{{ key }}" style="display:none" />
-		
-		{% endif %}
+		<a href="<?php echo $cron['url']; ?>" class="test_cron" rel="<?php echo $key; ?>">
+			<img src="<?php echo $theme_folder_url; ?>/backup_pro/admin/images/test.png" />
+		</a> <img src="<?php echo $theme_folder_url; ?>/backup_pro/admin/images/indicator.gif" id="animated_<?php echo $key; ?>" style="display:none" />
 	</td>
 </tr>
 <?php endforeach; ?>

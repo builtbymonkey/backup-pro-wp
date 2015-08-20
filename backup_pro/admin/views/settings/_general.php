@@ -18,6 +18,16 @@
 </tr>
 <tr>
     <th scope="row">
+        <label for="cron_query_key"><?php echo $view_helper->m62Lang('cron_query_key'); ?></label>
+    </th>
+    <td>
+        <input name="cron_query_key" type="text" id="cron_query_key" value="<?php echo $form_data['cron_query_key']; ?>" class="regular-text code" />
+        <p class="description" id="cron_query_key-description"><?php echo $view_helper->m62Lang('cron_query_key_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['cron_query_key']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
         <label for="dashboard_recent_total"><?php echo $view_helper->m62Lang('dashboard_recent_total'); ?></label>
     </th>
     <td>

@@ -67,10 +67,10 @@ jQuery(document).ready(function() {
 		var link = this;
 		
 		var image_id = "#animated_" + backup_type;
-		$(image_id).show();
+		jQuery(image_id).show();
 		jQuery(link).hide();
 
-		$.ajax({
+		jQuery.ajax({
 			url: url,
 			context: document.body,
 			success: function(xhr){

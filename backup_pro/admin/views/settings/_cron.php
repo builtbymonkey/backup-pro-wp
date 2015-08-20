@@ -1,25 +1,29 @@
 <h3  class="accordion"><?=$view_helper->m62Lang('configure_cron')?></h3>
-<?php 
-if(count($backup_cron_commands) >= 1)
-{
-	$this->table->set_heading(
-		array('data' => $view_helper->m62Lang('backup_type'), 'width' => '50%'), 
-		array('data' => $view_helper->m62Lang('cron_commands'), 'width' => '30%'), 
-		array('data' => $view_helper->m62Lang('test'), 'width' => '20%')
-	);
-	foreach($backup_cron_commands AS $key => $value)
-	{
-		$this->table->add_row(
-			array('data' => $view_helper->m62Lang($key), 'width' => '50%'), 
-			'<div class="select_all">'.$value['cmd'].'</div>',
-			'<a href="'.$value['url'].'" class="test_cron" rel="'.$key.'"><img src="'.$theme_folder_url.'backup_pro/images/test.png" /></a> <img src="'.$theme_folder_url.'backup_pro/images/indicator.gif" id="animated_'.$key.'" style="display:none" />');
-	}
-	echo $this->table->generate();
-	$this->table->clear();	
-}	
-//
-?>
 
+<table class="widefat" border="0" cellspacing="0" cellpadding="0">
+<thead>
+	<tr>
+		<th width='50%'></th>
+		<th width='30%'><?php echo $view_helper->m62Lang('cron_commands'); ?></th>
+		<th width='20%'><?php echo $view_helper->m62Lang('test'); ?></th>
+	</tr>
+</thead>
+<tbody>
+<?php foreach($backup_cron_commands AS $key => $cron): ?>
+<tr class="even">
+	<td width='50%' style="width:50%;"><?php echo $view_helper->m62Lang($key); ?></td>
+	<td style="width:50%;">
+		<div class="select_all"><?php echo $cron['cmd']; ?></div>
+	</td>
+	<td style="width:50%;">
+		<a href="<?php echo $cron['url']; ?>" class="test_cron" rel="<?php echo $key; ?>">
+			<img src="<?php echo $theme_folder_url; ?>/backup_pro/admin/images/test.png" />
+		</a> <img src="<?php echo $theme_folder_url; ?>/backup_pro/admin/images/indicator.gif" id="animated_<?php echo $key; ?>" style="display:none" />
+	</td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
 <h3  class="accordion"><?=$view_helper->m62Lang('configure_cron_notification')?></h3>
 <table class="form-table" >
 <tr>
