@@ -19,15 +19,18 @@
  */
 class BackupProDeactivate {
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function deactivate() {
-
+    /**
+     * do it
+     */
+	public static function deactivate() 
+	{
+	    global $wpdb;
+	    
+	    delete_option( 'bp3_db_version' );
+	    
+        $sql = "DROP TABLE IF EXISTS ".$wpdb->prefix."backup_pro_settings";
+        $wpdb->query($sql);
+        $wpdb->flush();
 	}
 
 }
