@@ -34,6 +34,9 @@ class BackupProPublic extends WpController implements BpInterface
 	 */
 	private $version = self::version;
 	
+	/**
+	 * Processes the Cron Backup
+	 */
 	public function procCronBackup()
 	{
 	    if( $this->getPost('backup_pro') == $this->settings['cron_query_key'] && $this->getPost('backup') != '' )
@@ -45,6 +48,9 @@ class BackupProPublic extends WpController implements BpInterface
 	    }
 	}
 	
+	/**
+	 * Processes the Integrity Check Cron
+	 */
 	public function procIntegrityCron()
 	{
 	    if( $this->getPost('backup_pro') == $this->settings['cron_query_key'] && $this->getPost('integrity') == 'check' )
