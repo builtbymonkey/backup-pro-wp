@@ -134,6 +134,7 @@ class BackupProStorageController extends WpController implements BpInterface
             $data = array_map( 'stripslashes_deep', $_POST );
             
             $variables['form_data'] = $data;
+            $data['location_id'] = $storage_id;
             $settings_errors = $this->services['backup']->getStorage()->validateDriver($this->services['validate'], $storage_details['storage_location_driver'], $data, $this->settings['storage_details']);
             if( $settings_errors )
             {
