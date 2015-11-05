@@ -24,7 +24,7 @@
 	<h3><?=$view_helper->m62Lang('database_backups').' ('.count($backups['database']).')';?></h3>
 	
 	<?php if(count($backups['database']) == 0): ?>
-		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_database_backups')?> <a href="<?php echo $url_base; ?>confirm_backup_db"><?php echo $view_helper->m62Lang('would_you_like_to_backup_now')?></a></div>
+		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_database_backups')?> <a href="<?php echo $url_base; ?>confirm_backup_db"><?php echo $view_helper->m62Lang('would_you_like_to_backup_database_now')?></a></div>
 	<?php else: ?>
 	
 	
