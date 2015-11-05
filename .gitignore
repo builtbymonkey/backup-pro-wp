@@ -18,3 +18,8 @@
 /backup_pro/admin/css
 /backup_pro/admin/images
 /backup_pro/admin/js/wp
+/wp-content/plugins/backup_pro/admin/js
+/wp-content/plugins/backup_pro/admin/css
+/wp-content/plugins/backup_pro/admin/images
+/wp-content/plugins/backup_pro/includes/vendor
+/wp-content/plugins/backup_pro/includes/mithra62

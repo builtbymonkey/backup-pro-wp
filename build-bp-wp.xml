@@ -1,33 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project name="Backup Pro Wordpress" default="move_zip">
 
 	<property name="platform_name" value="WordPress" />
 	<property name="build_path" value="../builds/wp" />
-	<property name="build_container_dir" value="${build_path}/backuppro" />
-	<property name="main_files" value="craft" />
-	<property name="cms_root_path" value="${build_container_dir}/craft" /> 
-	<property name="vendor_path" value="${cms_root_path}/plugins/backuppro/vendor" />
-	<property name="backup_pro_logic_base" value="${cms_root_path}/plugins/backuppro/mithra62/BackupPro" />
-	<property name="jaeger_base" value="${cms_root_path}/plugins/backuppro/mithra62" />
+	<property name="build_container_dir" value="${build_path}/backup_pro" />
+	<property name="main_files" value="wp-content" />
+	<property name="cms_root_path" value="${build_container_dir}/wp-content" /> 
+	<property name="vendor_path" value="${cms_root_path}/plugins/backup_pro/includes/vendor" />
+	<property name="backup_pro_logic_base" value="${cms_root_path}/plugins/backup_pro/includes/mithra62/BackupPro" />
+	<property name="jaeger_base" value="${cms_root_path}/plugins/backup_pro/includes/mithra62" />
 		
-	<property name="platform_theme_base" value="${build_container_dir}/craft/plugins/backuppro/resources" />		
+	<property name="platform_theme_base" value="${build_container_dir}/wp-content/plugins/backup_pro/admin" />		
 	<property name="backup_pro_theme_base" value="${platform_theme_base}" />
-	<property name="build_archive_path" value="${build_path}/backuppro.craft.${version}.zip" />
-	<property name="export_archive_path" value="../../product-export/craft/backuppro.craft.${version}.zip" />
+	<property name="build_archive_path" value="${build_path}/backup_pro.wp.${version}.zip" />
+	<property name="export_archive_path" value="../../product-export/wp/backup_pro.wp.${version}.zip" />
 		
-	<property name="clean_install_bp_core_file_path" value="../../clean_cms/craft/craft/plugins/backuppro" />
-	<property name="clean_install_bp_theme_path" value="${clean_install_bp_core_file_path}/resources" />
+	<property name="clean_install_bp_core_file_path" value="../../clean_cms/wp/html/wp-content/plugins/backup_pro" />
+	<property name="clean_install_bp_theme_path" value="${clean_install_bp_core_file_path}/admin" />
 		
-	<property name="clean_install_cms_add_on_path" value="../../clean_cms/craft/craft" />
-	<property name="clean_install_cms_theme" value="${clean_install_cms_add_on_path}/plugins/backuppro/resources" />
+	<property name="clean_install_cms_add_on_path" value="../../clean_cms/wp/html/wp-content" />
+	<property name="clean_install_cms_theme" value="${clean_install_cms_add_on_path}/plugins/backup_pro/admin" />
+	
+	<property name="mink_test_dir" value="WP" />
 	
 	<import file="../backup-pro-lib/phing.prepare.xml" />
-	<import file="../backup-pro-lib/phing.unit-test.xml" /> 
 	<import file="../backup-pro-lib/phing.cms-files.xml" />
-	<import file="../backup-pro-lib/phing.vendor.xml" /> 
-	<import file="../backup-pro-lib/phing.bp-files.xml" />
-	<import file="../backup-pro-lib/phing.clean-install.xml" /> 
-	<import file="../backup-pro-lib/phing.archive.xml" />
+	<import file="../backup-pro-lib/phing.vendor-no-dev.xml" /> 
+	<import file="../backup-pro-lib/phing.bp-files.xml" /> 
+	<import file="../backup-pro-lib/phing.clean-install.xml" />  
+	<import file="../backup-pro-lib/phing.unit-test.xml" /> 
+	<import file="../backup-pro-lib/phing.archive.xml" /> 
+	
+	<target name="cms-files" depends="prepare">
+        <echo msg="(${platform_name}) Copying files to build directory..." />
+
+    	<echo msg="" />
+		<echo msg="(${platform_name}) Copying to ${cms_root_path}" />
+		<copy todir="${cms_root_path}">
+			<fileset dir="${main_files}">
+				<include name="**"></include>
+				<exclude name="**/mithra62/**"></exclude>
+				<exclude name="**/vendor/**"></exclude>
+				<exclude name="**composer.**"></exclude>
+				<exclude name="**/resources/**"></exclude>
+				<exclude name="**/images**"></exclude>
+				<exclude name="**/css/**"></exclude>
+				<exclude name="**/js/**"></exclude>
+			</fileset>
+		</copy>
+    </target>	
 	
 </project>
