@@ -40,4 +40,8 @@ switch($section)
 
 </form>
 
+<style>
+
+li.notice { color: red; }
+</style>
 </div>
