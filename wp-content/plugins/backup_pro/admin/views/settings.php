@@ -33,7 +33,10 @@ switch($section)
 		<?php //echo form_submit(array('name' => 'submit', 'value' => $lang->__('update_settings'), 'class' => 'submit'));?>
 	</div>
 </div>	
-<?php submit_button($view_helper->m62Lang('update_settings'));?>
+
+<p class="submit">
+    <input name="m62_settings_submit" id="m62_settings_submit" class="button m62_settings_submit" value="<?php echo$view_helper->m62Lang('update_settings'); ?>" type="submit">
+</p>
 
 </form>
 
