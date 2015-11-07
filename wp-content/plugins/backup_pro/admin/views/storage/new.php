@@ -21,3 +21,8 @@
     </div>	
     </form>
 </div>
+
+<style>
+
+li.notice { color: red; }
+</style>
