@@ -13,8 +13,11 @@
     </table>
     <div class="tableFooter">
     	<div class="tableSubmit">
-            <?php submit_button($view_helper->m62Lang('add_storage_location'));?>
+    	<p class="submit">
+        <input name="m62_settings_submit" id="m62_settings_submit" class="button m62_settings_submit" value="<?php echo$view_helper->m62Lang('add_storage_location'); ?>" type="submit">
+        </p>
     	</div>
+    	
     </div>	
     </form>
 </div>
