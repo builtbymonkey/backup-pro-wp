@@ -1,4 +1,5 @@
 <input type="hidden" value="0" name="ftp_passive" />
+<input type="hidden" value="0" name="ftp_ssl" />
 <tr>
     <th scope="row">
         <label for="ftp_hostname"><?php echo $view_helper->m62Lang('ftp_hostname'); ?></label>
@@ -55,7 +56,7 @@
     </th>
     <td>
         <fieldset><legend class="screen-reader-text"><span><?php echo $view_helper->m62Lang('ftp_passive_instructions'); ?></span></legend><label for="ftp_passive">
-            <input name="ftp_passive" id="ftp_passive" value="1" type="checkbox" <?php echo checked( $form_errors['ftp_passive'], 1, true); ?>>
+            <input name="ftp_passive" id="ftp_passive" value="1" type="checkbox" <?php echo checked( $form_data['ftp_passive'], 1, true); ?>>
             <?php echo $view_helper->m62Lang('ftp_passive_instructions'); ?></label></fieldset>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['ftp_passive']); ?>
     </td>
@@ -66,7 +67,7 @@
     </th>
     <td>
         <fieldset><legend class="screen-reader-text"><span><?php echo $view_helper->m62Lang('ftp_ssl_instructions'); ?></span></legend><label for="ftp_ssl">
-            <input name="ftp_ssl" id="ftp_ssl" value="1" type="checkbox" <?php echo checked( $form_errors['ftp_ssl'], 1, true); ?>>
+            <input name="ftp_ssl" id="ftp_ssl" value="1" type="checkbox" <?php echo checked( $form_data['ftp_ssl'], 1, true); ?>>
             <?php echo $view_helper->m62Lang('ftp_ssl_instructions'); ?></label></fieldset>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['ftp_ssl']); ?>
     </td>
