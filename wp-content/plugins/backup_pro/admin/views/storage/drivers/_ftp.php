@@ -26,7 +26,7 @@
     </th>
     <td>
         <input name="ftp_password" type="password" id="ftp_password" value="<?php echo $form_data['ftp_password']; ?>" class="regular-text code" />
-        <p class="description" id="email_storage_attach_threshold-description"><?php echo $view_helper->m62Lang('ftp_password_instructions'); ?></p>
+        <p class="description" id="ftp_password-description"><?php echo $view_helper->m62Lang('ftp_password_instructions'); ?></p>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['ftp_password']); ?>
     </td>
 </tr>
