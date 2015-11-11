@@ -2,7 +2,7 @@
 <br clear="all" />
 <h3 class="title"><?=$view_helper->m62Lang('integrity_agent_cron')?></h3>
 
-<input type="hidden" name="cron_notify_member_ids[]" value="" />
+<input type="hidden" name="check_backup_state_cp_login" value="0" />
 
 <table class="widefat" border="0" cellspacing="0" cellpadding="0">
 <thead>
@@ -57,7 +57,7 @@
     </th>
     <td>
         <fieldset><legend class="screen-reader-text"><span><?php echo $view_helper->m62Lang('check_backup_state_cp_login_instructions'); ?></span></legend><label for="check_backup_state_cp_login">
-            <input name="check_backup_state_cp_login" id="check_backup_state_cp_login" value="1" type="checkbox" <?php echo checked( $form_errors['check_backup_state_cp_login'], 1, true); ?>>
+            <input name="check_backup_state_cp_login" id="check_backup_state_cp_login" value="1" type="checkbox" <?php echo checked( $form_data['check_backup_state_cp_login'], 1, true); ?>>
             <?php echo $view_helper->m62Lang('check_backup_state_cp_login_instructions'); ?></label></fieldset>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['check_backup_state_cp_login']); ?>
     </td>
