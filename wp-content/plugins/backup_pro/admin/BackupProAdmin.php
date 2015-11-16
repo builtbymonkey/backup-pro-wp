@@ -594,9 +594,7 @@ class BackupProAdmin extends WpController implements BpInterface
 
 	    if ( !$display_notice && strpos($screen_id, 'backup_pro') !== FALSE ) 
 	    {
-	        $errors = $this->services['errors']->checkStorageLocations($this->settings['storage_details'])
-                        	         ->licenseCheck($this->settings['license_number'], $this->services['license'])
-                        	         ->getErrors();
+	        $errors = $this->services['errors']->getErrors();
 	        
 	        if( $errors && count($errors) >= 1)
 	        {	            
@@ -606,16 +604,24 @@ class BackupProAdmin extends WpController implements BpInterface
             	    echo"<div class=\"$class\"> <p>".esc_html__($this->view_helper->m62Lang($error));
             	    if( $error == 'no_storage_locations_setup' )
             	    {
-            	        echo ' <a href="'.$this->url_base.'settings&section=storage&action=new&engine=local">Setup Storage Location</a>';
+            	        echo ' <a href="'.$this->url_base.'settings&section=storage&action=new&engine=local">'.$this->view_helper->m62Lang('setup_storage_location').'</a>';
             	    }
             	    elseif( $error == 'license_number' || $error == 'missing_license_number' )
             	    {
-            	        echo ' <a href="'.$this->url_base.'settings&section=license">Enter License</a> or <a href="https://mithra62.com/projects/view/backup-pro">Purchase a License</a>';
+            	        echo ' <a href="'.$this->url_base.'settings&section=license">'.$this->view_helper->m62Lang('enter_license').'</a> or <a href="https://mithra62.com/projects/view/backup-pro">'.$this->view_helper->m62Lang('purchase_a_license').'</a>';
             	    }
             	    elseif( $error == 'invalid_working_directory' )
             	    {
-            	        echo ' <a href="'.$this->url_base.'settings">Check Working Directory</a>';
+            	        echo ' <a href="'.$this->url_base.'settings">'.$this->view_helper->m62Lang('check_working_dir').'</a>';
             	    }
+            		elseif( $error == 'no_db_backups_exist_yet' )
+            		{
+            		    echo ' <a href="'.$this->url_base.'confirm_backup_db">'.$this->view_helper->m62Lang('would_you_like_to_backup_database_now').'</a>';
+            		}
+            		elseif( $error == 'no_file_backups_exist_yet' )
+            		{
+            		    echo ' <a href="'.$this->url_base.'confirm_backup_files">'.$this->view_helper->m62Lang('would_you_like_to_backup_files_now').'</a>';
+            		}
             	    
             	    echo "</p></div>";
 	            }

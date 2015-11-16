@@ -27,7 +27,7 @@
 
     <h3  class="accordion"><?php echo $view_helper->m62Lang('file_backups').' ('.count($backups['files']).')'?></h3>
 	<?php if(count($backups['files']) == 0): ?>
-		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_file_backups')?> <a href="<?php echo $url_base; ?>confirm_backup_files""><?php echo $view_helper->m62Lang('would_you_like_to_backup_files_now')?></a></div>
+		<div class="no_backup_found"><?php echo $view_helper->m62Lang('no_file_backups')?> <a href="<?php echo $url_base; ?>confirm_backup_files"><?php echo $view_helper->m62Lang('would_you_like_to_backup_files_now')?></a></div>
 	<?php else: ?>
 	
 	

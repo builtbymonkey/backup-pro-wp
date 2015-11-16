@@ -23,6 +23,9 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
+if ( defined('WP_CLI') && WP_CLI ) {
+    include_once __DIR__ . '/includes/BackupProConsoleCommands.php';
+}
 
 if( !function_exists('activateBackupPro') )
 {
