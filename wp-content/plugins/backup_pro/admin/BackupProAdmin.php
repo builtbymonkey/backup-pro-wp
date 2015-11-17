@@ -488,6 +488,22 @@ class BackupProAdmin extends WpController implements BpInterface
 	    }
 	}
 	
+	public function procIaMissedBackupEmail()
+	{
+	    $errors = $this->errors;
+	    if( $this->settings['check_backup_state_cp_login'] == '1' && 
+	        count($this->settings['backup_missed_schedule_notify_emails']) >= 1 &&
+	        (isset($errors['db_backup_past_expectation']) || isset($errors['file_backup_past_expectation'])) 
+	      )
+	    {
+	        $backups = $this->services['backups'];
+	        $backup_data = $backups->setBackupPath($this->settings['working_directory'])->getAllBackups($this->settings['storage_details']);
+	        $backup_meta = $backups->getBackupMeta($backup_data);
+	        $notify = $this->services['notify']->setBackup( $this->services['backup']);
+	        $this->services['backups']->getIntegrity()->notifyBackupState($backup_meta, $this->settings, $errors, $notify );
+	    }
+	}
+	
 	public function dashboard()
 	{
 	    $page = new BackupProDashboardController();

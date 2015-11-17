@@ -170,6 +170,7 @@ class BackupPro implements BpInterface
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procBackupFiles');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'downloadBackup');
 		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procDbRestore');
+		$this->loader->addAction( 'admin_init' , $plugin_admin, 'procIaMissedBackupEmail');
 		
 		$this->loader->addFilter( 'plugin_action_links_'.$this->plugin_name.'/'.$this->plugin_name.'.php', $plugin_admin, 'pluginLinks');
 		
