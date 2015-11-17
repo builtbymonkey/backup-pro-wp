@@ -622,6 +622,30 @@ class BackupProAdmin extends WpController implements BpInterface
             		{
             		    echo ' <a href="'.$this->url_base.'confirm_backup_files">'.$this->view_helper->m62Lang('would_you_like_to_backup_files_now').'</a>';
             		}
+            		elseif( $error == 'db_backup_past_expectation_stub' || $error == 'file_backup_past_expectation_stub' )
+            		{
+                        $backup = $this->services['backups'];
+                        $backups = $backup->setBackupPath($this->settings['working_directory'])->getAllBackups($this->settings['storage_details']);
+                        $backup_meta = $backup->getBackupMeta($backups);
+                        
+                        if( $error == 'db_backup_past_expectation_stub' )
+                        {
+                		    $lang = sprintf(
+                		        $this->view_helper->m62Lang('db_backup_past_expectation'), 
+                		        $this->view_helper->getRelativeDateTime($backup_meta['database']['newest_backup_taken_raw'], false), 
+                		        $this->url_base.'confirm_backup_db'
+                		    );
+                        }
+                        else if ( $error == 'file_backup_past_expectation_stub' )
+                        {
+                            $lang = sprintf(
+                                $this->view_helper->m62Lang('files_backup_past_expectation'),
+                                $this->view_helper->getRelativeDateTime($backup_meta['files']['newest_backup_taken_raw'], false),
+                                $this->url_base.'confirm_backup_files'
+                            );
+                        }
+            		    echo $lang;
+            		}
             	    
             	    echo "</p></div>";
 	            }

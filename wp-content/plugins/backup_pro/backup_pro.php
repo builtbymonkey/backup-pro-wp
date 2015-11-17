@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( defined('WP_CLI') && WP_CLI ) {
-    include_once __DIR__ . '/includes/BackupProConsoleCommands.php';
+    return; //we don't work nicely with WP_CLI since Backup Pro uses the wp-cli-tools library too
 }
 
 if( !function_exists('activateBackupPro') )
