@@ -290,7 +290,7 @@ class BackupProAdmin extends WpController implements BpInterface
             add_action( 'admin_notices', array( $this, 'storageRemoveFail' ), 30, array('settings_updated'));
 	    }
 	    
-	    if( $this->getPost('remove_success') == 'yes' )
+	    if( $this->getPost('remove_success') == 'yes' && $this->getPost('section') == 'storage' )
 	    {
             add_action( 'admin_notices', array( $this, 'storageRemoveNotice' ), 30, array('settings_updated'));
 	    }

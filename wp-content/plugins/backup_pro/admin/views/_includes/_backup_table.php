@@ -26,7 +26,10 @@
 	</tr>
 </thead>
 <tbody>
-<?php foreach($backups AS $backup): 
+<?php 
+
+    $count = 0;
+    foreach($backups AS $backup): 
 
 	if($backup['verified'] == '0')
 	{
@@ -44,7 +47,7 @@
 <tr class="odd">
 	<td class=" backup_pro_backup_status <?php echo $status_class; ?>"></td>
 	<?php if(isset($enable_delete) && $enable_delete == 'yes' ): ?>
-	<td><input name="backups[]" id="allow_duplicates" value="<?php echo urlencode($view_helper->m62Encode($backup['file_name'])); ?>" type="checkbox">
+	<td><input name="backups[]" id="backup_check_<?php echo $count; $count++; ?>" value="<?php echo urlencode($view_helper->m62Encode($backup['file_name'])); ?>" type="checkbox">
 	
 	</td>
 	<?php endif; ?>
