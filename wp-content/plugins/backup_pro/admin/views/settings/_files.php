@@ -1,5 +1,5 @@
 <div>
-
+<input type="hidden" name="regex_file_exclude" value="0" />
 
 <br clear="all" />
 <h3 class="title"><?=$view_helper->m62Lang('config_files')?></h3>
@@ -43,6 +43,17 @@
         <textarea name="exclude_paths" rows="10" cols="50" id="exclude_paths" class="large-text code"><?php echo $form_data['exclude_paths']; ?></textarea>
         <p class="description" id="exclude_paths-description"><?php echo $view_helper->m62Lang('exclude_paths_instructions'); ?></p>
         <?php echo $this->backup_lib->displayFormErrors($form_errors['exclude_paths']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
+        <label for="regex_file_exclude"><?php echo $view_helper->m62Lang('regex_file_exclude'); ?></label>
+    </th>
+    <td>
+        <fieldset><legend class="screen-reader-text"><span><?php echo $view_helper->m62Lang('regex_file_exclude_instructions'); ?></span></legend><label for="regex_file_exclude">
+            <input name="regex_file_exclude" id="regex_file_exclude" value="1" type="checkbox" <?php echo checked( $form_data['regex_file_exclude'], 1, true); ?>>
+            <?php echo $view_helper->m62Lang('regex_file_exclude_instructions'); ?></label></fieldset>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['regex_file_exclude']); ?>
     </td>
 </tr>
 </table>

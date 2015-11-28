@@ -45,6 +45,16 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
         <?php echo $this->backup_lib->displayFormErrors($form_errors['db_backup_method']); ?>
     </td>
 </tr>
+<tr style="display:none" id="php_backup_method_select_chunk_limit_wrap">
+    <th scope="row">
+        <label for="php_backup_method_select_chunk_limit"><?php echo $view_helper->m62Lang('php_backup_method_select_chunk_limit'); ?></label>
+    </th>
+    <td>
+        <input name="php_backup_method_select_chunk_limit" type="text" id="php_backup_method_select_chunk_limit" value="<?php echo $form_data['php_backup_method_select_chunk_limit']; ?>" class="regular-text code" />
+        <p class="description" id="php_backup_method_select_chunk_limit-description"><?php echo $view_helper->m62Lang('php_backup_method_select_chunk_limit_instructions'); ?></p>
+        <?php echo $this->backup_lib->displayFormErrors($form_errors['php_backup_method_select_chunk_limit']); ?>
+    </td>
+</tr>
 <tr style="display:none" id="mysqldump_command_wrap">
     <th scope="row">
         <label for="mysqldump_command"><?php echo $view_helper->m62Lang('mysqldump_command'); ?></label>
