@@ -1,13 +1,13 @@
 <?php
 /**
-* Plugin Name: Backup Pro
-* Plugin URI: https://mithra62.com/projects/view/backup-pro
-* Description: Backup Pro adds simple, 1 click, file and database backup and database restoration. Backup Pro allows for abstract and redundant storage of your backups through any combination of Local Storage, Amazon S3, Rackspace Cloud Files, Google Cloud Storage, FTP, and even an Email Inbox (if that's your thing). 
-* Version: 3.1.3
-* Author: mithra62
-* Author URI: http://mithra62.com/
-* License: Commercial
-* License URI: https://mithra62.com/license-agreement
+ * Plugin Name: Backup Pro
+ * Plugin URI: https://mithra62.com/projects/view/backup-pro
+ * Description: Backup Pro adds simple, 1 click, file and database backup and database restoration. Backup Pro allows for abstract and redundant storage of your backups through any combination of Local Storage, Amazon S3, Rackspace Cloud Files, Google Cloud Storage, FTP, and even an Email Inbox (if that's your thing). 
+ * Version: 3.2
+ * Author: mithra62
+ * Author URI: http://mithra62.com/
+ * License: Commercial
+ * License URI: https://mithra62.com/license-agreement
 **/
 
 /**

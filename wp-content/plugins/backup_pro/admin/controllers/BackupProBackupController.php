@@ -93,15 +93,12 @@ class BackupProBackupController extends WpController implements BpInterface
                 $url = $this->url_base.'settings&section=files';
             }
             
-            ee()->session->set_flashdata('message_error', $this->services['lang']->__($error->getError()));
-            ee()->functions->redirect($url);
+            $this->platform->redirect($url);
         }
     }    
     
     public function backup($type = 'database')
     {
-        //$type = ee()->input->get_post('type', TRUE);
-        //ee()->view->cp_page_title = $this->services['lang']->__('backup_'.$type);
         $proc_url = FALSE;
         switch($type)
         {
@@ -125,20 +122,14 @@ class BackupProBackupController extends WpController implements BpInterface
     
         if(!$proc_url)
         {
-            wp_redirect($this->url_base.'settings&section=storage&backup_fail=yes');
-            exit;
+            $this->platform->redirect($this->url_base.'settings&section=storage&backup_fail=yes');
         }
-    
-        //ee()->cp->add_js_script('ui', 'progressbar');
-        //ee()->javascript->output('$("#progressbar").progressbar({ value: 0 });');
-        //ee()->javascript->compile();
     
         $variables = array('proc_url' => $proc_url);
         $variables['errors'] = $errors;
         $variables['proc_url'] = $proc_url;
         $variables['url_base'] = $this->url_base;
         $variables['backup_type'] = $type;
-        //$vars['menu_data'] = ee()->backup_pro->get_dashboard_view_menu();
         $variables['method'] = '';
         $variables['view_helper'] = $this->view_helper;
         $variables['url_base'] = $this->url_base;
