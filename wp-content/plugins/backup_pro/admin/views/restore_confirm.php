@@ -55,7 +55,7 @@
 <?php //echo form_open($query_base.'restore_database&id='.urlencode($view_helper->m62Encode($backup['details_file_name'])), array('id'=>'backup_form')); ?>
     <form action="<?php echo $url_base; ?>restore_database&id=<?php echo urlencode($view_helper->m62Encode($backup['details_file_name'])); ?>" method="post">
     <?php echo wp_nonce_field( 'restore_db_'.urlencode($view_helper->m62Encode($backup['details_file_name'])) ); ?>
-    <?php submit_button($view_helper->m62Lang('restore'));?>
+    <?php submit_button($view_helper->m62Lang('restore_db'));?>
     
     </form>
 <?php //echo form_close()?>
