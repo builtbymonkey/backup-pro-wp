@@ -60,6 +60,7 @@ class BackupProAdmin extends WpController implements BpInterface
     		wp_enqueue_script( 'bpchosen', plugin_dir_url( __FILE__ ) . 'js/chosen.jquery.js', array( 'jquery' ), $this->version, true );
     		wp_enqueue_script( 'bpdashboard', plugin_dir_url( __FILE__ ) . 'js/dashboard.js', array( 'jquery' ), $this->version, true );
     		wp_enqueue_script( 'bpbackup', plugin_dir_url( __FILE__ ) . 'js/backup.js', array( 'jquery' ), $this->version, true );
+    		wp_enqueue_script( 'bprestore', plugin_dir_url( __FILE__ ) . 'js/restore.js', array( 'jquery' ), $this->version, true );
     		wp_enqueue_script( 'bpsettings', plugin_dir_url( __FILE__ ) . 'js/settings.js', array( 'jquery' ), $this->version, true );
     		wp_enqueue_script( 'wp_backup_pro', plugin_dir_url( __FILE__ ) . 'js/wp/backup_pro.js', array( 'jquery' ), $this->version, true );
     		wp_enqueue_script( 'bpglobal', plugin_dir_url( __FILE__ ) . 'js/global.js', array( 'jquery' ), $this->version, true );
