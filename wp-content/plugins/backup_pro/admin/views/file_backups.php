@@ -31,7 +31,7 @@
 	<?php else: ?>
 	
 	
-		<form name="remove_backups" action="<?php echo $url_base; ?>confirm_remove_backup" method="post"  />
+		<form name="remove_backups" action="<?php echo $url_base; ?>confirm_remove_backup" method="post">
         <?php echo wp_nonce_field( 'remove_bp_backups' ); ?>
         <?php 
         $options = array('enable_type' => 'no', 'enable_editable_note' => 'yes', 'enable_actions' => 'yes', 'enable_delete' => 'yes');
@@ -41,8 +41,8 @@
         ?>	
 		<input type="hidden" name="type" id="hidden_backup_type" value="files" />	
 		
-        <div class="buttons right">
-        <?php submit_button($view_helper->m62Lang('delete_backups'));?>
+        <div class="buttons right" style="float:right">
+            <?php submit_button($view_helper->m62Lang('delete_backups'), 'primary', '_remove_backup_button');?>
         </div>
 		
 		</form>

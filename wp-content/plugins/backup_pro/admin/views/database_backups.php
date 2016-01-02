@@ -37,8 +37,8 @@
         $backups = $backups['database'];
         include '_includes/_backup_table.php';
         ?>		
-        <div class="buttons right">
-            <?php submit_button($view_helper->m62Lang('delete_backups'));?>
+        <div class="buttons right" style="float:right">
+            <?php submit_button($view_helper->m62Lang('delete_backups'), 'primary', '_remove_backup_button');?>
         </div>
 		</form>		
 	<?php endif; ?>

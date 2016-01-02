@@ -11,7 +11,7 @@
 <p><?php echo $view_helper->m62Lang('delete_backup_confirm'); ?></p>
 
 <p class="notice"><?php echo $view_helper->m62Lang('action_can_not_be_undone'); ?></p>
-<form name="remove_backups" action="<?php echo $url_base; ?>remove_backup" method="post"  />
+<form name="remove_backups" action="<?php echo $url_base; ?>remove_backup" method="post">
 	<input type="hidden" value="<?php echo $backup_type; ?>" name="type" />
 	<?php echo wp_nonce_field( 'really_for_reals_remove_bp_backups' ); ?>
 	<?php 
@@ -22,7 +22,7 @@
 	?>
 
 	<div class="buttons right">
-        <?php submit_button($view_helper->m62Lang('delete'));?>
+        <?php submit_button($view_helper->m62Lang('delete'), 'primary', '_remove_backup_button');?>
 	</div>
 
 </form>
