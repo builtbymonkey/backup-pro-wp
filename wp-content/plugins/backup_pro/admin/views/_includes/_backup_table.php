@@ -47,7 +47,7 @@
 <tr class="odd">
 	<td class=" backup_pro_backup_status <?php echo $status_class; ?>"></td>
 	<?php if(isset($enable_delete) && $enable_delete == 'yes' ): ?>
-	<td><input name="backups[]" id="backup_check_<?php echo $count; $count++; ?>" value="<?php echo urlencode($view_helper->m62Encode($backup['file_name'])); ?>" type="checkbox">
+	<td><input name="backups[]" id="backup_check_<?php echo $count; ?>" value="<?php echo urlencode($view_helper->m62Encode($backup['file_name'])); ?>" type="checkbox">
 	
 	</td>
 	<?php endif; ?>
@@ -82,7 +82,7 @@
             <?php if( $backup['backup_type'] == 'database'): ?> 
             
             <?php if( $backup['can_restore'] ): ?>
-    			<a href="<?php echo $url_base;?>&section=restore&type=database&id=<?php echo urlencode($view_helper->m62Encode($backup['details_file_name'])); ?>&type=<?php echo $backup['backup_type']; ?>" title="<?php echo $view_helper->m62Lang('restore'); ?>">
+    			<a href="<?php echo $url_base;?>&section=restore&type=database&id=<?php echo urlencode($view_helper->m62Encode($backup['details_file_name'])); ?>&type=<?php echo $backup['backup_type']; ?>" title="<?php echo $view_helper->m62Lang('restore'); ?>" id="restore_link_<?php echo $count; ?>">
     				<img src="<?php echo $theme_folder_url; ?>backup_pro/admin/images/restore.png" alt="<?php echo $view_helper->m62Lang('restore'); ?>" class="">
     			</a> 
             <?php else: ?>
@@ -94,7 +94,7 @@
         $encoded_name = urlencode($view_helper->m62Encode($backup['details_file_name']));
         $download_url = wp_nonce_url($url_base.'download&noheader=true&id='.$encoded_name.'&type='.$backup['backup_type'], $encoded_name);
         ?>
-    		<a href="<?php echo $download_url;?>" title="<?php echo $view_helper->m62Lang('download'); ?>">
+    		<a href="<?php echo $download_url;?>" title="<?php echo $view_helper->m62Lang('download'); ?>" id="download_link_<?php echo $count; ?>">
     			<img src="<?php echo $theme_folder_url; ?>backup_pro/admin/images/download.png" alt="<?php echo $view_helper->m62Lang('download'); ?>" class="">
     		</a> 
 		<?php else: ?>
@@ -104,6 +104,6 @@
 	</td>
 	<?php endif; ?>	
 </tr>
-<?php endforeach; ?>
+<?php $count++; endforeach; ?>
 </tbody>
 </table>
