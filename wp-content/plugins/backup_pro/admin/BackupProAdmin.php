@@ -45,7 +45,7 @@ class BackupProAdmin extends WpController implements BpInterface
 	{
 	    if( strpos($this->getPost('page'), 'backup_pro') !== FALSE ) 
 	    {
-    		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/backup_pro_admin.css', array(), $this->version, 'all' );
+    		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/backup_pro.css', array(), $this->version, 'all' );
     		wp_enqueue_style( $this->plugin_name.'_chosen', plugin_dir_url( __FILE__ ) . 'css/chosen.css', array(), $this->version, 'all' );
 	    }
 	}

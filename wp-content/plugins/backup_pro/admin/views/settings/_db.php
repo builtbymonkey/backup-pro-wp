@@ -18,7 +18,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
     <td>
         <input name="max_db_backups" type="text" id="max_db_backups" value="<?php echo $form_data['max_db_backups']; ?>" class="regular-text code" />
         <p class="description" id="max_db_backups-description"><?php echo $view_helper->m62Lang('max_db_backups_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['max_db_backups']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['max_db_backups']); ?>
     </td>
 </tr>
 <tr>
@@ -28,7 +28,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
     <td>
         <input name="db_backup_alert_threshold" type="text" id="db_backup_alert_threshold" value="<?php echo $form_data['db_backup_alert_threshold']; ?>" class="regular-text code" />
         <p class="description" id="db_backup_alert_threshold-description"><?php echo $view_helper->m62Lang('db_backup_alert_threshold_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['db_backup_alert_threshold']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['db_backup_alert_threshold']); ?>
     </td>
 </tr>
 <tr>
@@ -42,7 +42,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
         <?php endforeach; ?>
         </select>
         <p class="description" id="db_backup_method-description"><?php echo $view_helper->m62Lang('db_backup_method_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['db_backup_method']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['db_backup_method']); ?>
     </td>
 </tr>
 <tr style="display:none" id="php_backup_method_select_chunk_limit_wrap">
@@ -52,7 +52,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
     <td>
         <input name="php_backup_method_select_chunk_limit" type="text" id="php_backup_method_select_chunk_limit" value="<?php echo $form_data['php_backup_method_select_chunk_limit']; ?>" class="regular-text code" />
         <p class="description" id="php_backup_method_select_chunk_limit-description"><?php echo $view_helper->m62Lang('php_backup_method_select_chunk_limit_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['php_backup_method_select_chunk_limit']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['php_backup_method_select_chunk_limit']); ?>
     </td>
 </tr>
 <tr style="display:none" id="mysqldump_command_wrap">
@@ -62,7 +62,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
     <td>
         <input name="mysqldump_command" type="text" id="mysqldump_command" value="<?php echo $form_data['mysqldump_command']; ?>" class="regular-text code" />
         <p class="description" id="mysqldump_command-description"><?php echo $view_helper->m62Lang('mysqldump_command_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['mysqldump_command']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['mysqldump_command']); ?>
     </td>
 </tr>
 <tr>
@@ -76,7 +76,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
         <?php endforeach; ?>
         </select>
         <p class="description" id="db_restore_method-description"><?php echo $view_helper->m62Lang('db_restore_method_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['db_restore_method']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['db_restore_method']); ?>
     </td>
 </tr>
 <tr style="display:none" id="mysqlcli_command_wrap">
@@ -86,7 +86,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
     <td>
         <input name="mysqlcli_command" type="text" id="mysqlcli_command" value="<?php echo $form_data['mysqlcli_command']; ?>" class="regular-text code" />
         <p class="description" id="mysqlcli_command-description"><?php echo $view_helper->m62Lang('mysqlcli_command_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['mysqlcli_command']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['mysqlcli_command']); ?>
     </td>
 </tr>
 </table>
@@ -105,7 +105,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
         <?php endforeach; ?>
         </select>
         <p class="description" id="db_backup_ignore_tables-description"><?php echo $view_helper->m62Lang('db_backup_ignore_tables_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['db_backup_ignore_tables']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['db_backup_ignore_tables']); ?>
     </td>
 </tr>
 <tr>
@@ -119,7 +119,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
         <?php endforeach; ?>
         </select>
         <p class="description" id="db_backup_ignore_table_data-description"><?php echo $view_helper->m62Lang('db_backup_ignore_table_data_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['db_backup_ignore_table_data']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['db_backup_ignore_table_data']); ?>
     </td>
 </tr>
 </table>
@@ -134,7 +134,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
     <td>
         <textarea name="db_backup_archive_pre_sql" rows="10" cols="50" id="db_backup_archive_pre_sql" class="large-text code"><?php echo $form_data['db_backup_archive_pre_sql']; ?></textarea>
         <p class="description" id="db_backup_archive_pre_sql-description"><?php echo $view_helper->m62Lang('db_backup_archive_pre_sql_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['db_backup_archive_pre_sql']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['db_backup_archive_pre_sql']); ?>
     </td>
 </tr>
 <tr>
@@ -144,7 +144,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
     <td>
         <textarea name="db_backup_archive_post_sql" rows="10" cols="50" id="exclude_paths" class="large-text code"><?php echo $form_data['db_backup_archive_post_sql']; ?></textarea>
         <p class="description" id="db_backup_archive_post_sql-description"><?php echo $view_helper->m62Lang('db_backup_archive_post_sql_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['db_backup_archive_post_sql']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['db_backup_archive_post_sql']); ?>
     </td>
 </tr>
 </table>
@@ -158,7 +158,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
     <td>
         <textarea name="db_backup_execute_pre_sql" rows="10" cols="50" id="db_backup_execute_pre_sql" class="large-text code"><?php echo $form_data['db_backup_execute_pre_sql']; ?></textarea>
         <p class="description" id="db_backup_execute_pre_sql-description"><?php echo $view_helper->m62Lang('db_backup_execute_pre_sql_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['db_backup_execute_pre_sql']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['db_backup_execute_pre_sql']); ?>
     </td>
 </tr>
 <tr>
@@ -168,7 +168,7 @@ $db_restore_methods = array('php' => 'PHP', 'mysql' => 'MySQL');
     <td>
         <textarea name="db_backup_execute_post_sql" rows="10" cols="50" id="db_backup_execute_post_sql" class="large-text code"><?php echo $form_data['db_backup_execute_post_sql']; ?></textarea>
         <p class="description" id="db_backup_execute_post_sql-description"><?php echo $view_helper->m62Lang('db_backup_execute_post_sql_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['db_backup_execute_post_sql']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['db_backup_execute_post_sql']); ?>
     </td>
 </tr>
 </table>

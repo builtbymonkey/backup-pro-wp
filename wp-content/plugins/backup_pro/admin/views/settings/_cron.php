@@ -33,7 +33,7 @@
     <td>
         <textarea name="cron_notify_emails" rows="10" cols="50" id="cron_notify_emails" class="large-text code"><?php echo $form_data['cron_notify_emails']; ?></textarea>
         <p class="description" id="cron_notify_emails-description"><?php echo $view_helper->m62Lang('cron_notify_emails_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['cron_notify_emails']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['cron_notify_emails']); ?>
     </td>
 </tr>
 <tr>
@@ -47,7 +47,7 @@
         <?php endforeach; ?>
         </select>
         <p class="description" id="cron_notify_email_mailtype-description"><?php echo $view_helper->m62Lang('cron_notify_email_mailtype_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['cron_notify_email_mailtype']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['cron_notify_email_mailtype']); ?>
     </td>
 </tr>
 <tr>
@@ -57,7 +57,7 @@
     <td>
         <input name="cron_notify_email_subject" type="text" id="cron_notify_email_subject" value="<?php echo $form_data['cron_notify_email_subject']; ?>" class="regular-text code" />
         <p class="description" id="cron_notify_email_subject-description"><?php echo $view_helper->m62Lang('cron_notify_email_subject_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['cron_notify_email_subject']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['cron_notify_email_subject']); ?>
     </td>
 </tr>
 <tr>
@@ -67,7 +67,7 @@
     <td>
         <textarea name="cron_notify_email_message" rows="10" cols="50" id="cron_notify_email_message" class="large-text code"><?php echo $form_data['cron_notify_email_message']; ?></textarea>
         <p class="description" id="cron_notify_email_message-description"><?php echo $view_helper->m62Lang('cron_notify_email_message_instructions'); ?></p>
-        <?php echo $this->backup_lib->displayFormErrors($form_errors['cron_notify_email_message']); ?>
+        <?php echo $view_helper->m62FormErrors($form_errors['cron_notify_email_message']); ?>
     </td>
 </tr>
 </table>

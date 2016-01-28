@@ -1,5 +1,5 @@
 <div class='wrap'>
-    <h2  class="accordion"><?=$view_helper->m62Lang('remove_storage_location')?> (<?php echo $storage_details['storage_location_name']; ?>)</h2>
+    <h2  class="accordion"><?=$view_helper->m62Lang('remove_storage_location')?> (<?php echo $view_helper->m62Escape($storage_details['storage_location_name']); ?>)</h2>
     <?php include '_submenu.php'; ?> <br clear="all" /><br />
     
 	

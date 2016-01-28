@@ -12,6 +12,13 @@
     	<table border="0" cellspacing="0" cellpadding="0" class="widefat"  width="100%" >
     
     	<tbody>
+    	<?php if( $backup['note'] != '' ): ?>
+    	<tr>
+    		<td><strong><?php echo $view_helper->m62Lang('note'); ?>:</strong></td>
+    		<td><?php echo $view_helper->m62Escape($backup['note']); ?></td>
+    	</tr>
+    	
+    	<?php endif; ?>
     	<tr>
     		<td><strong><?php echo $view_helper->m62Lang('taken'); ?>:</strong></td>
     		<td><?php echo $view_helper->m62DateTime($backup['created_date']); ?></td>

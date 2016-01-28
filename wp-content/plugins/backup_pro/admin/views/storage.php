@@ -24,8 +24,8 @@
 	<?php else: ?>
         <?php foreach($storage_details AS $key => $storage): ?>
 		<tr>
-			<td><a href="<?php echo $url_base.'settings&section=storage&action=edit&id='.$key; ?>"><?php echo $storage['storage_location_name']; ?></a></td>
-			<td><div style="float:right"><img src="<?php echo $theme_folder_url; ?>backup_pro/admin/images/storage/<?php echo $storage['storage_location_driver']?>.png" class="" title="<?php echo $storage['storage_location_name']; ?>"></div></td>
+			<td><a href="<?php echo $url_base.'settings&section=storage&action=edit&id='.$key; ?>"><?php echo $view_helper->m62Escape($storage['storage_location_name']); ?></a></td>
+			<td><div style="float:right"><img src="<?php echo $theme_folder_url; ?>backup_pro/admin/images/storage/<?php echo $view_helper->m62Escape($storage['storage_location_driver']); ?>.png" class="" title="<?php echo $view_helper->m62Escape($storage['storage_location_name']); ?>"></div></td>
 			<td><div style="float:right"><?php if ($storage['storage_location_status'] == '1'):?>Active<?php else: ?>Inactive<?php endif;?></div></td>
 			<td><div style="float:right"><?php echo $view_helper->m62DateTime($storage['storage_location_create_date']); ?></div></td>
 			<td><div style="float:right">
