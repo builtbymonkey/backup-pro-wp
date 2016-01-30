@@ -95,7 +95,7 @@
     </th>
     <td>
         <select name="backup_missed_schedule_notify_email_mailtype" id="backup_missed_schedule_notify_email_mailtype">
-        <?php foreach(array('html' => 'html', 'text' => 'text') AS $key => $value): ?>
+        <?php foreach($view_helper->m62Options('email_type') AS $key => $value): ?>
             <option value="<?php echo $key; ?>" <?php selected( $form_data['backup_missed_schedule_notify_email_mailtype'], $key); ?>><?php echo $value; ?></option>
         <?php endforeach; ?>
         </select>

@@ -42,7 +42,7 @@
     </th>
     <td>
         <select name="cron_notify_email_mailtype" id="cron_notify_email_mailtype">
-        <?php foreach(array('html' => 'html', 'text' => 'text') AS $key => $value): ?>
+        <?php foreach($view_helper->m62Options('email_type') AS $key => $value): ?>
             <option value="<?php echo $key; ?>" <?php selected( $form_data['cron_notify_email_mailtype'], $key); ?>><?php echo $value; ?></option>
         <?php endforeach; ?>
         </select>
