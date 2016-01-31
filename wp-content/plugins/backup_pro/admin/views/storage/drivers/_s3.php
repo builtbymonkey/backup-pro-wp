@@ -31,6 +31,22 @@
 </tr>
 <tr>
     <th scope="row">
+        <label for="s3_region"><?php echo $view_helper->m62Lang('s3_region'); ?></label>
+    </th>
+    <td>
+        <select name="s3_region" id="s3_region">
+        <?php 
+        $regions = $view_helper->m62Options('s3_regions', false);
+        foreach($regions AS $key => $value): ?>
+            <option value="<?php echo $key; ?>" <?php selected( $form_data['s3_region'], $key); ?>><?php echo $value; ?></option>
+        <?php endforeach; ?>
+        </select>
+        <p class="description" id="s3_region-description"><?php echo $view_helper->m62Lang('s3_region_instructions'); ?></p>
+        <?php echo $view_helper->m62FormErrors($form_errors['s3_region']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
         <label for="s3_optional_prefix"><?php echo $view_helper->m62Lang('s3_optional_prefix'); ?></label>
     </th>
     <td>
