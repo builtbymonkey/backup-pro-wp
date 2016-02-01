@@ -30,6 +30,16 @@
 </tr>
 <tr>
     <th scope="row">
+        <label for="rcf_optional_prefix"><?php echo $view_helper->m62Lang('rcf_optional_prefix'); ?></label>
+    </th>
+    <td>
+        <input name="rcf_optional_prefix" type="text" id="rcf_optional_prefix" value="<?php echo $form_data['rcf_optional_prefix']; ?>" class="regular-text code" />
+        <p class="description" id="rcf_optional_prefix-description"><?php echo $view_helper->m62Lang('rcf_optional_prefix_instructions'); ?></p>
+        <?php echo $view_helper->m62FormErrors($form_errors['rcf_optional_prefix']); ?>
+    </td>
+</tr>
+<tr>
+    <th scope="row">
         <label for="rcf_location"><?php echo $view_helper->m62Lang('rcf_location'); ?></label>
     </th>
     <td>

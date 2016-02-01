@@ -9,7 +9,7 @@
 		<th></th>
 	
 		<?php if(isset($enable_delete) && $enable_delete == 'yes' ): ?>
-		<th></th>
+		<th><a href="javascript:;" class="bp3_toggle_all">All</a></th>
 		<?php endif; ?>
 		<th></th>
 		<th></th>
@@ -47,7 +47,7 @@
 <tr class="odd">
 	<td class=" backup_pro_backup_status <?php echo $status_class; ?>"></td>
 	<?php if(isset($enable_delete) && $enable_delete == 'yes' ): ?>
-	<td><input name="backups[]" id="backup_check_<?php echo $count; ?>" value="<?php echo urlencode($view_helper->m62Encode($backup['file_name'])); ?>" type="checkbox">
+	<td><input name="backups[]" id="backup_check_<?php echo $count; ?>" value="<?php echo urlencode($view_helper->m62Encode($backup['file_name'])); ?>" type="checkbox" class="bp_toggle_check">
 	
 	</td>
 	<?php endif; ?>
