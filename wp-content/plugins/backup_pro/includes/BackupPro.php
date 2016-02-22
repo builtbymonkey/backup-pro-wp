@@ -189,6 +189,7 @@ class BackupPro implements BpInterface
 		$plugin_public->setContext($this);
 		$this->loader->addAction('init', $plugin_public, 'procCronBackup');
 		$this->loader->addAction('init', $plugin_public, 'procIntegrityCron');
+		$this->loader->addAction('init', $plugin_public, 'procRestApi');
 
 	}
 

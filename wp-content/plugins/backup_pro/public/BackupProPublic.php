@@ -61,4 +61,17 @@ class BackupProPublic extends WpController implements BpInterface
 	        exit;
 	    }
 	}
+	
+	/**
+	 * Spin up the REST API if the request matches
+	 */
+	public function procRestApi()
+	{
+	    if($this->getPost('bp_method') != '')
+	    {
+            $_SERVER['REQUEST_URI'] = '/backup_pro/api'.$this->getPost('bp_method');
+    	    $this->services['rest']->setPlatform($this->platform)->getServer()->run();
+    	    exit;
+	    }
+	}
 }
