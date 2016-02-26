@@ -18,6 +18,7 @@ switch($section)
 	case 'db':
 	case 'files':
 	case 'license':
+	case 'api':
 	case 'integrity_agent':
 		include 'settings/_'.$section.'.php';
 		break;

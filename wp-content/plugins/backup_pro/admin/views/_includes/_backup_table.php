@@ -9,7 +9,7 @@
 		<th></th>
 	
 		<?php if(isset($enable_delete) && $enable_delete == 'yes' ): ?>
-		<th><a href="javascript:;" class="bp3_toggle_all">All</a></th>
+		<th style="padding:0;"><input name="bp_toggle_all" value="1" type="checkbox" class="bp_toggle_all" /></th>
 		<?php endif; ?>
 		<th></th>
 		<th></th>

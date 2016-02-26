@@ -50,6 +50,7 @@ class BackupProSettingsController extends WpController implements BpInterface
         $variables['view_helper'] = $this->view_helper;
         $variables['url_base'] = $this->url_base;
         $variables['theme_folder_url'] = plugin_dir_url(self::name);
+        $variables['rest_api_route_entry'] = $this->platform->getRestApiRouteEntry($this->settings);
         
         //ee()->view->cp_page_title = $this->services['lang']->__($variables['section'].'_bp_settings_menu');
         //return ee()->load->view('settings', $variables, true);
