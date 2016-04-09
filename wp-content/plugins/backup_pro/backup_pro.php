@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Backup Pro
- * Plugin URI: https://mithra62.com/projects/view/backup-pro
+ * Plugin URI: http://backup-pro.com/
  * Description: Backup Pro adds simple, 1 click, file and database backup and database restoration. Backup Pro allows for abstract and redundant storage of your backups through any combination of Local Storage, Amazon S3, Rackspace Cloud Files, Google Cloud Storage, FTP, and even an Email Inbox (if that's your thing). 
- * Version: 3.2.2
+ * Version: 3.3
  * Author: mithra62
- * Author URI: http://mithra62.com/
+ * Author URI: https://mithra62.com/
  * License: Commercial
  * License URI: https://mithra62.com/license-agreement
 **/
@@ -13,7 +13,7 @@
 /**
  * mithra62 - Backup Pro
  *
- * @copyright	Copyright (c) 2015, mithra62, Eric Lamb.
+ * @copyright	Copyright (c) 2016, mithra62, Eric Lamb.
  * @link		http://mithra62.com/
  * @version		3.0
  * @filesource 	./backup_pro.php
@@ -34,6 +34,22 @@ if( !function_exists('activateBackupPro') )
      */
     function activateBackupPro() 
     {
+        if (version_compare(phpversion(), '5.4.0', '<')) {
+            throw new \Exception('You must be run PHP 5.4 or greater to use this package.');
+        }
+         
+        if (!function_exists('mysqli_report') && !class_exists('PDO')) {
+            throw new \Exception('Backup Pro requires either the mysqli or PDO extension for database use.');
+        }
+         
+        if (!function_exists('mb_check_encoding')) {
+            throw new \Exception('Backup Pro requires the Multi Byte extension to ensure proper string encoding.');
+        }
+         
+        if (!function_exists('curl_init')) {
+            throw new \Exception('Backup Pro requires the Curl extension to transfer backups to remote locations.');
+        }
+        
         require_once plugin_dir_path( __FILE__ ) . 'includes/BackupProActivate.php';
         BackupProActivate::activate();
     }
