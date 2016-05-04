@@ -56,6 +56,7 @@ class BackupProCronController extends WpController implements BpInterface
                                  ->setDetails($this->services['backups']->getDetails())
                                  ->autoThreshold($this->settings['auto_threshold'])
                                  ->counts($this->settings['max_file_backups'], 'files')
+                                 ->counts($this->settings['max_db_backups'], 'database')
                                  ->duplicates($this->settings['allow_duplicates']);
         
             //now send the notifications (if any)
