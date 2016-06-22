@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Backup Pro
  * Plugin URI: http://backup-pro.com/
- * Description: Backup Pro adds simple, 1 click, file and database backup and database restoration. Backup Pro allows for abstract and redundant storage of your backups through any combination of Local Storage, Amazon S3, Rackspace Cloud Files, Google Cloud Storage, FTP, and even an Email Inbox (if that's your thing). 
- * Version: 3.3
+ * Description: Backup Pro adds simple, 1 click, file and database backup and database restoration. 
+ * Version: 3.3.1
  * Author: mithra62
  * Author URI: https://mithra62.com/
  * License: Commercial
