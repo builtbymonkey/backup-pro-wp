@@ -658,7 +658,7 @@ class BackupProAdmin extends WpController implements BpInterface
                         else if ( $error == 'file_backup_past_expectation_stub' )
                         {
                             $lang = sprintf(
-                                $this->view_helper->m62Lang('files_backup_past_expectation'),
+                                $this->view_helper->m62Lang('file_backup_past_expectation'),
                                 $this->view_helper->getRelativeDateTime($backup_meta['files']['newest_backup_taken_raw'], false),
                                 $this->url_base.'confirm_backup_files'
                             );
