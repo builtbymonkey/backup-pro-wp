@@ -9,7 +9,7 @@
  */
 
 use mithra62\BackupPro\Platforms\Controllers\Wordpress AS WpController;
-use mithra62\Traits\Log;
+use JaegerApp\Traits\Log;
 use mithra62\BackupPro\BackupPro AS BpInterface;
 
 /**
