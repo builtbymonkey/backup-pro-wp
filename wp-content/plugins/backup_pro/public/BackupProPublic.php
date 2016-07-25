@@ -67,9 +67,9 @@ class BackupProPublic extends WpController implements BpInterface
 	 */
 	public function procRestApi()
 	{
-	    if($this->getPost('bp_method') != '')
+	    if($this->getPost('api_method') != '')
 	    {
-            $_SERVER['REQUEST_URI'] = '/backup_pro/api'.$this->getPost('bp_method');
+            $_SERVER['REQUEST_URI'] = '/backup_pro/api'.$this->getPost('api_method');
     	    $this->services['rest']->setPlatform($this->platform)->getServer()->run();
     	    exit;
 	    }
