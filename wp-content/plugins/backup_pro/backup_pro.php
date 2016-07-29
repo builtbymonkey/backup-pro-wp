@@ -3,7 +3,7 @@
  * Plugin Name: Backup Pro
  * Plugin URI: http://backup-pro.com/
  * Description: Backup Pro adds simple, 1 click, file and database backup and database restoration. 
- * Version: 3.4
+ * Version: 3.4.0.1
  * Author: mithra62
  * Author URI: https://mithra62.com/
  * License: Commercial
