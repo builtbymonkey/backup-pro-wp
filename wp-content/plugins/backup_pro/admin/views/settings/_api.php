@@ -10,7 +10,7 @@
         <label for="rest_api_route_entry"><?php echo $view_helper->m62Lang('rest_api_route_entry'); ?></label>
     </th>
     <td>
-        <a href="<?php echo $rest_api_route_entry; ?>" target="_blank"><?php echo $rest_api_route_entry; ?></a>
+        <a href="<?php echo $rest_api_route_entry; ?>" target="_blank" id="rest_api_url_wrap"><?php echo $rest_api_route_entry; ?></a>
     </td>
 </tr>
 <tr>
